@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;www.affecthing.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;right&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:false,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文属于原创文章，转载请注明–来自桃源小盼聊技术 Javascript，一门神奇的语言，它的数组也同样独特。我们要去其糟粕，取其精华，把常用的最优实践总结出来。如有错误，请指出。 javascript数组是一种类数组的对象，拥有对象的特性。当属性名是小而连续的整数时，应该使用数组，否则，使用对象。 数组来源所有的数组都是Array构造出来的，我们来测试一下constructor这个属性。 123v">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爱上Javascript数组Array（一）——基础介绍">
+<meta property="og:url" content="http://www.affecthing.com/20160311/array1/index.html">
+<meta property="og:site_name" content="桃源小盼聊技术">
+<meta property="og:description" content="本文属于原创文章，转载请注明–来自桃源小盼聊技术 Javascript，一门神奇的语言，它的数组也同样独特。我们要去其糟粕，取其精华，把常用的最优实践总结出来。如有错误，请指出。 javascript数组是一种类数组的对象，拥有对象的特性。当属性名是小而连续的整数时，应该使用数组，否则，使用对象。 数组来源所有的数组都是Array构造出来的，我们来测试一下constructor这个属性。 123v">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-03-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-09T02:27:34.354Z">
+<meta property="article:author" content="桃源小盼">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="数组">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.affecthing.com/20160311/array1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;www.affecthing.com&#x2F;20160311&#x2F;array1&#x2F;&quot;,&quot;path&quot;:&quot;20160311&#x2F;array1&#x2F;&quot;,&quot;title&quot;:&quot;爱上Javascript数组Array（一）——基础介绍&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>爱上Javascript数组Array（一）——基础介绍 | 桃源小盼聊技术</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?da43f566d2f30854d287949fe923820a"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">桃源小盼聊技术</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">桃源小盼博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-book"><a href="/book/" rel="section"><i class="fa fa-book fa-fw"></i>book</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E6%9D%A5%E6%BA%90"><span class="nav-number">1.</span> <span class="nav-text">数组来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E7%BB%84"><span class="nav-number">2.</span> <span class="nav-text">创建数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%90%A6%E4%B8%BA%E6%95%B0%E7%BB%84"><span class="nav-number">3.</span> <span class="nav-text">检测对象是否为数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6"><span class="nav-number">4.</span> <span class="nav-text">数组长度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E9%81%8D%E5%8E%86"><span class="nav-number">5.</span> <span class="nav-text">数组遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">小结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="桃源小盼"
+      src="https://blogcdn.affecthing.com/profile-200.jpeg">
+  <p class="site-author-name" itemprop="name">桃源小盼</p>
+  <div class="site-description" itemprop="description">新鲜中带着历史、主观里带着务实</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hanmingpan" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hanmingpan" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/1646274942" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;1646274942" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:page@111.com" title="E-Mail → mailto:page@111.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.affecthing.com/20160311/array1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://blogcdn.affecthing.com/profile-200.jpeg">
+      <meta itemprop="name" content="桃源小盼">
+      <meta itemprop="description" content="新鲜中带着历史、主观里带着务实">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="桃源小盼聊技术">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          爱上Javascript数组Array（一）——基础介绍
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-03-11 00:00:00" itemprop="dateCreated datePublished" datetime="2016-03-11T00:00:00+08:00">2016-03-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-09 10:27:34" itemprop="dateModified" datetime="2021-06-09T10:27:34+08:00">2021-06-09</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><em>本文属于原创文章，转载请注明–来自<a target="_blank" rel="noopener" href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>Javascript，一门神奇的语言，它的数组也同样独特。我们要去其糟粕，取其精华，把常用的最优实践总结出来。如有错误，请指出。</p>
+<p>javascript数组是一种类数组的对象，拥有对象的特性。当属性名是小而连续的整数时，应该使用数组，否则，使用对象。</p>
+<h2 id="数组来源"><a href="#数组来源" class="headerlink" title="数组来源"></a>数组来源</h2><p>所有的数组都是Array构造出来的，我们来测试一下constructor这个属性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [];</span><br><span class="line">arr.constructor === <span class="built_in">Array</span>; <span class="comment">// true</span></span><br><span class="line">arr.constructor === <span class="built_in">Array</span>.prototype.constructor; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="创建数组"><a href="#创建数组" class="headerlink" title="创建数组"></a>创建数组</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//数组字面量方式</span></span><br><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]; <span class="comment">// [1,2,3]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//构造函数方式</span></span><br><span class="line"><span class="keyword">var</span> arr2 = <span class="keyword">new</span> <span class="built_in">Array</span>();        <span class="comment">// [] 空数组</span></span><br><span class="line"><span class="keyword">var</span> arr3 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="string">&#x27;9&#x27;</span>);     <span class="comment">// [&quot;9&quot;] 一个字符串元素</span></span><br><span class="line"><span class="keyword">var</span> arr4 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">9</span>);       <span class="comment">// [] 数组长度length为9</span></span><br><span class="line"><span class="keyword">var</span> arr5 = <span class="keyword">new</span> <span class="built_in">Array</span>([<span class="number">9</span>]);     <span class="comment">// [[9]] 相当于二维数组</span></span><br><span class="line"><span class="keyword">var</span> arr6 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>); <span class="comment">// [1, 2, 3]</span></span><br><span class="line"><span class="keyword">var</span> arr7 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">1</span>, <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>)</span>&#123;&#125;, &#123;<span class="attr">o</span> : <span class="number">6</span>&#125;, <span class="literal">null</span>,<span class="literal">undefined</span>,<span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 数组可以存储任意混合数据类型</span></span><br></pre></td></tr></table></figure>
+
+<p>由于arr4的方式，当只有一个数字参数传递到Array的构造函数中，构造函数会返回设置了length属性的空数组。所以<code>推荐使用数组字面量方式</code>，短小而简洁。</p>
+<span id="more"></span>
+
+<h2 id="检测对象是否为数组"><a href="#检测对象是否为数组" class="headerlink" title="检测对象是否为数组"></a>检测对象是否为数组</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">typeof</span>(arr1); <span class="comment">// object</span></span><br></pre></td></tr></table></figure>
+
+<p>众所周知，typeof不能正确检测类型。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr1 <span class="keyword">instanceof</span> <span class="built_in">Array</span>; <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<p>instanceof 方式在一个网页内是没有问题，一旦嵌套其他网页，便存在两个全局作用域，互相调用时的检测就会出问题。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>.isArray(arr1); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>Array.isArray() 是ECMAScript5 新增的方法，没有缺陷。唯一的问题是ie8浏览器不支持，ie9浏览器在严格模式下也不支持。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.prototype.toString.apply(arr1).slice(<span class="number">8</span>, -<span class="number">1</span>); <span class="comment">// Array</span></span><br></pre></td></tr></table></figure>
+
+<p>最后一种方式是检测类型的最好方法。</p>
+<h2 id="数组长度"><a href="#数组长度" class="headerlink" title="数组长度"></a>数组长度</h2><p>数组的length也是它的属性，增大length也不会发生越界错误。<br>length值等于数组最大的整数属性名加1。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [];</span><br><span class="line">arr1[<span class="number">9</span>] = <span class="number">1</span>; <span class="comment">// 长度为10，只包含一个元素的数组</span></span><br></pre></td></tr></table></figure>
+
+<p>设小值将将会把属性名大于等于length的属性删除。<br>如果将length值设为0，相当于清空数组。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr2.length = <span class="number">3</span>; <span class="comment">// [1, 2, 3]</span></span><br><span class="line">arr2.length = <span class="number">0</span>; <span class="comment">// []</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="数组遍历"><a href="#数组遍历" class="headerlink" title="数组遍历"></a>数组遍历</h2><p>遍历数组不要使用for in循环遍历数组，因为for in会遍历原型链上的所有属性，但我们并不需要这么多。推荐使用for循环的方式。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr1.test = <span class="number">9</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//for in 方式</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> prop <span class="keyword">in</span> arr1)&#123;</span><br><span class="line">    cosole.log(prop, arr1[prop]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出如下</span></span><br><span class="line"><span class="comment">// 0 1</span></span><br><span class="line"><span class="comment">// 1 2</span></span><br><span class="line"><span class="comment">// 2 3</span></span><br><span class="line"><span class="comment">// test 9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//for循环方式</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>, len = arr1.length; i &lt; len; i++)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(arr1[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出如下</span></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<p>我们看到for in方式多出了一个test值，可以使用<code>hasOwnProperty</code>函数排除，但那会比for循环的方式慢很多。<br>缓存数组长度很有必要的一步，每次访问是有性能开销的（最新的浏览器在这方面做了优化）。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>简单介绍了Array的相关基础知识，到这里也算是能对Array有更全面的理解了。下一篇介绍Array的方法。</p>
+<p>Javascript虽然有很多不太容易弄懂的地方，随着长时间的学习，我已经慢慢地爱上它了。</p>
+<p>下一篇<a href="/20160313/array2/">《爱上Javascript数组Array（二）——方法解读》</a>，这一篇详细介绍Array的所有方法。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/%E6%95%B0%E7%BB%84/" rel="tag"># 数组</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/20151204/compatibility/" rel="prev" title="小谈网站建设的兼容性">
+                  <i class="fa fa-chevron-left"></i> 小谈网站建设的兼容性
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/20160313/array2/" rel="next" title="爱上Javascript数组Array（二）——方法解读">
+                  爱上Javascript数组Array（二）——方法解读 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="http://www.beian.miit.gov.cn/" target="_blank">鲁ICP备14032062号-1</a></span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;www.affecthing.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;right&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:false,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文属于原创文章，转载请注明–来自桃源小盼聊技术 起因每次换工作写简历都是有点痛苦的事情，尤其是下载word模板，各种注册流程，有的还得买积分，冲会员，甚是不爽。就算下载好了，修改其中的一些细节也不太熟悉各种功能，由于长期不用word，早把很多设置功能抛之脑后。 忽然有一天灵感涌上，这种简易的模板样式，对于一个前端工程师来说，写个页面分分钟的事，只要能把html转成pdf格式这事就成了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我用HTML写简历">
+<meta property="og:url" content="http://www.affecthing.com/20180923/resume/index.html">
+<meta property="og:site_name" content="桃源小盼聊技术">
+<meta property="og:description" content="本文属于原创文章，转载请注明–来自桃源小盼聊技术 起因每次换工作写简历都是有点痛苦的事情，尤其是下载word模板，各种注册流程，有的还得买积分，冲会员，甚是不爽。就算下载好了，修改其中的一些细节也不太熟悉各种功能，由于长期不用word，早把很多设置功能抛之脑后。 忽然有一天灵感涌上，这种简易的模板样式，对于一个前端工程师来说，写个页面分分钟的事，只要能把html转成pdf格式这事就成了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-09-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-09T02:27:34.355Z">
+<meta property="article:author" content="桃源小盼">
+<meta property="article:tag" content="puppeteer">
+<meta property="article:tag" content="简历">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.affecthing.com/20180923/resume/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;www.affecthing.com&#x2F;20180923&#x2F;resume&#x2F;&quot;,&quot;path&quot;:&quot;20180923&#x2F;resume&#x2F;&quot;,&quot;title&quot;:&quot;我用HTML写简历&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>我用HTML写简历 | 桃源小盼聊技术</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?da43f566d2f30854d287949fe923820a"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">桃源小盼聊技术</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">桃源小盼博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-book"><a href="/book/" rel="section"><i class="fa fa-book fa-fw"></i>book</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%B7%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puppeteer"><span class="nav-number">2.</span> <span class="nav-text">Puppeteer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#install"><span class="nav-number">2.1.</span> <span class="nav-text">install</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#index-html"><span class="nav-number">3.</span> <span class="nav-text">index.html</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gulpfile-js"><span class="nav-number">4.</span> <span class="nav-text">gulpfile.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#build-js"><span class="nav-number">5.</span> <span class="nav-text">build.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="桃源小盼"
+      src="https://blogcdn.affecthing.com/profile-200.jpeg">
+  <p class="site-author-name" itemprop="name">桃源小盼</p>
+  <div class="site-description" itemprop="description">新鲜中带着历史、主观里带着务实</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hanmingpan" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hanmingpan" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/1646274942" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;1646274942" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:page@111.com" title="E-Mail → mailto:page@111.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.affecthing.com/20180923/resume/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://blogcdn.affecthing.com/profile-200.jpeg">
+      <meta itemprop="name" content="桃源小盼">
+      <meta itemprop="description" content="新鲜中带着历史、主观里带着务实">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="桃源小盼聊技术">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          我用HTML写简历
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-23 00:00:00" itemprop="dateCreated datePublished" datetime="2018-09-23T00:00:00+08:00">2018-09-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-09 10:27:34" itemprop="dateModified" datetime="2021-06-09T10:27:34+08:00">2021-06-09</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><em>本文属于原创文章，转载请注明–来自<a target="_blank" rel="noopener" href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>每次换工作写简历都是有点痛苦的事情，尤其是下载word模板，各种注册流程，有的还得买积分，冲会员，甚是不爽。就算下载好了，修改其中的一些细节也不太熟悉各种功能，由于长期不用word，早把很多设置功能抛之脑后。</p>
+<p>忽然有一天灵感涌上，这种简易的模板样式，对于一个前端工程师来说，写个页面分分钟的事，只要能把html转成pdf格式这事就成了。</p>
+<span id="more"></span>
+
+<h2 id="Puppeteer"><a href="#Puppeteer" class="headerlink" title="Puppeteer"></a>Puppeteer</h2><p>Puppeteer是谷歌出的一个headless自动化工具。</p>
+<ul>
+<li>利用网页生成PDF、图片</li>
+<li>抓取网站内容</li>
+<li>自动化表单提交、UI测试、键盘输入等</li>
+<li>创建一个最新的自动化测试环境</li>
+</ul>
+<p>用来把html转换pdf，虽然是有点大材小用，但是很适合，渲染效果也是足够放心的。</p>
+<h3 id="install"><a href="#install" class="headerlink" title="install"></a>install</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> &gt; Node v6.4.0</span></span><br><span class="line">npm i puppeteer --save</span><br></pre></td></tr></table></figure>
+
+<p>但是安装这里有坑位，还好前人踩过坑了，失败的人点<a target="_blank" rel="noopener" href="https://juejin.im/post/5b99c9ece51d450e51625630">这里</a>，笔者也是下载失败了~~~</p>
+<h2 id="index-html"><a href="#index-html" class="headerlink" title="index.html"></a>index.html</h2><p>具体怎么写得养眼，就是自己的事情了，这里提供一个简单的模板。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>我的简历<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1.0, maximum-scale=1.0, user-scalable=0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">    主要内容</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="gulpfile-js"><a href="#gulpfile-js" class="headerlink" title="gulpfile.js"></a>gulpfile.js</h2><p>既然想要写得爽，怎么也得来个热更新吧，搞个简单的自动化工具。<br>Puppeteer只能访问http地址，所以还需要静态资源服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i --save browser-sync gulp gulp-notify</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>browser-sync 提供静态服务器和热更新</li>
+<li>gulp 自动化工具</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> notify = <span class="built_in">require</span>(<span class="string">&#x27;gulp-notify&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> browserSync = <span class="built_in">require</span>(<span class="string">&#x27;browser-sync&#x27;</span>).create()</span><br><span class="line"><span class="keyword">const</span> reload = browserSync.reload</span><br><span class="line"></span><br><span class="line"><span class="comment">// 热更新</span></span><br><span class="line">gulp.task(<span class="string">&#x27;styles&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">&#x27;src/*.css&#x27;</span>)</span><br><span class="line">        .pipe(reload(&#123;<span class="attr">stream</span>: <span class="literal">true</span>&#125;))</span><br><span class="line">        .pipe(notify(&#123;<span class="attr">message</span>: <span class="string">&#x27;Styles complete&#x27;</span>&#125;))</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态资源服务</span></span><br><span class="line">gulp.task(<span class="string">&#x27;serve&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>], <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    browserSync.init(&#123;</span><br><span class="line">        <span class="attr">server</span>: &#123;</span><br><span class="line">            <span class="attr">baseDir</span>: <span class="string">&quot;./src&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">port</span>: <span class="number">7000</span>,</span><br><span class="line">        <span class="comment">// 关闭右上角通知</span></span><br><span class="line">        <span class="attr">notify</span>: <span class="literal">false</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.css&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>])</span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.html&#x27;</span>, reload)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="build-js"><a href="#build-js" class="headerlink" title="build.js"></a>build.js</h2><p>只差转换生成了，这里用到了await语法，否则层级太深。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">&#x27;puppeteer&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch()</span><br><span class="line">    <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage()</span><br><span class="line">    <span class="keyword">await</span> page.goto(<span class="string">&#x27;http://localhost:7000&#x27;</span>)</span><br><span class="line">    <span class="keyword">await</span> page.pdf(&#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&#x27;resume.pdf&#x27;</span>,</span><br><span class="line">        <span class="attr">format</span>: <span class="string">&#x27;A4&#x27;</span>,</span><br><span class="line">        <span class="comment">// 打印背景色</span></span><br><span class="line">        <span class="attr">printBackground</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> browser.close()</span><br><span class="line">    <span class="built_in">console</span>.info(<span class="string">&#x27;build done&#x27;</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后写简历的事情，也被我们工程化了，想想也是省心省力。可以发挥我们的想象，加入各种好玩的东西，再也没人有跟我一样的简历样式了。</p>
+<p>这里写了一个简单的项目，仅供参考<a target="_blank" rel="noopener" href="https://github.com/hanmingpan/better-resume">demo地址</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/puppeteer/" rel="tag"># puppeteer</a>
+              <a href="/tags/%E7%AE%80%E5%8E%86/" rel="tag"># 简历</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/20180620/flexible/" rel="prev" title="淘宝flexible深度解读">
+                  <i class="fa fa-chevron-left"></i> 淘宝flexible深度解读
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/20181213/natapp/" rel="next" title="代理本地服务到公网-natapp内网穿透工具">
+                  代理本地服务到公网-natapp内网穿透工具 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="http://www.beian.miit.gov.cn/" target="_blank">鲁ICP备14032062号-1</a></span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

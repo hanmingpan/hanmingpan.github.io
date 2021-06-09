@@ -1,0 +1,1472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>socket.io Get started/chat</title>
+    <url>/20150920/socket_io/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>socket.io非常适合做聊天室，但英文官网读起来还是有一定的障碍，特此翻译。如有误点，欢迎指出。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原地址：http://socket.io/get-started/chat/</span><br></pre></td></tr></table></figure>
+
+<p>正文如下：</p>
+<h1 id="开始：聊天"><a href="#开始：聊天" class="headerlink" title="开始：聊天"></a>开始：聊天</h1><p>本篇文章，我们将一起来创建一个简单的聊天应用。它几乎不要求你提前掌握Node.JS 或 Socket.IO的知识，适合任何人来尝试。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>用LAMP这种传统的方式来搭建一个聊天应用是很难的，它包括轮询服务器的变化，保持跟踪时间戳，比socket.io慢得多。</p>
+<p>Sockets一直是最具实时性的聊天系统解决方案，在客户端和服务端提供了一种双向通信通道。</p>
+<p>这意味着服务器能发送消息给客户端。当你发出一条消息时，服务端将获取它，并将它发送给其他所有在线客户端。</p>
+<span id="more"></span>
+
+<h2 id="使用web框架-express"><a href="#使用web框架-express" class="headerlink" title="使用web框架 express"></a>使用web框架 express</h2><p>首要目标是建立一个简单的HTML页面，包括一个表单和一个消息列表，我们将使用Node.JS web 框架 <code>express</code> 去搭建。请先确保 <a href="https://nodejs.org/en/">Node.JS</a> 已经安装。</p>
+<p>首先为我们的应用新建一个<code>package.json</code>配置文件，把它放到一个新建的文件夹中（例如<code>chat-example</code>）。</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;socket-chat-example&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;0.0.1&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;description&quot;</span>: <span class="string">&quot;my first socket.io app&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span>: &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在为了更快的将我们需要的依赖应用添加到<code>dependencies</code>中，运行<code>npm install --save</code>：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install --save express@4.10.2</span><br></pre></td></tr></table></figure>
+
+
+<p>现在<code>express</code>已经安装好了，我们再新建一个index.js作为我们的入口文件。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> app = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>)();</span><br><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>).Server(app);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">&#x27;/&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>&#123;</span><br><span class="line">  res.send(<span class="string">&#x27;&lt;h1&gt;Hello world&lt;/h1&gt;&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">http.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;listening on *:3000&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>说明如下：</p>
+<ul>
+<li>Express初始化<code>app</code>为一个处理请求HTTP服务的程序。（参见第二行）</li>
+<li>定义一个路由<code>/</code>访问网站根目录</li>
+<li>监听HTTP服务器端口3000</li>
+</ul>
+<p>如果你运行<code>node index.js</code>，将看到如下界面：</p>
+<p><img src="//blogcdn.affecthing.com/socket-io-1.png" alt="socket-io-1"></p>
+<p>紧接着我们用浏览器访问<code>http://localhost:3000</code>：</p>
+<p><img src="//blogcdn.affecthing.com/socket-io-2.png" alt="socket-io-2"></p>
+<h2 id="编辑HTML（Serving-HTML）"><a href="#编辑HTML（Serving-HTML）" class="headerlink" title="编辑HTML（Serving HTML）"></a>编辑HTML（Serving HTML）</h2><p>现在我们在<code>index.js</code>中使用<code>res.send</code>传递一个HTML字符串。如果我们把整个应用的的HTML放在<code>index.js</code>中，整个代码结构将杂乱无章。所以我们要创建一个<code>index.html</code>文件。</p>
+<p>我们要使用<code>sendFile</code>方法来重构路由管理。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">app.get(<span class="string">&#x27;/&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>&#123;</span><br><span class="line">  res.sendFile(__dirname + <span class="string">&#x27;/index.html&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><code>index.html</code>如下：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Socket.IO chat<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">      * &#123; <span class="attribute">margin</span>: <span class="number">0</span>; <span class="attribute">padding</span>: <span class="number">0</span>; <span class="attribute">box-sizing</span>: border-box; &#125;</span></span><br><span class="line"><span class="css">      <span class="selector-tag">body</span> &#123; <span class="attribute">font</span>: <span class="number">13px</span> Helvetica, Arial; &#125;</span></span><br><span class="line"><span class="css">      <span class="selector-tag">form</span> &#123; <span class="attribute">background</span>: <span class="number">#000</span>; <span class="attribute">padding</span>: <span class="number">3px</span>; <span class="attribute">position</span>: fixed; <span class="attribute">bottom</span>: <span class="number">0</span>; <span class="attribute">width</span>: <span class="number">100%</span>; &#125;</span></span><br><span class="line"><span class="css">      <span class="selector-tag">form</span> <span class="selector-tag">input</span> &#123; <span class="attribute">border</span>: <span class="number">0</span>; <span class="attribute">padding</span>: <span class="number">10px</span>; <span class="attribute">width</span>: <span class="number">90%</span>; <span class="attribute">margin-right</span>: .<span class="number">5%</span>; &#125;</span></span><br><span class="line"><span class="css">      <span class="selector-tag">form</span> <span class="selector-tag">button</span> &#123; <span class="attribute">width</span>: <span class="number">9%</span>; <span class="attribute">background</span>: <span class="built_in">rgb</span>(<span class="number">130</span>, <span class="number">224</span>, <span class="number">255</span>); <span class="attribute">border</span>: none; <span class="attribute">padding</span>: <span class="number">10px</span>; &#125;</span></span><br><span class="line"><span class="css">      <span class="selector-id">#messages</span> &#123; <span class="attribute">list-style-type</span>: none; <span class="attribute">margin</span>: <span class="number">0</span>; <span class="attribute">padding</span>: <span class="number">0</span>; &#125;</span></span><br><span class="line"><span class="css">      <span class="selector-id">#messages</span> <span class="selector-tag">li</span> &#123; <span class="attribute">padding</span>: <span class="number">5px</span> <span class="number">10px</span>; &#125;</span></span><br><span class="line"><span class="css">      <span class="selector-id">#messages</span> <span class="selector-tag">li</span><span class="selector-pseudo">:nth-child</span>(odd) &#123; <span class="attribute">background</span>: <span class="number">#eee</span>; &#125;</span></span><br><span class="line"><span class="css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">&quot;messages&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">&quot;m&quot;</span> <span class="attr">autocomplete</span>=<span class="string">&quot;off&quot;</span> /&gt;</span><span class="tag">&lt;<span class="name">button</span>&gt;</span>Send<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>如果你重启进程（ctrl+C并再次运行<code>node index</code>)并且刷新浏览器，效果如下：</p>
+<p><img src="//blogcdn.affecthing.com/socket-io-3.png" alt="socket-io-3"></p>
+<h2 id="整合Socket-IO"><a href="#整合Socket-IO" class="headerlink" title="整合Socket.IO"></a>整合Socket.IO</h2><p>Socket.IO由两部分构成：</p>
+<ul>
+<li>服务端使用Node.JS的HTTP服务器: <code>socket.io</code></li>
+<li>客户端则在浏览器端加载：<code>socket.io-client</code></li>
+</ul>
+<p>开发期间，<code>socket.io</code>自动在客服端运行加载，现在我们必须要安装一个模块：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install --save socket.io</span><br></pre></td></tr></table></figure>
+
+<p>上面的命令将安装<code>socket.io</code>模块，并将它写入配置文件<code>package.json</code>。然后我们修改<code>index.js</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> app = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>)();</span><br><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>).Server(app);</span><br><span class="line"><span class="keyword">var</span> io = <span class="built_in">require</span>(<span class="string">&#x27;socket.io&#x27;</span>)(http);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">&#x27;/&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>&#123;</span><br><span class="line">  res.sendfile(<span class="string">&#x27;index.html&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">io.on(<span class="string">&#x27;connection&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">socket</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;a user connected&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">http.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;listening on *:3000&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+<p>注意，我通过使用<code>http</code>（http服务器）对象来初始化一个<code>socket.io</code>实例。接着监听socket连接事件，并将它输出到控制台。</p>
+<p>然后在<code>index.html</code>中<code>&lt;/body&gt;</code>之前加入以下片段：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script src=<span class="string">&quot;/socket.io/socket.io.js&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="keyword">var</span> socket = io();</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>客户端加载<code>socket.io-client</code>，在全局调用<code>io()</code>并连接服务端。</p>
+<p>注意，当我们调用<code>io()</code>时没有指定任何一个URL，因为它默认去尝试连接主机。</p>
+<p>如果你现在重载服务器和客户端，控制台打印“a user connected”。</p>
+<p>尝试打开多个页面，你将看到如：</p>
+<p><img src="//blogcdn.affecthing.com/socket-io-4.png" alt="socket-io-4"></p>
+<p>每个socket也触发特殊的<code>disconnect</code>事件。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">io.on(<span class="string">&#x27;connection&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">socket</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;a user connected&#x27;</span>);</span><br><span class="line">  socket.on(<span class="string">&#x27;disconnect&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;user disconnected&#x27;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如果你刷新一个页面几次，你将在控制台看到如下信息：</p>
+<p><img src="//blogcdn.affecthing.com/socket-io-5.png" alt="socket-io-5"></p>
+<h2 id="发送事件（Emitting）"><a href="#发送事件（Emitting）" class="headerlink" title="发送事件（Emitting）"></a>发送事件（Emitting）</h2><p>Socket.IO背后的主要思想是：你可以发送和接收任何你想要的事件和数据。任何被编码为JSON的对象，二进制数据也支持。</p>
+<p>当用户输入一条消息时，服务端把它当作<code>chat message</code>事件获得。在<code>index.html</code>中的<code>script</code>片段如下：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.socket.io/socket.io-1.2.0.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://code.jquery.com/jquery-1.11.1.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">var</span> socket = io();</span></span><br><span class="line"><span class="javascript">  $(<span class="string">&#x27;form&#x27;</span>).submit(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    socket.emit(<span class="string">&#x27;chat message&#x27;</span>, $(<span class="string">&#x27;#m&#x27;</span>).val());</span></span><br><span class="line"><span class="javascript">    $(<span class="string">&#x27;#m&#x27;</span>).val(<span class="string">&#x27;&#x27;</span>);</span></span><br><span class="line"><span class="javascript">    <span class="keyword">return</span> <span class="literal">false</span>;</span></span><br><span class="line"><span class="javascript">  &#125;);</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>同时在<code>index.js</code>中打印出<code>chat message</code>事件：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">io.on(<span class="string">&#x27;connection&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">socket</span>)</span>&#123;</span><br><span class="line">  socket.on(<span class="string">&#x27;chat message&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">msg</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;message: &#x27;</span> + msg);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：（原文是一小片段视频，此处无法加进来，截图展示）</p>
+<p><img src="//blogcdn.affecthing.com/socket-io-6.png" alt="socket-io-6"></p>
+<h2 id="通知（Broadcasting）"><a href="#通知（Broadcasting）" class="headerlink" title="通知（Broadcasting）"></a>通知（Broadcasting）</h2><p>下一个目标是将来自服务器的消息发送给其他用户。</p>
+<p>为了发送给每一个人，<code>Socket.IO</code>提供<code>io.emit</code>了给我们：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">io.emit(<span class="string">&#x27;some event&#x27;</span>, &#123; <span class="attr">for</span>: <span class="string">&#x27;everyone&#x27;</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如果你想发送消息给每个人除了一定的socket，我们有<code>broadcast</code>标记：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">io.on(<span class="string">&#x27;connection&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">socket</span>)</span>&#123;</span><br><span class="line">  socket.broadcast.emit(<span class="string">&#x27;hi&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">现在为了简单起见，我们发送消息给每个人，包括发送者自己。</span><br><span class="line"></span><br><span class="line">``` javascript</span><br><span class="line">      io.on(&#x27;connection&#x27;, function(socket)&#123;</span><br><span class="line">        socket.on(&#x27;chat message&#x27;, function(msg)&#123;</span><br><span class="line">          io.emit(&#x27;chat message&#x27;, msg);</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在客户端我们捕获<code>chat message</code>事件。客户端全部的 JavaScript 代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> socket = io();</span><br><span class="line">$(<span class="string">&#x27;form&#x27;</span>).submit(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  socket.emit(<span class="string">&#x27;chat message&#x27;</span>, $(<span class="string">&#x27;#m&#x27;</span>).val());</span><br><span class="line">  $(<span class="string">&#x27;#m&#x27;</span>).val(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;);</span><br><span class="line">socket.on(<span class="string">&#x27;chat message&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">msg</span>)</span>&#123;</span><br><span class="line">  $(<span class="string">&#x27;#messages&#x27;</span>).append($(<span class="string">&#x27;&lt;li&gt;&#x27;</span>).text(msg));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>现在我们的聊天应用完成了，大约20行代码，最后就是这样子了：（原文是一小片段视频，此处无法加进来，截图展示）</p>
+<p><img src="//blogcdn.affecthing.com/socket-io-7.png" alt="socket-io-7"></p>
+<h2 id="更多的实践"><a href="#更多的实践" class="headerlink" title="更多的实践"></a>更多的实践</h2><p>这有一些建议来改进这个应用：</p>
+<ul>
+<li>当有人进入或离开时，通知给所有人。</li>
+<li>增加昵称</li>
+<li>不发送相同的消息给发送者自己，反而当输入回车时快速发送消息。</li>
+<li>增加“用户正在输入”功能</li>
+<li>展示谁在线</li>
+<li>增加私信</li>
+<li>分享你的改进</li>
+</ul>
+<h2 id="获得这个例子"><a href="#获得这个例子" class="headerlink" title="获得这个例子"></a>获得这个例子</h2><p>在GitHub上你能<a href="https://github.com/rauchg/chat-example">找到它</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/guille/chat-example.git</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="译者说："><a href="#译者说：" class="headerlink" title="译者说："></a>译者说：</h2><p>这篇文章还是有几处我没有翻译好的地方，作为一个coder必须要把英语学好。好事多磨，编程也不要过分地追求速度。</p>
+]]></content>
+      <tags>
+        <tag>聊天室</tag>
+        <tag>node.js</tag>
+        <tag>socket</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Javascript中的Number和Math</title>
+    <url>/20160330/number/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<h1 id="Number"><a href="#Number" class="headerlink" title="Number"></a>Number</h1><h2 id="number-toExponential"><a href="#number-toExponential" class="headerlink" title="number.toExponential()"></a>number.toExponential()</h2><p>以指数表示法返回一个字符串，参数用来指定小数点后的位数。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num = <span class="number">123.456</span>;</span><br><span class="line">num.toExponential();  <span class="comment">// &quot;1.23456e+2&quot;</span></span><br><span class="line">num.toExponential(<span class="number">1</span>);  <span class="comment">// &quot;1.2e+2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="number-toFixed"><a href="#number-toFixed" class="headerlink" title="number.toFixed()"></a>number.toFixed()</h2><p>返回一个指定小数点后位数的字符串，参数默认为0。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num = <span class="number">123.456</span>;</span><br><span class="line">num.toFixed();      <span class="comment">// &quot;123&quot;</span></span><br><span class="line">num.toFixed(<span class="number">1</span>);     <span class="comment">// &quot;123.4&quot;</span></span><br><span class="line">num.toFixed(<span class="number">4</span>);     <span class="comment">// &quot;123.4560&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="number">123.456</span>.toFixed();  <span class="comment">// &quot;123&quot;;</span></span><br><span class="line">+<span class="number">123.456</span>.toFixed(); <span class="comment">// 123  (由于操作符优先级，返回数字)</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="isNaN"><a href="#isNaN" class="headerlink" title="isNaN()"></a>isNaN()</h2><p>判断是否是NaN，然而这个方法并不准确。新增加的number.isNaN()还不能广泛使用。<br>使用(x !== x) 到是可以检测。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="literal">NaN</span>;</span><br><span class="line"><span class="keyword">var</span> y = <span class="literal">undefined</span>;</span><br><span class="line"><span class="keyword">var</span> z = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">isNaN</span>(x); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">isNaN</span>(y); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">isNaN</span>(z); <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line">x !== x;  <span class="comment">// true</span></span><br><span class="line">y !== y;  <span class="comment">// false</span></span><br><span class="line">z !== z;  <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="parseInt"><a href="#parseInt" class="headerlink" title="parseInt()"></a>parseInt()</h2><p>将字符串转换成整数</p>
+<h2 id="parseFloat"><a href="#parseFloat" class="headerlink" title="parseFloat()"></a>parseFloat()</h2><p>将字符串转换成浮点数字</p>
+<h1 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h1><p>Math相关的属性和方法都是静态的，直接使用即可。</p>
+<ul>
+<li>  Math.abs()       // 取绝对值</li>
+<li>  Math.ceil()      // 向上取整</li>
+<li>  Math.floor()     // 向下取整</li>
+<li>  Math.max()       // 返回一组数据中的最大值（非数组）</li>
+<li>  Math.min()       // 返回一组数据中的最小值</li>
+<li>  Math.pow(x, y)   // 计算次幂结果</li>
+<li>  Math.random()    // 返回[0,1]之间的伪随机浮点数</li>
+<li>  Math.round()     // 四舍五入，返回整数</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+        <tag>Number</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小谈网站建设的兼容性</title>
+    <url>/20151204/compatibility/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>本文的兼容性包含了更多的意思，一些和网站开发注意的实际问题。对注重seo的网站帮助更多一些。</p>
+<h2 id="关于浏览器"><a href="#关于浏览器" class="headerlink" title="关于浏览器"></a>关于浏览器</h2><p>现在的前端开发已经开始放弃兼容ie6,ie7,并且也在有条件的放弃ie8。像chrome这样的现代浏览器对新特性支持度都很棒，只是在某些新特性上的实现方式并不太统一。</p>
+<blockquote>
+<p>这是百度统计最近六个月的数据，ie6和ie7合起来还是有9.03%，360是被统计到各种内核中了。</p>
+<p><img src="//blogcdn.affecthing.com/compatibility-1.png" alt="compatibility-1"></p>
+</blockquote>
+<p>而现在需要我们考虑的就是ie浏览器了。对于ie6,ie7需要去写很多hack代码，非常丑陋并且还要花费大把的时间去调试，然而现在真正使用这两个浏览器的人却是不多的，与其这样还不如把精力投入到大部分用户群体上，为他们提供更好的体验。</p>
+<p>所以是时候放弃兼容他们了，但是我们也不能把使用这两个浏览器的用户放弃掉，所以我们应该加一些让他们更新浏览器的提示，像下面这样：</p>
+<span id="more"></span>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--[if lte IE 8]&gt;</span></span><br><span class="line"><span class="comment">    &lt;div&gt;</span></span><br><span class="line"><span class="comment">     您正在使用的浏览器版本过低，无法达到最佳体验效果。建议使用以下浏览器：</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://se.360.cn&quot; target=&quot;_blank&quot;&gt;360浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://ie.sogou.com&quot; target=&quot;_blank&quot;&gt;搜狗浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://browser.qq.com&quot; target=&quot;_blank&quot;&gt;QQ浏览器&lt;/a&gt;/</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html&quot;</span></span><br><span class="line"><span class="comment">      target=&quot;_blank&quot;&gt;Chrome&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://http://www.firefox.com.cn&quot; target=&quot;_blank&quot;&gt;火狐浏览器&lt;/a&gt;</span></span><br><span class="line"><span class="comment">    &lt;/div&gt;</span></span><br><span class="line"><span class="comment">&lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><em>之所以把喜爱的chrome放到后面，是因为既然他们正在使用低版本浏览器就并不太会使用chrome,而国产浏览器更适合大多数人使用</em></p>
+<h2 id="文档模式"><a href="#文档模式" class="headerlink" title="文档模式"></a>文档模式</h2><p>ie8在win7和XP下的表现也是不同的，因为文档模式，在旧有的文档模式下，并不能正确识别HTML5的新标签。这是最近六个月的操作系统统计数据：</p>
+<p><img src="//blogcdn.affecthing.com/compatibility-2.png" alt="compatibility-2"></p>
+<p>首先在head加文档模式的选择，和浏览器内核的选择</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;x-ua-compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;renderer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;webkit&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>而xp系统下的ie8并没有edge文档模式，所以这里使用<a href="https://github.com/Modernizr/Modernizr">modernizr</a>,它能让你放心使用HTML5标签，并且还能检测浏览器的能力，根据不同的能力来实现不同的东西。压缩版已经足够小了，这里把它放到头部。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/dep/Modernizr/modernizr.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="显示分辨率"><a href="#显示分辨率" class="headerlink" title="显示分辨率"></a>显示分辨率</h2><p>现在屏幕的分辨率也是各种尺寸了，下面是各种分辨率的统计数据：</p>
+<p><img src="//blogcdn.affecthing.com/compatibility-3.png" alt="compatibility-3"></p>
+<p>大屏已经是趋势了，但是1024*768这个附近应该还有不少，分辨率这个问题我们不能像浏览器那样提示更换显示器吧，毕竟有不小成本，所以还是要借助代码来实现响应式，对于比较复杂的网页实现1200px和1000px就可以了，因为桌面端的网站并不适合手机端，就算你使用响应式，也存在很多其他问题。尤其ie8并不能识别<code>@media</code>语法，所以要借助<a href="https://github.com/scottjehl/Respond">Respond.js</a></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--[if lt IE 9]&gt;</span></span><br><span class="line"><span class="comment">    &lt;script src=&quot;/dep/respond/dest/respond.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">&lt;!--&lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>到这里我们的头部看起来是这样的:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">class</span>=<span class="string">&quot;no-js&quot;</span> <span class="attr">lang</span>=<span class="string">&quot;zh-CN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;x-ua-compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>网站建设<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;keywords&quot;</span> <span class="attr">content</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;description&quot;</span> <span class="attr">content</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;renderer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;webkit&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;shortcut icon&quot;</span> <span class="attr">type</span>=<span class="string">&quot;image/x-icon&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/favicon.ico&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/static/main.css&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/dep/Modernizr/modernizr.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--[if lt IE 9]&gt;</span></span><br><span class="line"><span class="comment">    &lt;script src=&quot;/dep/respond/dest/respond.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">    &lt;!--&lt;![endif]--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--[if lte IE 8]&gt;</span></span><br><span class="line"><span class="comment">    &lt;div&gt;</span></span><br><span class="line"><span class="comment">        您正在使用的浏览器版本过低，无法达到最佳体验效果。建议使用以下浏览器：</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://se.360.cn&quot; target=&quot;_blank&quot;&gt;360浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://ie.sogou.com&quot; target=&quot;_blank&quot;&gt;搜狗浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://browser.qq.com&quot; target=&quot;_blank&quot;&gt;QQ浏览器&lt;/a&gt;/</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html&quot;</span></span><br><span class="line"><span class="comment">         target=&quot;_blank&quot;&gt;Chrome&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://http://www.firefox.com.cn&quot; target=&quot;_blank&quot;&gt;火狐浏览器&lt;/a&gt;</span></span><br><span class="line"><span class="comment">    &lt;/div&gt;</span></span><br><span class="line"><span class="comment">    &lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="css样式和Jquery"><a href="#css样式和Jquery" class="headerlink" title="css样式和Jquery"></a>css样式和Jquery</h2><p>现在的前端开发已经翻天覆地了，less和sass大行其道，没有使用小伙伴赶快尝试吧。css3的新属性需要写很多兼容方式，想下面这种写法应该很烦了吧。</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.gradient</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-moz-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>, <span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-webkit-gradient</span>(linear, left top, left bottom,</span><br><span class="line">                                 <span class="built_in">color-stop</span>(<span class="number">0%</span>,<span class="number">#000000</span>), <span class="built_in">color-stop</span>(<span class="number">100%</span>,<span class="number">#ffffff</span>));</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-webkit-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-o-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-ms-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to bottom, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  所以我们要感谢<code>Autoprefixer</code>这样的工具，这里借助自动化方案结合它使用是很爽的。只要写标准的方式即可，其他的都交给它吧。</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.gradient</span>&#123;</span><br><span class="line">        <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to bottom, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Jquery已经快出生十年了，它就是为了解决浏览器的兼容性而生的，对于桌面端开发我们还是建议采用<code>jquery-1.11.1</code>这个版本。而我们也很清楚它的性能并不高，比原生的js性能最多能差出几十倍，所以我们也不一定并非要使用它，要根据自己网站的真实用户统计数据来决定未来的解决方案，不断的引导自己网站用户使用更新的浏览器，当低端浏览器的份额足够低的时候，就是你可以抛弃jquery的时候了。</p>
+<h2 id="网站性能"><a href="#网站性能" class="headerlink" title="网站性能"></a>网站性能</h2><p>网站性能其实也能和兼容性搭上个边，服务器开启gzip,前端压缩合并各种静态资源，一方面减轻了整个网站的大小，同时也能减轻http的请求数量，而这对于性能不够好的浏览器能更好的减轻他们的负担。</p>
+<p>而关于这方面的东西都是需要结合自动化解决方案的，这方面的文章请看<a href="https://github.com/fouber/blog">fouber</a>老师的个人博客</p>
+]]></content>
+      <tags>
+        <tag>兼容性</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Javascript字符串string</title>
+    <url>/20160323/string/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>字符串是Javascript最常用的数据类型，是五种基本数据类型之一（其他是number, boolean, null, undefined)。<br>我们常用的是字符串字面量形式。</p>
+<h2 id="检测是否为字符串"><a href="#检测是否为字符串" class="headerlink" title="检测是否为字符串"></a>检测是否为字符串</h2><p>typeof直接去检测是不准确的，通用的类型检测方法又太过繁琐。<br>而借助valueOf()方法，则可以返回一个字符串字面量。(此方式也适用于number与boolean)</p>
+<pre><code>var str1 = &#39;hello&#39;;
+var str2 = new String(&#39;world&#39;);
+
+typeof str1; // string
+typeof str2; // object
+typeof str2.valueOf(); // string
+</code></pre>
+<h2 id="其他类型转换为字符串"><a href="#其他类型转换为字符串" class="headerlink" title="其他类型转换为字符串"></a>其他类型转换为字符串</h2><p>大部分情况下调用toString()方法即可，然后null和undefined则需要使用String()方法。</p>
+<pre><code>var num = 1;
+   num.toString();       // &#39;1&#39;
+   var other = String(null) // &#39;null&#39;
+</code></pre>
+<span id="more"></span>
+
+<h2 id="一元运算符和字符串"><a href="#一元运算符和字符串" class="headerlink" title="一元运算符和字符串"></a>一元运算符和字符串</h2><p>当一个字符串和其他类型相加时，其他类型会转换成字符串，再相加。<br>而如果是和其他类型做比较和减法运算时，字符串会转换成数字，再计算。</p>
+<pre><code>var str = &#39;1&#39;;
+   var num = 5;
+   var boo = true;
+   num - str;  // 4
+   str == boo; // true
+</code></pre>
+<h2 id="str-concat"><a href="#str-concat" class="headerlink" title="str.concat()"></a>str.concat()</h2><p>将一个或者多个字符串参数附加到字符串对象末尾，拼接成一个字符串。</p>
+<pre><code>  var str = &#39;Hello&#39;;
+str.concat(&#39; &#39;, &#39;World&#39;); // Hello World
+</code></pre>
+<p>然而最常用的还是’+’运算符。</p>
+<pre><code>var str = &#39;5&#39; &#39;1&#39;;    // 51
+var str2 = 5 + &#39;1&#39;;   // 51
+var num = 5 + (+&#39;1&#39;); // 6
+</code></pre>
+<p>当其他数据类型和字符串相加时，首先会被转换成字符串。<br>但是在数字字符串前面加入一个’+’运算符，将会把字符串转化为数字。</p>
+<h2 id="str-indexOf-与-str-lastIndexOf"><a href="#str-indexOf-与-str-lastIndexOf" class="headerlink" title="str.indexOf() 与 str.lastIndexOf()"></a>str.indexOf() 与 str.lastIndexOf()</h2><p>在原始字符串中查找参数字符串，如果存在，则返回参数字符串索引位置。不存在返回-1。<br>第二个参数代表查找的起始位置。</p>
+<pre><code>var str = &#39;god is god&#39;;
+
+str.indexOf(&#39;god&#39;);    // 0
+str.indexOf(&#39;god&#39;, 4); // 7
+str.indexOf(&#39;are&#39;);    // -1
+</code></pre>
+<p>lastIndexOf()则是从右向左搜索，第二个参数也是从右向左计数。</p>
+<pre><code>str.lastIndexOf(&#39;god&#39;);    // 7
+str.lastIndexOf(&#39;god&#39;, 1); // 0
+
+str.indexOf(&#39;god&#39;, 0);     // 0
+str.lastIndexOf(&#39;god&#39;, 0); // 0
+</code></pre>
+<p>Javascript从右向左计算时，通常遵循左包括右不包括。</p>
+<h2 id="str-search"><a href="#str-search" class="headerlink" title="str.search()"></a>str.search()</h2><p>在字符串中查找符合正则表达式的匹配项，如果匹配成功，返回首次匹配项的索引，否则返回-1。</p>
+<pre><code>var str = &#39;hello 123 world&#39;;
+str.search(/\d/);    // 6
+str.search(/china/); // -1
+</code></pre>
+<h2 id="str-match"><a href="#str-match" class="headerlink" title="str.match()"></a>str.match()</h2><p>参数为正则表达式对象，返回一个包含匹配结果的数组。</p>
+<pre><code>var str = &#39;1 hello 2 world 3&#39;;
+var arr = str.match(/\d/g); // [1, 2, 3]
+</code></pre>
+<h2 id="str-replace"><a href="#str-replace" class="headerlink" title="str.replace()"></a>str.replace()</h2><p>语法</p>
+<pre><code>str.replace(regexp/substr, newstr/function)
+</code></pre>
+<p>用字符串替换匹配项，返回新字符串。<br>第一个参数可以是字符串或正则表达式对象。<br>第二个参数为替换字符串或者函数返回值。</p>
+<pre><code>var str = &#39;1 hello 2 world 3&#39;;
+var str2 = str.replace(&#39;world&#39;, &#39;china&#39;); // &#39;1 hello 2 china 3&#39;
+var str3 = str.replace(/\d/g, &#39;88&#39;); // &#39;88 hello 88 china 88&#39;
+
+//函数四个参数分别为匹配项、p1正则表达式一个括号匹配项(p2为第二个括号匹配项，以此类推)、匹配项索引位置、原始字符串
+//此方法将所有项打印出来看看
+var str4 = str.replace(/(\d)/g, function(match, p1, offset, string)&#123;
+    return &#39;(match:&#39; + match + &#39;-p1:&#39; + p1 + &#39;-offset:&#39; + offset + &#39;-string:&#39; + string + &#39;)&#39;;
+&#125;)
+// &#39;(match:1-p1:1-offset:0-string:1 hello 2 world 3) hello (match:2-p1:2-offset:8-string:1 hello 2 world 3) world (match:3-p1:3-offset:16-string:1 hello 2 world 3)&#39;
+</code></pre>
+<h2 id="str-slice"><a href="#str-slice" class="headerlink" title="str.slice()"></a>str.slice()</h2><p>语法</p>
+<pre><code>str.slice(start, end);
+</code></pre>
+<p>提取字符串中的一部分，参数为索引位置，第二个参数可选（默认为字符串长度）。<br>如果参数为负，自动被加上字符串长度计算。</p>
+<pre><code>var str = &#39;God is god&#39;;
+var str2 = str.slice(0, 3);   // God
+var str3 = str.slice(4);      // is god
+var str4 = str.slice(-3, -1); // go
+</code></pre>
+<h2 id="str-substring"><a href="#str-substring" class="headerlink" title="str.substring()"></a>str.substring()</h2><p>语法</p>
+<pre><code>str.substring(start, end)
+</code></pre>
+<p>此方法和slice()相似。只是如果参数为负数，则按照0计算。如果参数大于字符串长度，则按照str.length计算。</p>
+<pre><code>var str = &#39;God is god&#39;;
+var str1 = str.substring(0, 3);  // God
+var str2 = str.substring(-2, 3); // God
+var str3 = str.substring(4);     // is god
+var str4 = str.substring(7, 10); // god
+var str5 = str.substring(7, 20); // god
+</code></pre>
+<h2 id="str-substr"><a href="#str-substr" class="headerlink" title="str.substr()"></a>str.substr()</h2><p>语法</p>
+<pre><code>str.substr(start, length)
+</code></pre>
+<p>提取字符串中指定长度的子字符串。<br>第一个参数为起始索引位置，如果为负数，则自动被加上字符串长度计算。<br>第二个参数为截取的长度，可选的（默认字符串长度），如果为0或者负数，则返回空字符串。</p>
+<pre><code>var str = &#39;God is god&#39;;
+var str1 = str.substr(0, 3);  // God
+var str2 = str.substr(-3, 3); // god
+var str3 = str.substr(3, -1); // &#39;&#39;
+var str4 = str.substr(4);     // is god
+</code></pre>
+<h2 id="str-split"><a href="#str-split" class="headerlink" title="str.split()"></a>str.split()</h2><p>语法</p>
+<pre><code>str.split(sep, limit)
+</code></pre>
+<p>将一个字符串按照给定分隔符，分割为一个数组。<br>第一个参数为字符串或正则表达式，第二个参数限制数组长度。</p>
+<pre><code>var str = &#39;1,2,3,4,5&#39;;
+var arr = str.split(&#39;,&#39;);     // [1, 2, 3, 4, 5]
+var arr2 = str.split(&#39;,&#39;, 3); // [1, 2, 3]
+var arr3 = str.split(/,/);    // [1, 2, 3, 4, 5]
+</code></pre>
+<h2 id="str-trim"><a href="#str-trim" class="headerlink" title="str.trim()"></a>str.trim()</h2><p>去除字符串两端的空白。</p>
+<pre><code>var str1 = &#39; hello &#39;;
+var str2 = &#39; hello&#39;;
+var str3 = &#39;hello &#39;;
+var str4 = &#39;he llo&#39;;
+
+str1.trim(); // hello
+str2.trim(); // hello
+str3.trim(); // hello
+str4.trim(); // he llo
+</code></pre>
+<p>trim()不存在时的兼容代码</p>
+<pre><code>if (!String.prototype.trim) &#123;
+  String.prototype.trim = function () &#123;
+    return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, &#39;&#39;);
+  &#125;;
+&#125;
+</code></pre>
+<h2 id="str-charAt"><a href="#str-charAt" class="headerlink" title="str.charAt()"></a>str.charAt()</h2><p>获取指定索引位置的字符。</p>
+<pre><code>var str = &#39;hello world&#39;;
+str.charAt(0); // h
+str.charAt(6); // w
+</code></pre>
+<h2 id="str-charCodeAt"><a href="#str-charCodeAt" class="headerlink" title="str.charCodeAt()"></a>str.charCodeAt()</h2><p>获取指定索引位置字符的Unicode编码。</p>
+<pre><code>var str = &#39;hello wrold&#39;;
+str.charCodeAt(0); // 104
+str.charCodeAt(6); // 119
+</code></pre>
+<h2 id="String-fromCharCode"><a href="#String-fromCharCode" class="headerlink" title="String.fromCharCode()"></a>String.fromCharCode()</h2><p>静态方法，根据指定的Unicode编码，返回响应的字符串。</p>
+<pre><code>String.fromCharCode(97,98,99); // abc
+</code></pre>
+<h2 id="str-toUpperCase-与-str-toLowerCase"><a href="#str-toUpperCase-与-str-toLowerCase" class="headerlink" title="str.toUpperCase() 与 str.toLowerCase()"></a>str.toUpperCase() 与 str.toLowerCase()</h2><p>字符串大小写转换。</p>
+<pre><code>var str = &#39;hello china&#39;;
+var str2 = &#39;HELLO WORLD&#39;;
+
+str.toUpperCase();  // HELLO　CHINA
+str2.toLowerCase(); // hello world
+</code></pre>
+<h2 id="str-localeCompare"><a href="#str-localeCompare" class="headerlink" title="str.localeCompare()"></a>str.localeCompare()</h2><p>字符串比较函数，如果原始字符串在词法上比参数字符串大，返回1，相等的话返回0，否则返回-1。<br>一般情况下使用比较运算符即可。</p>
+<pre><code>var str = &#39;abcd&#39;;
+str.localeCompare(&#39;efgh&#39;); // -1;
+str.localeCompare(&#39;ABCD&#39;); // 1
+</code></pre>
+<h2 id="JSON-parse"><a href="#JSON-parse" class="headerlink" title="JSON.parse()"></a>JSON.parse()</h2><p>语法</p>
+<pre><code>JSON.parse(str, function(prop, val)&#123;&#125;);
+</code></pre>
+<p>将一个json字符串解析成为一个javascipt值;<br>第一个参数是json字符串。<br>第二个参数是一个解析函数，会把返回值覆盖原属性值，如果返回为undefined,则此属性从对象中删除。<br>函数中的两个参数分别为属性名和属性值。</p>
+<pre><code>var str = &#39;&#123;&quot;oo&quot; : 1, &quot;pp&quot; : &quot;2&quot;&#125;&#39;;
+var obj = JSON.parse(str);
+// Object &#123;oo: 1, pp: &quot;2&quot;&#125;
+
+var obj2 = JSON.parse(str, function(p, v)&#123;
+    if( p === &#39;oo&#39;) &#123;
+        v = undefined;
+    &#125;
+    return v;
+&#125;);
+//    Object &#123;pp: &quot;2&quot;&#125;
+
+var obj3 = JSON.parse(str, function(p, v)&#123;
+    return v + 5;
+&#125;);
+// [object object]5
+</code></pre>
+<p>第三个例子明显不是我们想要的结果。因为在遍历到最顶层的时候，传入到函数中的参数是空字符串。<br>重新改写第三个例子。</p>
+<pre><code>var obj3 = JSON.parse(str, function(p, v)&#123;
+    if (p === &#39;&#39;) &#123;
+        return v;
+    &#125;
+
+    return v + 5;
+&#125;);
+// Object &#123;oo: 6, pp: &quot;25&quot;&#125;
+</code></pre>
+<h2 id="JSON-stringify"><a href="#JSON-stringify" class="headerlink" title="JSON.stringify()"></a>JSON.stringify()</h2><p>语法</p>
+<pre><code>JSON.stringify(value, function()/array, space);
+</code></pre>
+<p>将js值序列化成json字符串。<br>第一个参数可以是任何类型，但是非数组中的undefined会被忽略，数组中的undefined转化为null。<br>第二参数可以是函数或者数组，如果是函数，用法类型JSON.parse()。如果是数组，那么最终结果是数组中存在的值。<br>第三个参数是控制结果字符串的间距，如果是数字，则缩进对应数量空格。如果是字符串，则每个级别插入该字符串。（最多十位）</p>
+<pre><code>var obj = &#123;oo : 1, pp : 2&#125;;
+var str = JSON.stringify(obj);
+// &#39;&#123;&quot;oo&quot;:1,&quot;pp&quot;:2&#125;&#39;
+
+var str2 = JSON.stringify(obj, [&#39;oo&#39;]);
+// &#39;&#123;&quot;pp&quot;:2&#125;&#39;
+
+var str3 = JSON.stringify(obj, null, &#39;bili&#39;);
+/* &#39;&#123;
+    bili&quot;oo&quot;: 1,
+    bili&quot;pp&quot;: 2
+    &#125;&#39;
+*/
+
+var str4 = JSON.stringify(obj, null, 4);
+/* &#39;&#123;
+        &quot;oo&quot;: 1,
+        &quot;pp&quot;: 2
+    &#125;&#39;
+*/
+</code></pre>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+        <tag>String</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>dom节点处理</title>
+    <url>/20160418/dom/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>原生js处理dom节点的各种方法。</p>
+<span id="more"></span>
+
+<h2 id="html结构"><a href="#html结构" class="headerlink" title="html结构"></a>html结构</h2><pre><code>&lt;div id=&quot;content&quot;&gt;
+    &lt;div class=&quot;left&quot;&gt;
+        left
+    &lt;/div&gt;
+    &lt;div id=&quot;main&quot;&gt;
+        main
+    &lt;/div&gt;
+    &lt;div class=&quot;right&quot;&gt;
+        right
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="document-getElementById"><a href="#document-getElementById" class="headerlink" title="document.getElementById()"></a>document.getElementById()</h2><p>通过id获取dom对象，参数大写小敏感。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);  // #content
+</code></pre>
+<h2 id="parent-getElementsByName"><a href="#parent-getElementsByName" class="headerlink" title="parent.getElementsByName()"></a>parent.getElementsByName()</h2><p>通过元素的name属性来获取dom对象，返回一个数组。</p>
+<pre><code>var arr = document.getElementByName(&#39;user&#39;);  // [input, input]
+</code></pre>
+<h2 id="parent-getElementByTagNmae"><a href="#parent-getElementByTagNmae" class="headerlink" title="parent.getElementByTagNmae()"></a>parent.getElementByTagNmae()</h2><p>通过节点名称获取dom属性，返回一个数组。(ie8只支持document对象)</p>
+<pre><code>var arr = document.getElementByTagName(&#39;input&#39;);  // [input, input]
+</code></pre>
+<h2 id="parent-firstChild"><a href="#parent-firstChild" class="headerlink" title="parent.firstChild"></a>parent.firstChild</h2><p>获取父节点的第一个子节点，然而这是个坑，如果父节点与子节点元素之间有空格，那么获取到的第一个是个text，<br>实际使用时需要封装方法，加上判断nodeType是否等于1。</p>
+<h2 id="parent-lastChild"><a href="#parent-lastChild" class="headerlink" title="parent.lastChild"></a>parent.lastChild</h2><p>获取父节点的最后一个子节点，坑同上。</p>
+<h2 id="parent-childNodes"><a href="#parent-childNodes" class="headerlink" title="parent.childNodes"></a>parent.childNodes</h2><p>获取子节点数组，坑同上。</p>
+<h2 id="near-previousSibling"><a href="#near-previousSibling" class="headerlink" title="near.previousSibling"></a>near.previousSibling</h2><p>获取同辈的前一个元素，坑同上。near 代表同辈元素。</p>
+<h2 id="near-nextSibling"><a href="#near-nextSibling" class="headerlink" title="near.nextSibling"></a>near.nextSibling</h2><p>获取同辈的下一个元素，坑同上。</p>
+<h2 id="near-parentNode"><a href="#near-parentNode" class="headerlink" title="near.parentNode"></a>near.parentNode</h2><p>获取父元素节点</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+var p = ele.parentNode; // .content
+</code></pre>
+<h2 id="node-nodeName"><a href="#node-nodeName" class="headerlink" title="node.nodeName"></a>node.nodeName</h2><p>获取节点名称</p>
+<h2 id="node-getAttribute"><a href="#node-getAttribute" class="headerlink" title="node.getAttribute()"></a>node.getAttribute()</h2><p>获取节点指定属性值。</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+ele.getAttribute(&#39;id&#39;);
+</code></pre>
+<h2 id="node-setAttribute"><a href="#node-setAttribute" class="headerlink" title="node.setAttribute()"></a>node.setAttribute()</h2><p>设置节点指定属性值</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+ele.serAttribute(&#39;class&#39;, &#39;show&#39;);
+</code></pre>
+<h2 id="document-createElement"><a href="#document-createElement" class="headerlink" title="document.createElement()"></a>document.createElement()</h2><p>创建元素</p>
+<h2 id="parent-appendChild"><a href="#parent-appendChild" class="headerlink" title="parent.appendChild()"></a>parent.appendChild()</h2><p>插入元素到父元素的末尾</p>
+<pre><code>var p = document.createElement(&#39;p&#39;);
+var ele = document.getElementById(&#39;main&#39;);
+ele.appenChild(p);
+</code></pre>
+<h1 id="HTML5新增"><a href="#HTML5新增" class="headerlink" title="HTML5新增"></a>HTML5新增</h1><h2 id="parent-getElementsByClassName"><a href="#parent-getElementsByClassName" class="headerlink" title="parent.getElementsByClassName()"></a>parent.getElementsByClassName()</h2><p>通过class属性获得dom对象，返回一个数组。parent作为查找根节点。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);
+var arr = document.getElementsByClassName(&#39;red&#39;);
+var arr = ele.getElementsByClassName(&#39;left red&#39;);
+</code></pre>
+<h2 id="parent-firstElementChild"><a href="#parent-firstElementChild" class="headerlink" title="parent.firstElementChild"></a>parent.firstElementChild</h2><p>获取父节点的第一个子节点。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);
+var first = ele.firstElementChild;  // .left
+</code></pre>
+<h2 id="parent-lastElementChild"><a href="#parent-lastElementChild" class="headerlink" title="parent.lastElementChild"></a>parent.lastElementChild</h2><p>获取父节点的最后一个子节点。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);
+var last = ele.lastElementChild;  // .right
+</code></pre>
+<h2 id="near-previousElementSibling"><a href="#near-previousElementSibling" class="headerlink" title="near.previousElementSibling"></a>near.previousElementSibling</h2><p>获取同辈的前一个元素。</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+var prev = ele.previousElementSibling; // .left
+</code></pre>
+<h2 id="near-nextElementSibling"><a href="#near-nextElementSibling" class="headerlink" title="near.nextElementSibling"></a>near.nextElementSibling</h2><p>获取同辈的后一个元素。</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+var next = ele.nextElementSibling;  // .right
+</code></pre>
+<h2 id="document-querySelector"><a href="#document-querySelector" class="headerlink" title="document.querySelector()"></a>document.querySelector()</h2><p>css方式选择器,只选择匹配到的第一个。</p>
+<p>var main = document.querySelector(‘#content #main’);</p>
+<h2 id="document-querySelectorAll"><a href="#document-querySelectorAll" class="headerlink" title="document.querySelectorAll()"></a>document.querySelectorAll()</h2><p>css方式选择器,返回一个数组。</p>
+<p>var main = document.querySelectorAll(‘#content div);</p>
+<p>function getElementsByClassName(node, classname){<br>    if(node.getElementsByClassName){<br>        //使用现有方法<br>        return node.getElementsByClassName(classname);<br>    }else{<br>        var results = new Array();<br>        var elems = node.getElementsByTagName(“*”);<br>        for(var i=0; i&lt;elems.length; i++){<br>            if(elems[i].className.indexOf(classname) != -1){<br>                results[results.length] = elems[i];<br>            }<br>        }<br>        return results;<br>    }<br>}</p>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+        <tag>DOM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>爱上Javascript数组Array（一）——基础介绍</title>
+    <url>/20160311/array1/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>Javascript，一门神奇的语言，它的数组也同样独特。我们要去其糟粕，取其精华，把常用的最优实践总结出来。如有错误，请指出。</p>
+<p>javascript数组是一种类数组的对象，拥有对象的特性。当属性名是小而连续的整数时，应该使用数组，否则，使用对象。</p>
+<h2 id="数组来源"><a href="#数组来源" class="headerlink" title="数组来源"></a>数组来源</h2><p>所有的数组都是Array构造出来的，我们来测试一下constructor这个属性。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [];</span><br><span class="line">arr.constructor === <span class="built_in">Array</span>; <span class="comment">// true</span></span><br><span class="line">arr.constructor === <span class="built_in">Array</span>.prototype.constructor; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="创建数组"><a href="#创建数组" class="headerlink" title="创建数组"></a>创建数组</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//数组字面量方式</span></span><br><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]; <span class="comment">// [1,2,3]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//构造函数方式</span></span><br><span class="line"><span class="keyword">var</span> arr2 = <span class="keyword">new</span> <span class="built_in">Array</span>();        <span class="comment">// [] 空数组</span></span><br><span class="line"><span class="keyword">var</span> arr3 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="string">&#x27;9&#x27;</span>);     <span class="comment">// [&quot;9&quot;] 一个字符串元素</span></span><br><span class="line"><span class="keyword">var</span> arr4 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">9</span>);       <span class="comment">// [] 数组长度length为9</span></span><br><span class="line"><span class="keyword">var</span> arr5 = <span class="keyword">new</span> <span class="built_in">Array</span>([<span class="number">9</span>]);     <span class="comment">// [[9]] 相当于二维数组</span></span><br><span class="line"><span class="keyword">var</span> arr6 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>); <span class="comment">// [1, 2, 3]</span></span><br><span class="line"><span class="keyword">var</span> arr7 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">1</span>, <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>)</span>&#123;&#125;, &#123;<span class="attr">o</span> : <span class="number">6</span>&#125;, <span class="literal">null</span>,<span class="literal">undefined</span>,<span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 数组可以存储任意混合数据类型</span></span><br></pre></td></tr></table></figure>
+
+<p>由于arr4的方式，当只有一个数字参数传递到Array的构造函数中，构造函数会返回设置了length属性的空数组。所以<code>推荐使用数组字面量方式</code>，短小而简洁。</p>
+<span id="more"></span>
+
+<h2 id="检测对象是否为数组"><a href="#检测对象是否为数组" class="headerlink" title="检测对象是否为数组"></a>检测对象是否为数组</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">typeof</span>(arr1); <span class="comment">// object</span></span><br></pre></td></tr></table></figure>
+
+<p>众所周知，typeof不能正确检测类型。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1 <span class="keyword">instanceof</span> <span class="built_in">Array</span>; <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<p>instanceof 方式在一个网页内是没有问题，一旦嵌套其他网页，便存在两个全局作用域，互相调用时的检测就会出问题。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Array</span>.isArray(arr1); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>Array.isArray() 是ECMAScript5 新增的方法，没有缺陷。唯一的问题是ie8浏览器不支持，ie9浏览器在严格模式下也不支持。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Object</span>.prototype.toString.apply(arr1).slice(<span class="number">8</span>, -<span class="number">1</span>); <span class="comment">// Array</span></span><br></pre></td></tr></table></figure>
+
+<p>最后一种方式是检测类型的最好方法。</p>
+<h2 id="数组长度"><a href="#数组长度" class="headerlink" title="数组长度"></a>数组长度</h2><p>数组的length也是它的属性，增大length也不会发生越界错误。<br>length值等于数组最大的整数属性名加1。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [];</span><br><span class="line">arr1[<span class="number">9</span>] = <span class="number">1</span>; <span class="comment">// 长度为10，只包含一个元素的数组</span></span><br></pre></td></tr></table></figure>
+
+<p>设小值将将会把属性名大于等于length的属性删除。<br>如果将length值设为0，相当于清空数组。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr2.length = <span class="number">3</span>; <span class="comment">// [1, 2, 3]</span></span><br><span class="line">arr2.length = <span class="number">0</span>; <span class="comment">// []</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="数组遍历"><a href="#数组遍历" class="headerlink" title="数组遍历"></a>数组遍历</h2><p>遍历数组不要使用for in循环遍历数组，因为for in会遍历原型链上的所有属性，但我们并不需要这么多。推荐使用for循环的方式。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr1.test = <span class="number">9</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//for in 方式</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> prop <span class="keyword">in</span> arr1)&#123;</span><br><span class="line">    cosole.log(prop, arr1[prop]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出如下</span></span><br><span class="line"><span class="comment">// 0 1</span></span><br><span class="line"><span class="comment">// 1 2</span></span><br><span class="line"><span class="comment">// 2 3</span></span><br><span class="line"><span class="comment">// test 9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//for循环方式</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>, len = arr1.length; i &lt; len; i++)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(arr1[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出如下</span></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<p>我们看到for in方式多出了一个test值，可以使用<code>hasOwnProperty</code>函数排除，但那会比for循环的方式慢很多。<br>缓存数组长度很有必要的一步，每次访问是有性能开销的（最新的浏览器在这方面做了优化）。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>简单介绍了Array的相关基础知识，到这里也算是能对Array有更全面的理解了。下一篇介绍Array的方法。</p>
+<p>Javascript虽然有很多不太容易弄懂的地方，随着长时间的学习，我已经慢慢地爱上它了。</p>
+<p>下一篇<a href="/20160313/array2/">《爱上Javascript数组Array（二）——方法解读》</a>，这一篇详细介绍Array的所有方法。</p>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+        <tag>数组</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>爱上Javascript数组Array（二）——方法解读</title>
+    <url>/20160313/array2/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>接上一篇<a href="/20160311/array1/">《爱上Javascript数组Array（一）——基础介绍》</a>，这一篇详细介绍Array的所有方法。</p>
+<p>所有数组的方法都定义在Array.prototype上,而Array.prototype本身也是一个数组。</p>
+<h2 id="array-concat"><a href="#array-concat" class="headerlink" title="array.concat()"></a>array.concat()</h2><p>浅复制一份当前数组，并把接收到的参数附加到新数组的末尾。原数组不改变。</p>
+<p>语法</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.concat(value1, value2, ..., valueN)</span><br></pre></td></tr></table></figure>
+
+<p>参数为需要合并的数组或非数组值</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">animal</span> : <span class="string">&#x27;monkey&#x27;</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> arr2 = arr1.concat([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], obj, [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]);</span><br><span class="line"><span class="comment">// arr1 [1, 2, 3]</span></span><br><span class="line"><span class="comment">// arr2 [1, 2, 3, 4, 5, 6, &#123;animal : &#x27;monkey&#x27;&#125;, 7, 8, 9]</span></span><br><span class="line"></span><br><span class="line">obj.animal = <span class="string">&#x27;tiger&#x27;</span>;</span><br><span class="line"><span class="comment">// [1, 2, 3, 4, 5, 6, &#123;animal : &#x27;tiger&#x27;&#125;, 7, 8, 9]</span></span><br></pre></td></tr></table></figure>
+
+<p>可以合并数组或非数组值，但是要注意如果包含对象，对象还是引用原来的对象。</p>
+<span id="more"></span>
+
+<h2 id="array-join"><a href="#array-join" class="headerlink" title="array.join()"></a>array.join()</h2><p>返回一个将数组所有元素用分隔符拼接成的字符串，默认分隔符为逗号。</p>
+<p>语法</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.join(seperator)</span><br></pre></td></tr></table></figure>
+
+<p>参数为分割符</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> str = arr1.join(); <span class="comment">// 1,2,3</span></span><br><span class="line">str = arr1.join(<span class="string">&#x27;#&#x27;</span>); <span class="comment">// 1#2#3</span></span><br></pre></td></tr></table></figure>
+
+<p>当将大量字符串片段组装时，join方法比+元素运算符要快。</p>
+<p>利用new Array(3)将生成一个长度为三的空数组，同时结合join()方法，可以实现重复某段字符串。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">3</span>).join(<span class="string">&#x27;-+&#x27;</span>); <span class="comment">// -+-+</span></span><br></pre></td></tr></table></figure>
+
+<p>重复的次数就是数组长度减一，因为字符串是分隔符。</p>
+<p>由于数组本身是对象，拥有toString()方法，利用它也能实现将数组拼接成一个字符串，只不过分隔符只能是逗号了。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr1.toString(); <span class="comment">// 1,2,3</span></span><br></pre></td></tr></table></figure>
+
+<p>实际上它会先调用每一个元素的toString()方法。</p>
+<h2 id="array-push"><a href="#array-push" class="headerlink" title="array.push()"></a>array.push()</h2><p>把一个或多个参数附加在数组末尾，返回数组长度。改变数组自身。</p>
+<p>语法</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.push(value1, value2, ..., valueN);</span><br></pre></td></tr></table></figure>
+
+<p>实例</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> len = arr1.push(<span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(len); <span class="comment">// 5</span></span><br><span class="line"><span class="built_in">console</span>.log(arr1); <span class="comment">// [1, 2, 3, 4, 5]</span></span><br></pre></td></tr></table></figure>
+
+<p>另一种方法也可以实现在数组末尾插入值。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1[arr1.length] = <span class="number">6</span>; <span class="comment">// [1, 2, 3, 4, 5, 6]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-pop"><a href="#array-pop" class="headerlink" title="array.pop()"></a>array.pop()</h2><p>将数组最后一项删除，并返回删除项。改变数组自身。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr.pop(); <span class="comment">// [1, 2] 返回 3</span></span><br></pre></td></tr></table></figure>
+
+<p>如果数组为空，返回undefined。</p>
+<h2 id="array-unshift"><a href="#array-unshift" class="headerlink" title="array.unshift()"></a>array.unshift()</h2><p>把一个或多个参数插入到数组头部，返回数组长度。改变数组自身。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> len = arr1.unshift(<span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(len); <span class="comment">// 5</span></span><br><span class="line"><span class="built_in">console</span>.log(arr1); <span class="comment">// [4, 5, 1, 2, 3]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-shift"><a href="#array-shift" class="headerlink" title="array.shift()"></a>array.shift()</h2><p>将数组的第一项删除，并返回删除项。改变数组自身。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr.shift(); <span class="comment">// [2, 3] 返回 1</span></span><br></pre></td></tr></table></figure>
+
+<p>如果数组为空，返回undefined。</p>
+<h2 id="array-sort"><a href="#array-sort" class="headerlink" title="array.sort()"></a>array.sort()</h2><p>这个方法按照每个元素的toString()方法返回的值进行排序，所以一般得不到期望的结果。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">14</span>, <span class="number">24</span>];</span><br><span class="line">arr1.sort(); <span class="comment">// [1, 14, 2, 24, 3]</span></span><br></pre></td></tr></table></figure>
+
+<p>但是sort()方法可以接收一个我们自定义的函数进行比较。比较函数接受两个参数，尤其sort()默认是升序，所以如果想让第一个参数位于第二个参数前面就要返回负数，相等返回0，位于后面返回正数。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> compare = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a - b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr2 = [<span class="number">1</span>, <span class="number">12</span>, <span class="number">2</span>, <span class="number">23</span>, <span class="number">3</span> , <span class="number">5</span>, <span class="number">4</span>];</span><br><span class="line">arr2.sort(compare); <span class="comment">// [1, 2, 3, 4, 5, 12, 23]</span></span><br></pre></td></tr></table></figure>
+
+<p>比较字符串可以结合string.localeCompare()方法来用。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr3 = [<span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;E&#x27;</span>];</span><br><span class="line">arr3.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.localeCompare(b);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [&#x27;e&#x27;, &#x27;E&#x27;, &#x27;f&#x27;, &#x27;F&#x27;]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-reverse"><a href="#array-reverse" class="headerlink" title="array.reverse()"></a>array.reverse()</h2><p>反转数组元素顺序，返回数组自身。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>];</span><br><span class="line">arr1.reverse(); <span class="comment">// [2, 3, 4, 1]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-slice"><a href="#array-slice" class="headerlink" title="array.slice()"></a>array.slice()</h2><p>对数组浅复制其中的一段，不改变数组自身。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.slice(start, end);</span><br></pre></td></tr></table></figure>
+
+<p>方法接受两个参数，最后一个可以省略，默认是数组自身长度。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line"></span><br><span class="line">arr1.slice(<span class="number">4</span>); <span class="comment">// [5, 6]</span></span><br><span class="line">arr1.slice(<span class="number">2</span>, <span class="number">4</span>); <span class="comment">// [3, 4]</span></span><br><span class="line">arr1.slice(-<span class="number">3</span>); <span class="comment">// [4, 5, 6]</span></span><br></pre></td></tr></table></figure>
+
+<p>如果传入负数，那么会被自动加上数组的长度，试图变成非负数。<br>传入一个绝对值小于数组长度的值，就是从后向前取负数绝对值个数的元素。例如例子中取了后三个元素。</p>
+<p>另一个用法就是将函数参数arguments转换为一个正常的数组。数组太大，性能不太好，权衡一下再使用。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="array-splice"><a href="#array-splice" class="headerlink" title="array.splice()"></a>array.splice()</h2><p>这是数组中最强大也最常用对的方法了，可以实现删除，插入，替换。</p>
+<p>语法</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.slice(start, count, item);</span><br></pre></td></tr></table></figure>
+
+<p>该方法移除一个或多个元素，并用新的元素替代他们。start是开始的位置，count是删除的数量，item是新增加的元素（item不止一个，也可省略)，以数组形式返回删除的元素。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="comment">//删除</span></span><br><span class="line">arr1.splice(<span class="number">2</span>, <span class="number">1</span>); <span class="comment">// [1, 2, 4, 5]  返回 [3]</span></span><br><span class="line"><span class="comment">//插入</span></span><br><span class="line">arr1.splice(<span class="number">3</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">7</span>); <span class="comment">// [1, 2, 4, 6, 7, 5]</span></span><br><span class="line"><span class="comment">//替换</span></span><br><span class="line">arr1.splice(<span class="number">1</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">9</span>); <span class="comment">// [1, 8, 9, 6, 7, 5]  返回[2, 4]</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>下面介绍一些ECMAScript5新增的方法，主要是ie8不支持。</strong></p>
+<h2 id="indexOf-与-lastIndexOf"><a href="#indexOf-与-lastIndexOf" class="headerlink" title="indexOf() 与 lastIndexOf()"></a>indexOf() 与 lastIndexOf()</h2><p>查找对应项在数组中的索引位置，第二个参数表示对应查找方向的起始位置，返回第一个匹配的位置，如果没有找到则返回-1;<br>indexOf()是从前往后查找，lastIndexOf()是从后往前查找。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>];</span><br><span class="line">arr1.indexOf(<span class="number">2</span>); <span class="comment">// 1</span></span><br><span class="line">arr1.indexOf(<span class="number">2</span>, <span class="number">3</span>); <span class="comment">// 5</span></span><br><span class="line"></span><br><span class="line">arr1.lastIndexOf(<span class="number">3</span>); <span class="comment">// 4</span></span><br><span class="line">arr1.lastIndexOf(<span class="number">3</span>, <span class="number">4</span>) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="迭代方法"><a href="#迭代方法" class="headerlink" title="迭代方法"></a>迭代方法</h1><p>以下方法接受两个参数，第一个是每一项运行的函数，第二个函数运行的作用域。<br>运行函数有三个参数，分别是当前项，位置，数组本身。</p>
+<h2 id="array-every"><a href="#array-every" class="headerlink" title="array.every()"></a>array.every()</h2><p>运行给定函数，如果迭代每一项都返回true,则最终返回true。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr1.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item &gt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-some"><a href="#array-some" class="headerlink" title="array.some()"></a>array.some()</h2><p>运行给定函数，如果迭代中有一项返回true,则最终返回true。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item &gt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-map"><a href="#array-map" class="headerlink" title="array.map()"></a>array.map()</h2><p>运行给定函数，将迭代中返回的值组成数组，返回该数组。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item * <span class="number">2</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [2, 4, 6, 8, 10]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-filter"><a href="#array-filter" class="headerlink" title="array.filter()"></a>array.filter()</h2><p>运行给定函数，将迭代中返回true的元素以数组形式返回</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item &gt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [4, 5]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-forEach"><a href="#array-forEach" class="headerlink" title="array.forEach()"></a>array.forEach()</h2><p>运行给定函数，不返回任何值。类似于普通的for循环的功能。</p>
+<h1 id="归并方法"><a href="#归并方法" class="headerlink" title="归并方法"></a>归并方法</h1><p>函数接受两个参数，第一个参数是每一个运行的自定义函数，第二项是作为归并基础的初始值。<br>自定义函数接受四个参数，分别是前一项，当前项，位置，数组。</p>
+<h2 id="array-reduce-与-array-reduceRight"><a href="#array-reduce-与-array-reduceRight" class="headerlink" title="array.reduce() 与 array.reduceRight()"></a>array.reduce() 与 array.reduceRight()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> splitstr = <span class="function"><span class="keyword">function</span>(<span class="params">prev, item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> prev + <span class="string">&#x27;#&#x27;</span> + item;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr1.reduce(splitstr, <span class="number">8</span>); <span class="comment">// 8#1#2#3#4#5</span></span><br><span class="line">arr1.reduceRight(splitstr, <span class="number">8</span>); <span class="comment">// 8#5#4#3#2#1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这一篇介绍了数组方法的种种细节和注意问题，下一篇将会介绍数组更高级的用法。</p>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+        <tag>数组</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mac前端开发工具集</title>
+    <url>/20180527/front_tools/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>最近因工作原因，需要重新配置开发环境。尝试过很多的开发工具，有些是尝鲜的，有些一直用下来了，只有时间和实际场景能让你知道，会不会长久地使用这个工具。我依然还会去尝试很多新工具，这次推荐前端的长期使用软件集合。</p>
+<h1 id="不分工种的工具"><a href="#不分工种的工具" class="headerlink" title="不分工种的工具"></a>不分工种的工具</h1><h2 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h2><p>mac上的快速安装软件，软件包管理器。免去先下载、再安装的繁琐，安装只需要一行命令。</p>
+<h2 id="iTerm2"><a href="#iTerm2" class="headerlink" title="iTerm2"></a>iTerm2</h2><p>我最喜欢的命令行工具，好处体现在细节，用过才知道。再配合<code>oh my zsh</code>就更爽了。</p>
+<span id="more"></span>
+
+<h2 id="SpaceLauncher"><a href="#SpaceLauncher" class="headerlink" title="SpaceLauncher"></a>SpaceLauncher</h2><p>全局快捷键定义，因为使用了空格键，跟其他软件快捷键无冲突，快速在各个工具间切换，那个感觉怎个爽啊。</p>
+<h2 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h2><p>几款实用插件</p>
+<ul>
+<li><code>postman</code> 接口api调试工具，可配各种方式，登录账户还能保存记录。</li>
+<li><code>OneTab</code> 保存当前的所有标签页，避免了开一堆标签页的眼花缭乱，也避免卡顿。</li>
+<li><code>User-Agent Switcher</code> 修改UA，在调试特定场景下，很管用。</li>
+<li><code>vue</code>和<code>react</code> 框架调试工具</li>
+<li><code>有道笔记</code> 和 <code>印象剪藏</code> 网页快速保存到笔记工具，很多网址会失效，存下来才是王道。</li>
+</ul>
+<h2 id="SourceTree"><a href="#SourceTree" class="headerlink" title="SourceTree"></a>SourceTree</h2><p>几乎人人在用的git可视化客户端工具，建议配置工作目录，也自定义下常用按钮，个人感觉<code>刷新</code>按钮很常用。</p>
+<h2 id="有道词典"><a href="#有道词典" class="headerlink" title="有道词典"></a>有道词典</h2><p>用过好几款词典，换来换去还是有道好用，翻译得精准，也没有广告。主要是查询一些变量命名和翻译大段文档。<br>在这里推荐一个好用的变量命名网站<a href="https://unbug.github.io/codelf/">CODELF</a></p>
+<h2 id="坚果云"><a href="#坚果云" class="headerlink" title="坚果云"></a>坚果云</h2><p>国内好用的云存储同步工具，自身已经盈利，不用担心关闭的问题。但免费的上传流量有限，不适合大文件。日常零碎的文件很适合。</p>
+<h2 id="Beyond-Compare"><a href="#Beyond-Compare" class="headerlink" title="Beyond Compare"></a>Beyond Compare</h2><p>文件比对工具，可能80%的情况下用不到它，一旦用得上是很感激的，肉眼对比是真的累。</p>
+<h1 id="网络工具"><a href="#网络工具" class="headerlink" title="网络工具"></a>网络工具</h1><h2 id="Lantern"><a href="#Lantern" class="headerlink" title="Lantern"></a>Lantern</h2><p>科学工具，解决广大程序猿的上网烦恼。建议买两年划算。</p>
+<h2 id="ShadowSocks"><a href="#ShadowSocks" class="headerlink" title="ShadowSocks"></a>ShadowSocks</h2><p>第二个科学工具，但得自己购买服务。</p>
+<h2 id="Charles"><a href="#Charles" class="headerlink" title="Charles"></a>Charles</h2><p>抓包工具，何人不抓包呢，现在可是移动端的天下。附带<a href="https://www.zzzmode.com/mytools/charles/">破解地址</a></p>
+<h2 id="Weinre"><a href="#Weinre" class="headerlink" title="Weinre"></a>Weinre</h2><p>线上调试工具，这个能解决抓包工具做不到的线上调试。这个<a href="https://blog.csdn.net/hzaini89/article/details/51745832">教程</a>很不错。</p>
+<h1 id="IDE编辑器"><a href="#IDE编辑器" class="headerlink" title="IDE编辑器"></a>IDE编辑器</h1><p>以下这三款可同时安装，atom较轻量，打开速度快、免费。</p>
+<ul>
+<li>WebStorm</li>
+<li>VSCode</li>
+<li>Atom</li>
+</ul>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
+<li>微信开发者工具</li>
+<li><a href="http://wit-web.azurewebsites.net/en/assistor/download">Assistor PS</a> ps切图插件</li>
+<li><code>nvm</code> node版本管理工具</li>
+<li>有道云笔记</li>
+<li>印象笔记</li>
+<li>kindle读书软件</li>
+<li><code>draw.io</code> 流程图工具</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>macOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>代理本地服务到公网-natapp内网穿透工具</title>
+    <url>/20181213/natapp/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>开发一些服务时，想把本地服务映射到公网可访问状态，方便开发调试。</p>
+<p>适合调试微信小程序，混合型app客户端等</p>
+<p><em>本工具免费稳定，也有高级付费版</em></p>
+<span id="more"></span>
+
+<h2 id="注册下载"><a href="#注册下载" class="headerlink" title="注册下载"></a>注册下载</h2><ol>
+<li>打开<a href="https://natapp.cn/">https://natapp.cn</a></li>
+<li>购买免费型</li>
+<li>下载客户端</li>
+<li>修改客户端权限</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd 下载目录</span><br><span class="line">chmod a+x natapp</span><br></pre></td></tr></table></figure>
+
+<p><img src="//blogcdn.affecthing.com/natapp1.png" alt="natapp1"></p>
+<h2 id="普通使用"><a href="#普通使用" class="headerlink" title="普通使用"></a>普通使用</h2><ol>
+<li>配置本地地址 127.0.0.1</li>
+<li>配置本地端口 8080</li>
+<li>复制authtoken</li>
+<li>运行客户端</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">// 运行客户端，出现online代表已通</span><br><span class="line">./natapp -authtoken=复制的authtoken</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>额外配置</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 如果使用了webpack，增加配置</span></span><br><span class="line"><span class="attr">devServer</span>: &#123;</span><br><span class="line">    <span class="attr">disableHostCheck</span>: <span class="literal">true</span> <span class="comment">// 绕过主机检查</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="//blogcdn.affecthing.com/natapp2.png" alt="natapp2"></p>
+<h2 id="高级使用-固定域名"><a href="#高级使用-固定域名" class="headerlink" title="高级使用-固定域名"></a>高级使用-固定域名</h2><ul>
+<li>购买付费服务，多种可选</li>
+<li>域名服务下增加一条CNAME解析</li>
+<li>将已备案域名绑定到natapp</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>内网穿透</tag>
+        <tag>远程调试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我用HTML写简历</title>
+    <url>/20180923/resume/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>每次换工作写简历都是有点痛苦的事情，尤其是下载word模板，各种注册流程，有的还得买积分，冲会员，甚是不爽。就算下载好了，修改其中的一些细节也不太熟悉各种功能，由于长期不用word，早把很多设置功能抛之脑后。</p>
+<p>忽然有一天灵感涌上，这种简易的模板样式，对于一个前端工程师来说，写个页面分分钟的事，只要能把html转成pdf格式这事就成了。</p>
+<span id="more"></span>
+
+<h2 id="Puppeteer"><a href="#Puppeteer" class="headerlink" title="Puppeteer"></a>Puppeteer</h2><p>Puppeteer是谷歌出的一个headless自动化工具。</p>
+<ul>
+<li>利用网页生成PDF、图片</li>
+<li>抓取网站内容</li>
+<li>自动化表单提交、UI测试、键盘输入等</li>
+<li>创建一个最新的自动化测试环境</li>
+</ul>
+<p>用来把html转换pdf，虽然是有点大材小用，但是很适合，渲染效果也是足够放心的。</p>
+<h3 id="install"><a href="#install" class="headerlink" title="install"></a>install</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> &gt; Node v6.4.0</span></span><br><span class="line">npm i puppeteer --save</span><br></pre></td></tr></table></figure>
+
+<p>但是安装这里有坑位，还好前人踩过坑了，失败的人点<a href="https://juejin.im/post/5b99c9ece51d450e51625630">这里</a>，笔者也是下载失败了~~~</p>
+<h2 id="index-html"><a href="#index-html" class="headerlink" title="index.html"></a>index.html</h2><p>具体怎么写得养眼，就是自己的事情了，这里提供一个简单的模板。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>我的简历<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1.0, maximum-scale=1.0, user-scalable=0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">    主要内容</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="gulpfile-js"><a href="#gulpfile-js" class="headerlink" title="gulpfile.js"></a>gulpfile.js</h2><p>既然想要写得爽，怎么也得来个热更新吧，搞个简单的自动化工具。<br>Puppeteer只能访问http地址，所以还需要静态资源服务</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm i --save browser-sync gulp gulp-notify</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>browser-sync 提供静态服务器和热更新</li>
+<li>gulp 自动化工具</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> notify = <span class="built_in">require</span>(<span class="string">&#x27;gulp-notify&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> browserSync = <span class="built_in">require</span>(<span class="string">&#x27;browser-sync&#x27;</span>).create()</span><br><span class="line"><span class="keyword">const</span> reload = browserSync.reload</span><br><span class="line"></span><br><span class="line"><span class="comment">// 热更新</span></span><br><span class="line">gulp.task(<span class="string">&#x27;styles&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">&#x27;src/*.css&#x27;</span>)</span><br><span class="line">        .pipe(reload(&#123;<span class="attr">stream</span>: <span class="literal">true</span>&#125;))</span><br><span class="line">        .pipe(notify(&#123;<span class="attr">message</span>: <span class="string">&#x27;Styles complete&#x27;</span>&#125;))</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态资源服务</span></span><br><span class="line">gulp.task(<span class="string">&#x27;serve&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>], <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    browserSync.init(&#123;</span><br><span class="line">        <span class="attr">server</span>: &#123;</span><br><span class="line">            <span class="attr">baseDir</span>: <span class="string">&quot;./src&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">port</span>: <span class="number">7000</span>,</span><br><span class="line">        <span class="comment">// 关闭右上角通知</span></span><br><span class="line">        <span class="attr">notify</span>: <span class="literal">false</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.css&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>])</span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.html&#x27;</span>, reload)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="build-js"><a href="#build-js" class="headerlink" title="build.js"></a>build.js</h2><p>只差转换生成了，这里用到了await语法，否则层级太深。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">&#x27;puppeteer&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch()</span><br><span class="line">    <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage()</span><br><span class="line">    <span class="keyword">await</span> page.goto(<span class="string">&#x27;http://localhost:7000&#x27;</span>)</span><br><span class="line">    <span class="keyword">await</span> page.pdf(&#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&#x27;resume.pdf&#x27;</span>,</span><br><span class="line">        <span class="attr">format</span>: <span class="string">&#x27;A4&#x27;</span>,</span><br><span class="line">        <span class="comment">// 打印背景色</span></span><br><span class="line">        <span class="attr">printBackground</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> browser.close()</span><br><span class="line">    <span class="built_in">console</span>.info(<span class="string">&#x27;build done&#x27;</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后写简历的事情，也被我们工程化了，想想也是省心省力。可以发挥我们的想象，加入各种好玩的东西，再也没人有跟我一样的简历样式了。</p>
+<p>这里写了一个简单的项目，仅供参考<a href="https://github.com/hanmingpan/better-resume">demo地址</a></p>
+]]></content>
+      <tags>
+        <tag>puppeteer</tag>
+        <tag>简历</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>淘宝flexible深度解读</title>
+    <url>/20180620/flexible/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>关于flexible的第一篇介绍文章是<code>大漠</code>的《<a href="https://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html">使用Flexible实现手淘H5页面的终端适配</a>》。请先阅读这篇文章再来看本文。</p>
+<p>三年前看的时候就一个感觉<code>Perfect</code>，还有这么神奇的操作，但是深入到原理就有点似懂非懂，向其他同学推荐的时候，总有些细节讲不清楚。究其原因是自己没有深入了解“为什么会产生这样的解决方案？”。</p>
+<span id="more"></span>
+
+<h2 id="rem如何计算？"><a href="#rem如何计算？" class="headerlink" title="rem如何计算？"></a>rem如何计算？</h2><p>这种方案受到<code>vw</code>这个单位的启发，100vw等于设备宽度，跟具体像素无关，有点类似100%。但百分比无法解决宽高比的问题。</p>
+<p>rem单位是参照根节点的font-size为依据，所以只要根据设备宽度来除以100份，动态计算根节点的字体大小，就能hack这个vw的效果。</p>
+<pre><code>1vw = (ClietWidth/100)= htmlFontSize = 1rem
+</code></pre>
+<p>flexible将页面分成了10份，为什么不像vw单位一样是100份呢？拿iPhone4举例，宽度为320px，如果是100份，1rem=3.2px，目前大部分浏览器不支持12px以下的字体大小，所以320/12=26.67，最多可以将页面分成26份，方便计算取整数10，1rem=(320/10)=32px。</p>
+<h2 id="dpr有什么用？"><a href="#dpr有什么用？" class="headerlink" title="dpr有什么用？"></a>dpr有什么用？</h2><p>先看一下设备的实际像素与css像素的统计图。</p>
+<p><img src="//blogcdn.affecthing.com/flexible-1.png" alt="flexible-1"></p>
+<p>在iphone4之前没有视网膜屏幕，一个设备像素等于一个css像素。最开始的移动端网站大多是按照240px或320px的设计图开发，iphone3GS就是320px，那么在iPhone4的640px上，整个网站只能显示一半，看起来很奇怪。就算厂商会自动缩放整个网站来适配<br>屏幕，也无法解决固定像素的问题。</p>
+<p><img src="//blogcdn.affecthing.com/flexible-2.png" alt="flexible-2"></p>
+<p>考虑到这方面的影响，iPhone4的物理像素比（devicePixelRatio）dpr=2，将一个像素的宽度和高度都扩大二倍，手机在底层对网站进行了显示上的放大，这样一来屏幕对于原有的网站还是320px。</p>
+<h2 id="viewport的改变能带来什么？"><a href="#viewport的改变能带来什么？" class="headerlink" title="viewport的改变能带来什么？"></a>viewport的改变能带来什么？</h2><p>这是计算rem的关键代码</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> docEl = <span class="built_in">document</span>.documentElement</span><br><span class="line"><span class="keyword">var</span> rem = docEl.clientWidth / <span class="number">10</span></span><br><span class="line">docEl.style.fontSize = rem + <span class="string">&#x27;px&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>clientWidth</code>是根元素的可视宽度，如果viewport缩放scale=1.0，那么对于iPhone4的clientWidth=320px，如果scale=0.5，那么clientWidth=640px，无论如何改变viewport值，rem都等于根节点可视宽度的1/10。</p>
+<p><code>老版本0.3.2</code>里有这样一段。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> isAndroid = win.navigator.appVersion.match(<span class="regexp">/android/gi</span>);</span><br><span class="line"><span class="keyword">var</span> isIPhone = win.navigator.appVersion.match(<span class="regexp">/iphone/gi</span>);</span><br><span class="line"><span class="keyword">var</span> devicePixelRatio = win.devicePixelRatio;</span><br><span class="line"><span class="keyword">if</span> (isIPhone) &#123;</span><br><span class="line">  <span class="comment">// iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案</span></span><br><span class="line">  <span class="keyword">if</span> (devicePixelRatio &gt;= <span class="number">3</span> &amp;&amp; (!dpr || dpr &gt;= <span class="number">3</span>)) &#123;</span><br><span class="line">      dpr = <span class="number">3</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (devicePixelRatio &gt;= <span class="number">2</span> &amp;&amp; (!dpr || dpr &gt;= <span class="number">2</span>)) &#123;</span><br><span class="line">      dpr = <span class="number">2</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      dpr = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// 其他设备下，仍旧使用1倍的方案</span></span><br><span class="line">  dpr = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">scale = <span class="number">1</span> / dpr;</span><br></pre></td></tr></table></figure>
+
+<p>动态去计算scale，并不影响rem的计算，好处是解决了1px的问题，坏处是破坏了css媒介media。<br>老版本对android不支持高清方案，是个缺陷。</p>
+<p><code>新版本2.0</code>里面则去掉了动态计算scale的方式，改为检测是否支持0.5px的特性，通过添加类名<code>hairlines</code>来向下兼容</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// detect 0.5px supports</span></span><br><span class="line"><span class="keyword">if</span> (dpr &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> fakeBody = <span class="built_in">document</span>.createElement(<span class="string">&#x27;body&#x27;</span>)</span><br><span class="line">    <span class="keyword">var</span> testElement = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">    testElement.style.border = <span class="string">&#x27;.5px solid transparent&#x27;</span></span><br><span class="line">    fakeBody.appendChild(testElement)</span><br><span class="line">    docEl.appendChild(fakeBody)</span><br><span class="line">    <span class="keyword">if</span> (testElement.offsetHeight === <span class="number">1</span>) &#123;</span><br><span class="line">        docEl.classList.add(<span class="string">&#x27;hairlines&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    docEl.removeChild(fakeBody)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="效果图和rem计算方式的联系是什么？"><a href="#效果图和rem计算方式的联系是什么？" class="headerlink" title="效果图和rem计算方式的联系是什么？"></a>效果图和rem计算方式的联系是什么？</h2><p>css里的1rem=clientWidth/10，效果图与设备像素计算的共同关联是都把屏幕分成10份，那么iphone4效果图里的1rem=(640/10)=64px。<br>所以css的转化基础永远是width/10。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这篇文章主要是记录思考为什么这样做的解答。希望有更多的疑问来让我们一起思考。</p>
+<p>如今淘宝家也升级了适配方案，拥抱真正的vw。参考大漠后来的文章《<a href="https://www.w3cplus.com/css/vw-for-layout.html">再聊移动端页面的适配》</a></p>
+]]></content>
+      <tags>
+        <tag>rem响应式</tag>
+        <tag>flexible</tag>
+        <tag>dpi</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我想让你先了解重构，然后深入重构</title>
+    <url>/20190615/refactoring/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>代码不可能在第一次就写得完美，这是一个持续修改的过程，那么应该怎么来进行呢？<br><em>以下内容来自<code>《重构-改善既有代码的设计》</code></em></p>
+<h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><ul>
+<li>好代码的检验标准就是人们是否能轻而易举地修改它。</li>
+<li>由于预先做出良好的设计非常困难，想要既体面又快速地开发功能，重构必不可少。</li>
+<li>重构的意义就在于：你永远不必说对不起，只要把出问题的地方修补好就行了。</li>
+<li>重构过程的精髓所在：小步修改，每次修改后就运行测试。</li>
+<li>重构的最佳时机就在添加新功能之前。</li>
+<li>我不专门安排一段时间来重构，而是在添加功能或修复bug的同时顺便重构。</li>
+<li>与其猜测未来需要哪些灵活性，需要什么机制来提供灵活性，我更愿意只根据当前的需求来构造软件。</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="做什么"><a href="#做什么" class="headerlink" title="做什么"></a>做什么</h2><ul>
+<li>数据结构才是一个健壮程序的根基。</li>
+<li>消除重复。</li>
+<li>函数是我们将程序拆分成小块的主要方式。</li>
+<li>根据一个函数的意图（做什么）来对它命名。</li>
+<li>只要改名能够提升代码的可读性，那就应该毫不犹豫去做。</li>
+<li>如果某些数据和某些函数总是一起出现，某些数据经常同时变化甚至彼此相依，这就表示你应该将它们分离出去(比如提炼类)。</li>
+<li>一个好的模块化的设计，”封装”是最关键的特征之一。”封装”意味着每个模块都应该尽可能少了解系统的其他部分。</li>
+<li>尽量遵循命令与查询分离原则。</li>
+<li>大部分条件逻辑只用到了基本的条件语句，但如果发现复杂条件逻辑，多态是改善这种情况的有力工具。</li>
+<li>合理的继承关系是在程序演化的过程中才浮现出来的：我发现了一些共同元素，希望把它们抽取到一处，于是就有了继承关系。</li>
+</ul>
+<h2 id="注意什么"><a href="#注意什么" class="headerlink" title="注意什么"></a>注意什么</h2><ul>
+<li>数据被使用得越广，就越是值得花精力给它一个体面的封装。</li>
+<li>如果可访问范围变大，重构的难度就会随之增大，这也是说全局数据是大麻烦的原因。</li>
+<li>将一个值用于多个不同的用途，这就是催生混乱和bug的温床。</li>
+<li>如果你不知道该做什么，这才是注释的良好运用时机。</li>
+<li>重构过程的性能问题：大多数情况下可以忽略它，如果有性能损耗，先完成重构，再做性能优化。</li>
+<li>如果重写比重构还容易，就别重构了。</li>
+</ul>
+<p>一直在追问自己要不要总结一篇这样偏理论性的文章。其实大部头的书不太容易静下心来读，那么我就把一些基本的知识晒出来，让看到的人产生思考，然后能去读原书。就算不读这本421页的《重构》也能对重构有一个基本的了解，方便在日后遇到问题时，知道去哪里寻找答案。</p>
+<p>原书总结了常用的上百种重构手法，如果真正理解了什么是重构，自己也可以创造一些手法，实际的业务场景才是重构的最好战场。</p>
+]]></content>
+      <tags>
+        <tag>重构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>给孤傲的程序员们：软件开发是一项团体运动</title>
+    <url>/20201101/cooperation/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<p>记得有个程序员调查报告显示：</p>
+<blockquote>
+<p>近 70％的受访者表示他们的能力高于平均水平，而不到 10％的受访者认为他们的能力低于平均水平。</p>
+</blockquote>
+<p>大部分人认为自己比其他同事水平要好或者不低于。</p>
+<span id="more"></span>
+
+<p>孤傲的我们总认为自己是那个扫地憎，完美地完成每个任务，拯救世上的软件。我不得不说程序员们太孤傲了，包括我自己。一度很流行“10 倍工程师”这个说法，很快就遭到了一众业界大佬的嘲讽。</p>
+<p>回到自然界，人类为什么战胜了狮子老虎，统治了世界。并不是因为你是武松，也不是因为你手里有刀，是围猎，是合作。最终的全球化，大范围地让不认识的人合作生产。</p>
+<p>强大如张无忌也差点在围攻光明顶时挂掉。大家爱玩的王者荣耀也不是1v5，而是5v5。超级计算中并没有超级芯片，而是几万个普通芯片的组合。合作的力量太强大了，合作是人类文明独有的超级核武。</p>
+<p>到了目前这个阶段，你不得不合作，产品经理、设计师、前端、后端、算法、人工智能、测试、运维。没有身兼数职的人，每一次开发任务都是多方沟通。这意味着开发不再是闷头搞大事，而是合作商量大事，各自去执行你擅长的部分。</p>
+<p>合作过程中的沟通是频繁，我知道很多人不喜欢被打断，我也尤其不喜欢在思考一个复杂问题时被打断，因为确实很影响继续工作的心流状态。越是不喜欢被打扰，现实中就越是经常被打扰或者被临时拉去开会。我们只能尽量提前规划一些沟通的时间段，或者每隔两三个小时主动看一下合作方的最新消息。</p>
+<p>软件开发显然是一项团体运动，写下代码前一些疑问，如果能提前沟通可能经常节省你不少的时间。当你给产品经理讲述新技术时，可能他帮你找到了用武之地。接口文档的提前约定，提前梳理了你在处理异常情况时的流程。</p>
+<p>拥抱合作，Peace and Love。</p>
+]]></content>
+      <tags>
+        <tag>合作</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>程序员综合能力参考清单</title>
+    <url>/20190924/ability/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<p>工作五年了，回头看看走过的路，好多道理真该早点懂得，但当时的我还在努力成为一个合格的程序员，没考虑到上层建筑的事。老话说得好<code>不谋全局者，不足谋一域</code>，更早的从整个软件行业来看待自己的职业，会做出更好的路线选择。</p>
+<span id="more"></span>
+
+<p>石头是个程序员，热爱新鲜的技术，醉心于这些好玩的东西，感觉它们很酷啊，希望把他们用到工作中，然后发现各种问题，不太实用，只能放弃了这项新技术，然后继续验证下一个想法。</p>
+<p>如果我是一个leader，需要这样的员工吗？答案是不一定，他热爱新技术，那只是他的加分项。因为我有另一个判断标准：能完成一件事，能实现业务目标，积极拥抱业务变化，为业务提供更好的技术支持，这是我要的员工。也就是说人得能成事，不仅仅是工作里的分内事。</p>
+<blockquote>
+<p>我发现，如果一个人的全部信息都局限于他的工作领域，那么他的工作不会做的很好。一个人必须有眼光，他可以从书籍或者人们身上，最好是两者兼有，培养眼光。                                                                           ——哈维·费尔斯通</p>
+</blockquote>
+<h2 id="管理能力"><a href="#管理能力" class="headerlink" title="管理能力"></a>管理能力</h2><p>石头刚入行不久，他幻想某一天也会成为某个小领导，目前来看还得几年，所以说管理能力不是石头该关心的事？反过来看，大部分人通常都会在私底下吐槽领导，就算你直属领导人挺好，你可能还会吐槽上层领导。如果领导经常做出错误的决定，那他怎么成为领导的，又怎么带领团队工作呢？</p>
+<p>逐渐去拥有管理能力的过程，会改变看事情的角度。也会将心比心的去问自己，能不能做出更好的决定。如果领导犯错了，我怎么恰当的给出提示。当有一天给到你带领团队的机会，也多少会胸有成竹。</p>
+<h2 id="沟通能力"><a href="#沟通能力" class="headerlink" title="沟通能力"></a>沟通能力</h2><p>人类之所以统治世界，是大规模群体合作的成果，沟通起到至关重要的作用。如果你能用一句话让别人明白你的意思，那就比用三句话的效率提高了一大截。</p>
+<p>能用尽量少的语言描述清楚一个问题，能迅速明白别人话语背后的意思，遇到不清楚的问题，多和相关人员，有经验的人去交流，总会给到你更丰富的信息，减少你的无谓劳动。这就是沟通能力带来的好处。</p>
+<p>沟通的过程中管理好自己的情绪，俗话说伸手不打笑脸人，我们的目的是解决问题，而不是比吵架谁赢了。</p>
+<h2 id="英文听说读写"><a href="#英文听说读写" class="headerlink" title="英文听说读写"></a>英文听说读写</h2><p>编程语言是英文的，这项基本的能力不够好，会在方面掣肘你。代码的可读性跟命名有直接关系。</p>
+<p>石头英语能力薄弱，公司要做个活动女神颜值测试，石头给项目起名<code>nvshen</code>，想了想汉语全拼有点低级，又想了个英文的<code>womanGod</code>，感觉还挺满意，其实这是中式英文chinglish。石头又用专业的有道词典，查到了<code>goddess</code>，这次应该没跑了，正宗的。而真相呢？<code>goddess</code>是女神仙的意思，电视剧里的女神仙确实挺漂亮的，它不是地道的英语表达。在这里<code>hottie</code>、<code>sexy</code>、<code>peach</code>这一类的单词显然更好。</p>
+<p>学好英文的唯一方式就是长期的刻意练习，石头狠心报了一个三年的培训班，从最开始的见面时打招呼<code>How are you?</code>到后来的<code>How&#39;s it going?</code>。英语交流开始变得顺其自然，看英文材料再也不是一筹莫展，而是迅速把握到重点片段，解决遇到的棘手问题。</p>
+<p><em>话说stackoverflow真香</em></p>
+<h2 id="技术全面性"><a href="#技术全面性" class="headerlink" title="技术全面性"></a>技术全面性</h2><p>其实笔者一直在强调全面性，而技术能力是看家本事，技术全面性也不能掉以轻心。难道这是让石头既要会前端，又要会后端，还是能运维？如果这么想说明还是不理解<code>全栈工程师</code>。当下这个时代，知识太多，要装下更多，也要学会放弃很多知识。咱们得把那些行业里大浪淘沙后的真金白银吃进肚子里。</p>
+<p>石头他们公司要做一个新项目，一兄弟说既然咱们都有<code>a.example.com</code>、<code>b.example.com</code>，咱们再买个新域名<code>c.example.com</code>吧，你听完不想笑吗？</p>
+<ul>
+<li>算法</li>
+<li>计算机原理&amp;Linux</li>
+<li>安全</li>
+<li>html&amp;css&amp;js</li>
+<li>Java&amp;Python&amp;php</li>
+<li>Mysql</li>
+<li>网络&amp;http</li>
+<li>正则表达式</li>
+<li>git&amp;开发工具</li>
+</ul>
+<p>以上这些基本的技能，尽量都掌握，有了他们，学习其他新技术的周期会缩短，也可以顺畅迁移到任何的新兴技术职业。</p>
+<p>特斯拉创始人马斯克有一个故事，每次他认为谁没足够努力把一件事做好，会当场把他辞掉，然后对他说，你的工作我接手了。直到找来新的员工，这期间他会一直承担那个人的工作。如果不具备全面的基本技能，他无法胜任。</p>
+<h2 id="凡事讲究个过程"><a href="#凡事讲究个过程" class="headerlink" title="凡事讲究个过程"></a>凡事讲究个过程</h2><p>先学习那些跟自身职业有关联的能力，尽量要学以致用，如果未来的一个项目会用到某项知识，就要提前开始学习。</p>
+<p>除了学好自身职业的关键知识，还要学会主要领域的关键知识，而一些子领域的知识点，视兴趣、工作情况选择性了解，在实际运用时再做详细研究。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>芒格在《穷查理宝典》中提到一个<code>lollapalooza效应</code>，为那些相互强化并极大地放大彼此效应的因素发明的词组。类比到工作中，如果你能综合利用各项能力去完成一件事，最终的结果通常会更好。</p>
+]]></content>
+      <tags>
+        <tag>全栈工程师</tag>
+        <tag>能力参考清单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何更容易记忆：JavaScript类型与类型判断</title>
+    <url>/20210318/javascripttype/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为什么写这篇文章，并不是不知道这些类型，而是发现常常会忘记其中的一个两个。像这类知识，其实就是记忆型的知识，并不需要多么深入的理解。</p>
+<p>一次性记住这么多，其实并不容易，刚开始学习时很容易就记住了，过段时间就又忘记了，因为并没有形成长期记忆。所以我做了分类管理，每次提起这个问题，先想到的是有哪些分类，再回忆每个分类下有哪些内容。</p>
+<span id="more"></span>
+
+<p><em>JavaScript中的变量是没有类型的，只有值才有。</em></p>
+<h2 id="七大基本类型"><a href="#七大基本类型" class="headerlink" title="七大基本类型"></a>七大基本类型</h2><ul>
+<li>number</li>
+<li>string</li>
+<li>boolean</li>
+<li>null</li>
+<li>undefined</li>
+<li>symbol</li>
+<li>bigint</li>
+</ul>
+<p>基本类型也称为简单数据类型或原始类型。</p>
+<p>我们拆成三种类型：</p>
+<h3 id="第一种是常用的类型："><a href="#第一种是常用的类型：" class="headerlink" title="第一种是常用的类型："></a>第一种是常用的类型：</h3><p>几乎所有编程语言都有这些类型</p>
+<ul>
+<li>数字 number</li>
+<li>字符串 string</li>
+<li>布尔值 boolean</li>
+</ul>
+<h3 id="第二种是js比较特殊的类型："><a href="#第二种是js比较特殊的类型：" class="headerlink" title="第二种是js比较特殊的类型："></a>第二种是js比较特殊的类型：</h3><ul>
+<li>空值 null</li>
+<li>未定义undefined</li>
+</ul>
+<h3 id="第三种是新增的类型："><a href="#第三种是新增的类型：" class="headerlink" title="第三种是新增的类型："></a>第三种是新增的类型：</h3><p>我们根据发布的es版本来记住它</p>
+<ul>
+<li>符号 symbol    es2015新增(es6)</li>
+<li>大数 bigInt      es2020新增</li>
+</ul>
+<h3 id="如何判断七种基本类型？"><a href="#如何判断七种基本类型？" class="headerlink" title="如何判断七种基本类型？"></a>如何判断七种基本类型？</h3><p>看下面这段代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">typeof 12            // number</span><br><span class="line">typeof &#x27;hello world&#x27; // string</span><br><span class="line">typeof true          // boolean</span><br><span class="line">typeof null          // object(特殊)</span><br><span class="line">typeof undefined     // undefined</span><br><span class="line">typeof Symbol()      // symbol</span><br><span class="line">typeof BigInt(1)     // bigint</span><br></pre></td></tr></table></figure>
+
+<p>其实typeof判断的很准确，只有一个null判断错误了,这是js的一个bug。我们只需要记住这个例外情况就够了。</p>
+<blockquote>
+<p>原理是这样的，不同的对象在底层都表示为二进制，在JavaScript中二进制前三位都为0的话会被判断为object类型，null的二进制表示是全0，自然前三位也为0，所以执行typeof时会返回”object”。</p>
+</blockquote>
+<h4 id="复合条件判断null类型"><a href="#复合条件判断null类型" class="headerlink" title="复合条件判断null类型"></a>复合条件判断null类型</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var a = null</span><br><span class="line">(!a &amp;&amp; typeof a === &#x27;object&#x27;) // true</span><br></pre></td></tr></table></figure>
+
+<h2 id="复杂类型-Object"><a href="#复杂类型-Object" class="headerlink" title="复杂类型 Object"></a>复杂类型 Object</h2><p>前面七种基本类型加上对象object，合称八种内置类型。</p>
+<p>object有两种经常提到的子类型：</p>
+<ul>
+<li>数组 array</li>
+<li>函数 function</li>
+</ul>
+<p>其实还有很多子类型：</p>
+<ul>
+<li>String</li>
+<li>Number</li>
+<li>Boolean</li>
+<li>Date</li>
+<li>RegExp</li>
+<li>Error</li>
+</ul>
+<h3 id="如何判断function类型"><a href="#如何判断function类型" class="headerlink" title="如何判断function类型"></a>如何判断function类型</h3><p>typeof可以正确检测函数类型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function foo () &#123;&#125;</span><br><span class="line"></span><br><span class="line">typeof foo // function</span><br></pre></td></tr></table></figure>
+
+<h3 id="如何判断数组类型"><a href="#如何判断数组类型" class="headerlink" title="如何判断数组类型"></a>如何判断数组类型</h3><p>可以使用的方式有多种：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var arr = [1]</span><br><span class="line"></span><br><span class="line">typeof arr                // object</span><br><span class="line">arr instanceof Array      // true</span><br><span class="line">arr.constructor === Array // true</span><br><span class="line">Array.isArray(arr)        // true</span><br></pre></td></tr></table></figure>
+
+<p><code>typeof</code>无法用在检测数组上。<br>首选推荐 <code>Array.isArray</code>。</p>
+<h2 id="万能类型判断方法"><a href="#万能类型判断方法" class="headerlink" title="万能类型判断方法"></a>万能类型判断方法</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function test(a) &#123;</span><br><span class="line">	return Object.prototype.toString.call(a).slice(8, -1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">test(123)          // Number</span><br><span class="line">test([1])          // Array</span><br><span class="line">test(function()&#123;&#125;) // Function</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>也许这种方式没有帮助到你，那你更应该去寻找适合自己的学习方式。</p>
+<p>欢迎讨论切磋学习方法。</p>
+]]></content>
+      <tags>
+        <tag>基本类型</tag>
+        <tag>类型检测</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HTTP——需要知道的协议</title>
+    <url>/20170524/http/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<h1 id="笔者语"><a href="#笔者语" class="headerlink" title="笔者语"></a>笔者语</h1><p>作为一个程序员，当我们访问一个接口，服务器接收到并返回结果，那么中间的流程是怎么处理的呢？这个请求是如何到达服务器，服务器又是怎样返回内容的？</p>
+<p>如果没有HTTP协议，接口请求具体实现的细节， 都需要每个客户端和服务器各自约定和实现，而自己的规则，又不能适用于别人。这给开发带来了极大的不便，HTTP就是为此而设计的。HTTP协议用来约定双方的行为规范，让相关开发者按照相同的规则来开发网站和工具。</p>
+<p>HTTP协议就像发快递时填写的发货单，规定必须填写收货人，地址和手机号码，只有这样才能准确送给收货人。HTTP则是规定了如何在两台电脑间发送和接收超文本。</p>
+<span id="more"></span>
+
+<h1 id="起源历史"><a href="#起源历史" class="headerlink" title="起源历史"></a>起源历史</h1><p>1980年，蒂姆·伯纳斯·李在CERN(欧洲核子研究组织)时，为了方便各地研究人员共享信息，提出了一个设想，”借助于超文本，连接成可互相浏览的WWW(万维网)项目”。</p>
+<p>到了1989年，伯纳斯·李看到了将超本文与互联网结合的机会，那时已经有了在电脑上显示信息的超文本系统，也有了域名系统和TCP/IP网络传输协议。伯纳斯·李又为此设计制作世界上第一个网页浏览器和网页服务器，将这一切组合起来，就能实现浏览处于世界任何地方服务器上的超文本信息。在这个过程中，由于TCP/IP协议族中没有适合传输超文本的协议，李博士又发起了HTTP(超文本传输协议)的提议。</p>
+<p>于是在1989年，HTTP协议诞生了。现如今最广泛使用的协议版本是在1999年制定的HTTP 1.1。</p>
+<p><code>蒂姆·伯纳斯·李在2017年4月5日，获得了2016年度图灵奖，被誉为万维网之父。他发明了浏览器， HTTP，HTML，URI等一系列相关的万维网技术。</code></p>
+<h1 id="TCP-IP协议族"><a href="#TCP-IP协议族" class="headerlink" title="TCP/IP协议族"></a>TCP/IP协议族</h1><p>现实世界中的各行各业都有自己的行业规则，违反规则，步履艰难，而尊重规则，便如鱼得水。网络世界也需要各种各样的规则，TCP/IP协议族就是这些规则的总称。而HTTP协议是其中的一种，负责传输超文本(HyperText)。</p>
+<p>TCP/IP协议族一共分为四层，包含不同的协议。应用层、传输层、网络层和链路层。</p>
+<p>这张图简单描述了，打开一个网站背后都发生了什么？</p>
+<p><img src="//blogcdn.affecthing.com/http-1.jpeg" alt="http-1"></p>
+<ol>
+<li>通过DNS协议，获得访问域名对应的服务器IP地址。DNS协议属于应用层。</li>
+<li>紧接着用到了HTTP协议，将生成的HTTP报文发送给服务器。HTTP协议属于应用层。</li>
+<li>数据在网络中的传输是十分重要的，为了保证数据传输的稳定性和完整性，制定了TCP协议，它将数据分割成报文段，按序号传输。TCP协议属于传输层。</li>
+<li>客户端发起的请求，怎么在众多机器中找到对应那一台，需要IP协议来寻找一条路径。IP协议属于网络层。</li>
+<li>最后服务器收到了请求，把响应内容按照之前的步骤，返回给客户端。</li>
+</ol>
+<h1 id="HTTP协议概述"><a href="#HTTP协议概述" class="headerlink" title="HTTP协议概述"></a>HTTP协议概述</h1><p>客户端发出请求报文，服务器收到请求，经过处理，把响应报文返回客户端，连接断开，一次请求结束。HTTP协议是无状态协议。</p>
+<p>在1990年W3C发布了第一个HTTP/0.9版本，这个版本只支持GET请求。</p>
+<p>1996年发布了HTTP/1.0版本，这是第一个广泛使用的版本，支持了多媒体类型和各种HTTP首部字段。</p>
+<p>但真正应用至今的是在1999年发布的HTTP/1.1版本，它修复了一些结构的缺陷，并引入了性能优化的措施。本文以下的内容都以HTTP/1.1为基础展开。</p>
+<p>我们用chrome浏览器打开<code>http://www.w3c.org</code>这个网站。打开开发者工具的network项，看看第一个请求的详细信息。</p>
+<p><img src="//blogcdn.affecthing.com/http-2.jpeg" alt="http-2"></p>
+<p>请求报文由请求地址、请求方法、协议版本、首部字段和内容实体。</p>
+<pre><code>GET /index.html HTTP/1.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6)
+Host: w3c.org
+</code></pre>
+<p>响应报文由状态码及解释短语、协议版本、首部字段和响应实体。</p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: 137582
+Server: Apache 0.84
+
+&lt;html&gt;
+  &lt;body&gt;Hello World&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h1 id="HTTP请求方法"><a href="#HTTP请求方法" class="headerlink" title="HTTP请求方法"></a>HTTP请求方法</h1><p>HTTP/1.1 支持多种请求方法，最常用的还是get和post方法。</p>
+<p>HTTP通信是建立在TCP连接的基础上，早期版本每次通信都需要重新连接、断开TCP。所以在HTTP/1.1下，实现了在一次TCP连接中进行多次HTTP通信的能力，大大提高了服务器的响应速度。同时也支持并行发送请求，一般浏览器是支持同时6个连接。</p>
+<h2 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h2><p>gee方法是安全的请求方法，获取已经存在的资源或者是查询一些数据，通常会把请求参数拼接在url中。</p>
+<h2 id="HEAD"><a href="#HEAD" class="headerlink" title="HEAD"></a>HEAD</h2><p>head方法也是安全的，但它与get的不同在于，它不会返回响应实体内容，只返回响应首部。一般会用来确认请求url的有效性。</p>
+<h2 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h2><p>post方法会把请求内容放在请求实体中，而不是拼接在url中。所以一般查询信息用GET方法，提交表单数据使用post方法。</p>
+<h2 id="OPTIONS"><a href="#OPTIONS" class="headerlink" title="OPTIONS"></a>OPTIONS</h2><p>查询指定url资源支持的请求方法，例如支持get和head。</p>
+<h2 id="TRACE"><a href="#TRACE" class="headerlink" title="TRACE"></a>TRACE</h2><p>一般请求发出后，会经过多层代理服务器，这个方法就是用来确认请求发出后发生的一系列操作。但会引起跨站追踪攻击，一般不用。</p>
+<h2 id="PUT与DELETE"><a href="#PUT与DELETE" class="headerlink" title="PUT与DELETE"></a>PUT与DELETE</h2><p>put是用来往服务器上传文件，而delete就是删除服务器上的文件。但是这两个方法没有验证机制，会产生不安全问题，一般服务器都不做支持。</p>
+<h1 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h1><p>状态码用来表示服务器返回的请求结果。由三位数字加解释短语组成，例如 200 ok。<br>虽然状态码有很多，但是也可分门别类，并不需要掌握所有，也对返回的结果有个大致的了解。</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>响应类别</th>
+<th>原因短语</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1xx</td>
+<td>信息性状态码（Informational）</td>
+<td>服务器正在处理请求</td>
+</tr>
+<tr>
+<td>2xx</td>
+<td>成功状态码（Success）</td>
+<td>请求已正常处理完毕</td>
+</tr>
+<tr>
+<td>3xx</td>
+<td>重定向状态码（Redirection）</td>
+<td>需要进行额外操作以完成请求</td>
+</tr>
+<tr>
+<td>4xx</td>
+<td>客户端错误状态码（Client Error）</td>
+<td>客户端原因导致服务器无法处理请求</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>服务器错误状态码（Server Error）</td>
+<td>服务器原因导致处理请求出错</td>
+</tr>
+</tbody></table>
+<p>当我们知道了，首位数字是定义状态码的类型后，理解更多的状态码也就简单起来。<br>下面，再详细介绍一些常见的状态码。</p>
+<h2 id="200-OK"><a href="#200-OK" class="headerlink" title="200 OK"></a>200 OK</h2><p>这个是最常见的，表示请求在服务器被正确处理了。</p>
+<h2 id="204-No-Content"><a href="#204-No-Content" class="headerlink" title="204 No Content"></a>204 No Content</h2><p>请求在服务器端被正确处理了，但是返回的响应报文中没有实体内容。一般用在只是客户端向服务器发送信息，而服务器不用向客户端返回什么信息的情况。</p>
+<h2 id="301-Moved-Permanently"><a href="#301-Moved-Permanently" class="headerlink" title="301 Moved Permanently"></a>301 Moved Permanently</h2><p>永久性重定向，代表资源的链接已经更换了url,在响应报文中会包含新的链接地址。</p>
+<h2 id="304-Not-Modified"><a href="#304-Not-Modified" class="headerlink" title="304 Not Modified"></a>304 Not Modified</h2><p>当发出的请求中有附加条件(首部字段有if-*)时，服务器允许访问，但是不满足条件的情况。</p>
+<h2 id="400-Bad-Request"><a href="#400-Bad-Request" class="headerlink" title="400 Bad Request"></a>400 Bad Request</h2><p>请求报文内容存在语法错误，服务器处理不了。</p>
+<h2 id="401-Unauthorized"><a href="#401-Unauthorized" class="headerlink" title="401 Unauthorized"></a>401 Unauthorized</h2><p>发送的请求中含有HTTP认证信息，认证未通过。<br>返回401的响应必须包含一个适用于被请求资源的WWW-Authenticate首部以质询用户信息</p>
+<h2 id="403-Forbidden"><a href="#403-Forbidden" class="headerlink" title="403 Forbidden"></a>403 Forbidden</h2><p>请求的资源拒绝被访问，一般是无权限访问。</p>
+<h2 id="404-Not-Found"><a href="#404-Not-Found" class="headerlink" title="404 Not Found"></a>404 Not Found</h2><p>这个也很常见，请求的资源服务器找不到。</p>
+<h2 id="500-Internal-Server-Error"><a href="#500-Internal-Server-Error" class="headerlink" title="500 Internal Server Error"></a>500 Internal Server Error</h2><p>服务器在处理请求时，出错了。一般是服务器发生了异常状况。</p>
+<h1 id="HTTP首部"><a href="#HTTP首部" class="headerlink" title="HTTP首部"></a>HTTP首部</h1><p>首部字段是为了给浏览器和服务器提供报文主体大小、所使用的语言、认证信息等内容。通俗点讲，浏览器和服务器会根据这些字段做出不同的反应，每个字段相当于一条配置信息。<br>首部字段类似于键值对，请求报文和响应报文都包含首部信息。</p>
+<p>这是一段请求首部字段，例如Accept表示浏览器可以接受的响应报文实体类型。</p>
+<pre><code>Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Encoding:gzip, deflate, sdch, br
+Accept-Language:zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4
+Cache-Control:max-age=0
+Connection:keep-alive
+Host:www.w3.org
+If-Modified-Since:Thu, 04 May 2017 23:40:12 GMT
+If-None-Match:&quot;a384-54ebb4b41af00;89-3f26bd17a2f00-gzip&quot;
+</code></pre>
+<p>首部字段分为了五种类型，通用首部、请求首部、响应首部、实体首部和拓展首部。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>通用首部</td>
+<td>是请求和响应都会用到的字段</td>
+</tr>
+<tr>
+<td>请求首部</td>
+<td>是客户端向服务器发送请求时，报文中包含的首部字段</td>
+</tr>
+<tr>
+<td>响应首部</td>
+<td>是服务器向浏览器返回响应报文时，包含的首部字段</td>
+</tr>
+<tr>
+<td>实体首部</td>
+<td>是请求报文和响应报文中针对实体内容的首部字段</td>
+</tr>
+<tr>
+<td>拓展首部</td>
+<td>是非标准首部字段，由开发者根据自身需求自由定义和实现</td>
+</tr>
+</tbody></table>
+<p>以下列表，提供一些首部的简单说明，每个字段的具体使用都不一样，实际应用还是查看详细介绍。</p>
+<h2 id="通用首部"><a href="#通用首部" class="headerlink" title="通用首部"></a>通用首部</h2><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cache-Control</td>
+<td>控制缓存行为</td>
+</tr>
+<tr>
+<td>Pragma</td>
+<td>HTTP/1.0遗留字段，也是用于控制缓存机制</td>
+</tr>
+<tr>
+<td>Transfer-Encoding</td>
+<td>传输报文主体的编码方式</td>
+</tr>
+<tr>
+<td>Trailer</td>
+<td>报文主体之后的首部字段，用于分块传输</td>
+</tr>
+<tr>
+<td>Upgrade</td>
+<td>检测HTTP协议是否可用更高版本</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>控制不再转发给代理的字段、连接的管理</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>创建报文的日期</td>
+</tr>
+<tr>
+<td>Via</td>
+<td>追踪客户端与服务器之间报文的传输路径，通常指代理服务器</td>
+</tr>
+<tr>
+<td>Warning</td>
+<td>缓存相关警告</td>
+</tr>
+</tbody></table>
+<h2 id="请求首部"><a href="#请求首部" class="headerlink" title="请求首部"></a>请求首部</h2><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Accept</td>
+<td>客户端可接受的媒体类型及相关优先级，q值表示权重</td>
+</tr>
+<tr>
+<td>Accept-Charset</td>
+<td>客户端可接受的字符集及优先顺序</td>
+</tr>
+<tr>
+<td>Accept-Encoding</td>
+<td>客户端支持的内容编码及优先顺序</td>
+</tr>
+<tr>
+<td>Accept-Language</td>
+<td>客户端可处理的自然语言集，以及优先级</td>
+</tr>
+<tr>
+<td>Authorization</td>
+<td>客户端的认证信息，一般是证书信息</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>请求资源所在服务器的主机名和端口号</td>
+</tr>
+<tr>
+<td>If-Match</td>
+<td>比较实体标记</td>
+</tr>
+<tr>
+<td>If-Modified-Since</td>
+<td>比较资源更新时间</td>
+</tr>
+<tr>
+<td>If-None-Match</td>
+<td>比较实体标记(与If-Match作用相反)</td>
+</tr>
+<tr>
+<td>If-Range</td>
+<td>资源未更新时发送实体Byte的范围请求</td>
+</tr>
+<tr>
+<td>If-Unmodified-Since</td>
+<td>比较资源更新时间(与If-Modified-Since作用相反)</td>
+</tr>
+<tr>
+<td>Max-Forwards</td>
+<td>最大传输逐跳数(TRACE或OPTIONS方法会用到)</td>
+</tr>
+<tr>
+<td>Range</td>
+<td>范围请求的实体字节段</td>
+</tr>
+<tr>
+<td>Referer</td>
+<td>请求页面的原始url</td>
+</tr>
+<tr>
+<td>TE</td>
+<td>传输编码及优先级</td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>请求客户端的自身信息</td>
+</tr>
+</tbody></table>
+<h2 id="响应首部"><a href="#响应首部" class="headerlink" title="响应首部"></a>响应首部</h2><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Accept-Ranges</td>
+<td>服务器是否接受字节范围请求</td>
+</tr>
+<tr>
+<td>Age</td>
+<td>服务器响应创建经过的时间</td>
+</tr>
+<tr>
+<td>ETag</td>
+<td>资源配置信息</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>服务器告知客户端重定向url</td>
+</tr>
+<tr>
+<td>Proxy-Authorization</td>
+<td>代理服务器向客户端发起的认证信息</td>
+</tr>
+<tr>
+<td>Retry-After</td>
+<td>服务器告知客户端再次请求的时间</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>服务器应用名、版本号等相关信息</td>
+</tr>
+<tr>
+<td>Vary</td>
+<td>代理服务器的缓存管理信息</td>
+</tr>
+<tr>
+<td>WWW-Authorization</td>
+<td>服务器对客户端的认证信息</td>
+</tr>
+</tbody></table>
+<h2 id="实体首部"><a href="#实体首部" class="headerlink" title="实体首部"></a>实体首部</h2><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Allow</td>
+<td>资源支持的请求方法</td>
+</tr>
+<tr>
+<td>Content-Encoding</td>
+<td>实体内容的编码方式</td>
+</tr>
+<tr>
+<td>Content-Language</td>
+<td>实体内容的自然语言集</td>
+</tr>
+<tr>
+<td>Content-Length</td>
+<td>实体内容字节长度</td>
+</tr>
+<tr>
+<td>Content-Location</td>
+<td>实体内容替代url</td>
+</tr>
+<tr>
+<td>Content-MD5</td>
+<td>实体内容的报文摘要</td>
+</tr>
+<tr>
+<td>Content-Range</td>
+<td>实体内容的位置范围</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>实体内容对应的媒体类型</td>
+</tr>
+<tr>
+<td>Expires</td>
+<td>实体内容失效日期</td>
+</tr>
+<tr>
+<td>Last-Modified</td>
+<td>实体内容最后修改日期</td>
+</tr>
+</tbody></table>
+<h1 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h1><p>HTTP协议是无状态的，如果我们今天登录了一个网站，明天重新打开网站时，能自动登录，怎么办？<br>那就得靠cookie来解决了。它能在客户端保存用户的基本信息，当我们下次访问该网站，浏览器会把cookie一起发送给服务器，服务器就会根据这些信息来判断你是否登陆过。</p>
+<p>cookie是网景公司的前雇员卢·蒙特利在1993年3月的发明的。cookie数据也是键值对的形式，它和网站以及网页是关联在一起的。如果保存cookie值指定了网站地址，访问其他网站时并不会发送这些cookie值。</p>
+<p>访问一个网站，打开chrome的开发者工具，application中可以看见cookie的信息。</p>
+<p><img src="//blogcdn.affecthing.com/http-3.jpeg" alt="http-3"></p>
+<h2 id="cookie相关的首部字段"><a href="#cookie相关的首部字段" class="headerlink" title="cookie相关的首部字段"></a>cookie相关的首部字段</h2><ul>
+<li>Expires:是用来设置cookie的绝对过期时间，默认cookie的生存周期是跟随页面的，页面关闭即失效。</li>
+<li>Max-Age:是用来设置cookie的相对过期时间，如果同时设置了Expires值，以Max-Age为准。</li>
+<li>path: 是用来指定与cookie绑定的网页地址，默认情况下，和该网页同一目录下的网页也能访问该cookie。</li>
+<li>domain: 指定与该cookie绑定的域名，该域名下的网页都可以访问该cookie。</li>
+<li>secure: 标明传输cookie值的方式。默认情况下，cookie是在不安全的HTTP链接传输，如果设定了该值，cookie将必须处于更安全的方式下才可以传输，比如接下来介绍的HTTPS。</li>
+</ul>
+<h2 id="cookie的缺陷"><a href="#cookie的缺陷" class="headerlink" title="cookie的缺陷"></a>cookie的缺陷</h2><ul>
+<li>传输：cookie在每一次的HTTP请求中都被附加发送，增加了传输流量。</li>
+<li>安全：cookie是明文传输，有安全性问题，会被劫持和篡改。</li>
+<li>大小：cookie有大小限制是4kb，更复杂的数据存储是无法满足的。</li>
+</ul>
+<h1 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h1><p>HTTP协议传输的数据是明文未加密的，为了安全性，网景公司设计了SSL协议（安全套接层）,用SSL建立一个安全的通信线路后，就可以在这条线路上进行普通的HTTP通信了，与SSL组合起来就是 HTTPS了，不过现在使用更多的是TLS（安全层传输协议）。</p>
+<p>网站使用HTTPS需要申请一个证书，由第三方的可信赖机构提供的，这是为了防止身份伪装。</p>
+<h2 id="HTTPS的握手过程"><a href="#HTTPS的握手过程" class="headerlink" title="HTTPS的握手过程"></a>HTTPS的握手过程</h2><p><img src="//blogcdn.affecthing.com/http-4.jpeg" alt="http-4"></p>
+<ol>
+<li>客户端发送协议版本，随机码，支持的加密算法和压缩方法</li>
+<li>服务器确认使用的协议版本和加密算法，生成随机码，发送服务器证书</li>
+<li>客户端验证服务器证书，生成48字节key，使用服务器公钥加密key，发送加密信息，客户端握手结束</li>
+<li>服务器将两个随机码+key组合生成本次通信密钥，用来加密信息，服务器握手结束</li>
+</ol>
+<p>接下来的通信都将在此加密通信下进行，以上任何确认过程失败，都将断开加密通信。</p>
+<h2 id="插曲OpenSSL"><a href="#插曲OpenSSL" class="headerlink" title="插曲OpenSSL"></a>插曲OpenSSL</h2><p>看过锤子发布会的，都知道这个组织，但具体干什么的恐怕也没几个人清楚。它是HTTPS中SSL和TLS的具体实现库。<br>OpenSSL是一个开放源代码的软件库包，应用程序可以使用这个包来进行安全通信，其主要库是以C语言所写成，实现了基本的加密功能，实现了SSL与TLS协议。OpenSSL可以运行在绝大多数类Unix操作系统上，OpenVMS与 Microsoft Windows。</p>
+<h1 id="未来的HTTP-2"><a href="#未来的HTTP-2" class="headerlink" title="未来的HTTP/2"></a>未来的HTTP/2</h1><p>随着互联网的发展，web页面的数据量暴增，服务多年的HTTP/1.1已经显露疲态，由于协议是固定的，所以浏览器，服务器和开发者等都通过各自的手段，来加强服务的响应能力，减缓HTTP/1.1的不足之处。</p>
+<p>谷歌开发了SPDY这个实验性协议来提升http的性能，HTTP/2的草案就是基于SPDY3.0展开的。HTTP/2的主要目标是改进传输性能，实现低延迟和高吞吐量。升级HTTP2不会影响原有的网站应用。</p>
+<h2 id="二进制分帧"><a href="#二进制分帧" class="headerlink" title="二进制分帧"></a>二进制分帧</h2><p>HTTP/2将所有传输的信息分割为更小的消息和帧，并对它们采用二进制格式的编码。之前版本的数据传输都是纯文本的方式，二进制的解析更高效，更准确。这是整个HTTP/2性能提升的基础。</p>
+<h2 id="多路复用的流"><a href="#多路复用的流" class="headerlink" title="多路复用的流"></a>多路复用的流</h2><p><code>当前问题：</code> HTTP/1.1协议中，一个tcp连接处理一个HTTP请求。例如同时有A和B两个请求，先发送A请求，A请求响应结束，再发送B请求，如果A请求处理的时间很长，B也只能等待，这样就造成了线头堵塞。目前每个浏览器可以同时发起6-8个tcp连接，也依然不能很好地解决大量请求的处理。就算开启了管道机制，一个tcp连接同时发送A和B请求，B还是会等在A之后响应。</p>
+<p><code>HTTP/2的方式：</code> HTTP/2中的请求都在一个tcp连接中处理，每个请求和响应都被分解为独立的帧，然后并行交错发送，再在另一端重新组装。请求之间不再互相干扰，从而消除了不必要的等待和延迟，巨大地提升了性能。</p>
+<h2 id="头部压缩"><a href="#头部压缩" class="headerlink" title="头部压缩"></a>头部压缩</h2><p>由于HTTP是无状态的，所以每一次请求和响应都会携带头信息，而其中很多头信息是相同的，毫无疑问增加了传输的数据量。</p>
+<p>所以HTTP/2设计了专门用于压缩头信息的HPACK算法，在客户端和服务器端使用“首部表”来跟踪和存储之前发送的键值对，并进行更新替换。</p>
+<h2 id="服务器推送"><a href="#服务器推送" class="headerlink" title="服务器推送"></a>服务器推送</h2><p>当我们访问一个网页时，服务器先返回HTML文档，浏览器再根据这个文档，去请求其中包含的图片，样式表和脚本。</p>
+<p>而HTTP/2中，服务器可以对一个客户端发送多个响应，而无需客户端再多起多次请求，客户端可以控制该功能的开启。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE">http超文本传输协议——维基百科</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/%E8%92%82%E5%A7%86%C2%B7%E4%BC%AF%E7%BA%B3%E6%96%AF-%E6%9D%8E">蒂姆·伯纳斯·李——万维网之父</a></li>
+<li><a href="http://baike.baidu.com/link?url=loLXfZfkha1NTPo0HdVb9OYJWF8EIut1VBooxm07fbj6xeW7v9rwSINwVT7sCwbA0T3rZwYkJDNlC6dQVi3TQsju-3BUnERVvTDPG8Qt0mH47F5V22CrAhh2MJi4Ifw-">超文本——百度百科</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2016/08/http.html">HTTP 协议入门——阮一峰</a></li>
+<li><a href="https://www.oschina.net/news/77354/http-get-post-different">99%的人理解错 HTTP 中 GET 与 POST 的区别</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI0NDYzMzg0OQ==&mid=2247484093&idx=1&sn=82d63ac497d0fb9f62cc7771cf884b16&chksm=e95b9b2bde2c123dd740a3c9fce614667cdbc0514601669478facbfa8a1f0881f5afe805b2e0&mpshare=1&scene=1&srcid=0502vPBmrkjC7tO0dnby8xMF#rd">一次完整的HTTP请求与响应涉及了哪些知识？</a></li>
+<li><a href="https://book.douban.com/subject/25863515/">《图解HTTP》</a></li>
+<li><a href="https://book.douban.com/subject/10746113/">《HTTP权威指南》</a></li>
+</ol>
+]]></content>
+      <tags>
+        <tag>http</tag>
+        <tag>https</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用JavaScript模拟事件循环</title>
+    <url>/20210609/eventloop/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<h2 id="哇叽哇叽"><a href="#哇叽哇叽" class="headerlink" title="哇叽哇叽"></a>哇叽哇叽</h2><p>对于很多概念性的原理，可能三两句话就能概括，但必然损失了很多细节。而实际的代码呢，无法忽略细节，最多是简化一些。</p>
+<p>那么就让我们一起来用代码来模拟事件循环机制吧。</p>
+<p><em>Talk is cheap. Show me the code.</em></p>
+<p>说起来容易做起来难，历史上的马谡可能是最佳反面代表人物了。</p>
+<h2 id="为什么是事件循环机制，而不是别的机制？"><a href="#为什么是事件循环机制，而不是别的机制？" class="headerlink" title="为什么是事件循环机制，而不是别的机制？"></a>为什么是事件循环机制，而不是别的机制？</h2><p>js主线程要做各种类型的任务，例如：dom事件、布局计算、js任务、用户输入、动画、定时器。</p>
+<h3 id="如何解决未来的新任务？"><a href="#如何解决未来的新任务？" class="headerlink" title="如何解决未来的新任务？"></a>如何解决未来的新任务？</h3><p>各种事件不可能是同一时间执行，会在未来产生新的事件，所以就需要有一个机制像前台接待员一样，一直守在那里，时刻检测是否有新任务了，一有新任务就执行它，这就是事件循环机制。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	doSomething()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="如何解决积攒的新任务？"><a href="#如何解决积攒的新任务？" class="headerlink" title="如何解决积攒的新任务？"></a>如何解决积攒的新任务？</h2><p>新任务太多了，前台接待员无法同时处理多个任务，只能让大家排队了，这就是任务队列机制。</p>
+<p>为什么无法同时处理多个任务？因为js(渲染进程的主线程)是单线程执行模式。</p>
+<p>队列是先进先出的数据结构，在js中可以理解为数组。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> queue = []</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> task = queue.unshift()</span><br><span class="line">	task()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 退出标志</span></span><br><span class="line">	<span class="keyword">if</span> (stop) &#123;</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="高优先级任务被阻塞了"><a href="#高优先级任务被阻塞了" class="headerlink" title="高优先级任务被阻塞了"></a>高优先级任务被阻塞了</h2><p>如果只有一个消息队列，那么高优先级的任务一直在等待，可能会产生页面卡顿。<br>所以按照任务的类型分了几种队列。优先级依次向下。</p>
+<ul>
+<li>用户交互</li>
+<li>合成页面</li>
+<li>默认（资源加载、定时器等）</li>
+<li>空闲（垃圾回收等）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">	handleQueue = []</span><br><span class="line">	composeQueue = []</span><br><span class="line">	baseQueue = []</span><br><span class="line">	freeQueue = []</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (type === <span class="string">&#x27;handle&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.handleQueue.push(task)</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;compose&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.composeQueue.push(task)</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;base&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.baseQueue.push(task)</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;free&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.freeQueue.push(task)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">const</span> queue = []</span><br><span class="line">		<span class="keyword">if</span> (handleQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			queue = handleQueue</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (composeQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			queue = composeQueue</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (baseQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			queue = baseQueue</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (freeQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			queue = freeQueue</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> queue.unshift()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> task = queue.get()</span><br><span class="line">	task()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 退出标志</span></span><br><span class="line">	<span class="keyword">if</span> (stop) &#123;</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="页面在不同阶段，高优目标是不同的"><a href="#页面在不同阶段，高优目标是不同的" class="headerlink" title="页面在不同阶段，高优目标是不同的"></a>页面在不同阶段，高优目标是不同的</h2><p>页面在加载阶段，第一目标是先把页面渲染出来。<br>页面在交互阶段，第一目标是及时响应用户的操作。</p>
+<p>为了满足不同阶段的目标，需要调整不同阶段任务队列的优先级。</p>
+<p><img src="//blogcdn.affecthing.com/eventloop-1" alt="natapp1"></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">	handleQueue = []</span><br><span class="line">	composeQueue = []</span><br><span class="line">	baseQueue = []</span><br><span class="line">	freeQueue = []</span><br><span class="line">	priority = []</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">setPriority</span>(<span class="params">lifecycle</span>)</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (lifecycle === <span class="string">&#x27;pageload&#x27;</span>) &#123;</span><br><span class="line">		  	<span class="built_in">this</span>.priority = [</span><br><span class="line">		<span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>]</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;handle&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.priority = [</span><br><span class="line">		<span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>, <span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>]</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;free&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.priority = [</span><br><span class="line">		<span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>]</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 省略</span></span><br><span class="line">	<span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">const</span> curr = []</span><br><span class="line"></span><br><span class="line">		<span class="built_in">this</span>.priority.forEach(<span class="function"><span class="params">priority</span> =&gt;</span> &#123;</span><br><span class="line">			<span class="keyword">const</span> queue = <span class="built_in">this</span>[priority]</span><br><span class="line">			<span class="keyword">if</span> (queue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				<span class="keyword">return</span> queue.unshift()</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">queue.setPriority(<span class="string">&#x27;pageload&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> task = queue.get()</span><br><span class="line">	task()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 退出标志</span></span><br><span class="line">	<span class="keyword">if</span> (stop) &#123;</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="如何在渲染前做一些任务？"><a href="#如何在渲染前做一些任务？" class="headerlink" title="如何在渲染前做一些任务？"></a>如何在渲染前做一些任务？</h2><p>有时候我们想在当前任务完成前再紧接着做一些任务，但是如果插入到队伍末尾，那么需要的时间可能长，可能短，这就无法稳定地按照预期来做了。</p>
+<p>所以增加了微任务队列，在当前任务即将完成时，再执行一些事情，不用等太久。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span> </span>&#123;</span><br><span class="line">	microQueue = []</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">do</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="comment">// 执行任务</span></span><br><span class="line">		<span class="keyword">if</span> (microQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			microQueue.forEach(<span class="function"><span class="params">microTask</span> =&gt;</span> microTask())</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">addMicro</span>(<span class="params">microTask</span>)</span> &#123;</span><br><span class="line">		<span class="built_in">this</span>.microQueue(microTask)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">setPriority</span>(<span class="params">lifecycle</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line">queue.add(<span class="keyword">new</span> Task(), <span class="string">&#x27;base&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> task = queue.get()</span><br><span class="line">	task.do()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 退出标志</span></span><br><span class="line">	<span class="keyword">if</span> (stop) &#123;</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="低级任务饿死现象"><a href="#低级任务饿死现象" class="headerlink" title="低级任务饿死现象"></a>低级任务饿死现象</h2><p>一直在执行高优任务，低级任务就会出现饿死现象，所以连续执行一定数量的高优任务后，需要执行一次低级任务。</p>
+<h2 id="异步回调"><a href="#异步回调" class="headerlink" title="异步回调"></a>异步回调</h2><p>这里先说一个常识，js虽然是单线程执行，但是浏览器却是多进程的。</p>
+<p>一个异步任务，可能是由浏览器的其他进程或者线程去执行，然后再将执行结果利用 IPC 的方式通知渲染进程，之后渲染进程再将对应的消息添加到消息队列中。</p>
+<h2 id="setTimeout实现机制有何不同之处？"><a href="#setTimeout实现机制有何不同之处？" class="headerlink" title="setTimeout实现机制有何不同之处？"></a>setTimeout实现机制有何不同之处？</h2><p>由于存在时间的概念，并不能直接放入消息队列中。浏览器又增加了一个延迟队列，还有其他的一些延迟任务都在这里执行。每次执行完消息队列中的一个任务，就要检查一遍延迟队列。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> delayQueue = []</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkDelayQueue</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	delayQueue.map(<span class="function"><span class="params">task</span> =&gt;</span> &#123; <span class="keyword">if</span> (<span class="string">&#x27;到期了&#x27;</span>) &#123;</span><br><span class="line">			task()</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span>() </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> task = queue.get()</span><br><span class="line">	task.do()</span><br><span class="line"></span><br><span class="line">	checkDelayQueue()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 退出标志</span></span><br><span class="line">	<span class="keyword">if</span> (stop) &#123;</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="setTimeout的一些问题"><a href="#setTimeout的一些问题" class="headerlink" title="setTimeout的一些问题"></a>setTimeout的一些问题</h3><ul>
+<li>当前任务执行太久，会影响定制器任务</li>
+<li>setTimeout嵌套，系统最短间隔是4ms，即使设置为0</li>
+<li>未激活的页面（非当前标签页），执行最小时间是1000ms</li>
+<li>延迟时间有最大值，受限于最大数字32bit</li>
+</ul>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>以上代码不是实际的浏览器实现，只是为了更好理解事件循环机制提供帮助。</p>
+<p>希望你也写出自己的实现版本。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li>《浏览器工作原理与实践》</li>
+<li>《JavaScript忍者秘籍》</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>事件循环</tag>
+      </tags>
+  </entry>
+</search>

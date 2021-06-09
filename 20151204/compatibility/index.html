@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;www.affecthing.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;right&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:false,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文属于原创文章，转载请注明–来自桃源小盼聊技术 本文的兼容性包含了更多的意思，一些和网站开发注意的实际问题。对注重seo的网站帮助更多一些。 关于浏览器现在的前端开发已经开始放弃兼容ie6,ie7,并且也在有条件的放弃ie8。像chrome这样的现代浏览器对新特性支持度都很棒，只是在某些新特性上的实现方式并不太统一。  这是百度统计最近六个月的数据，ie6和ie7合起来还是有9.03%，360是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小谈网站建设的兼容性">
+<meta property="og:url" content="http://www.affecthing.com/20151204/compatibility/index.html">
+<meta property="og:site_name" content="桃源小盼聊技术">
+<meta property="og:description" content="本文属于原创文章，转载请注明–来自桃源小盼聊技术 本文的兼容性包含了更多的意思，一些和网站开发注意的实际问题。对注重seo的网站帮助更多一些。 关于浏览器现在的前端开发已经开始放弃兼容ie6,ie7,并且也在有条件的放弃ie8。像chrome这样的现代浏览器对新特性支持度都很棒，只是在某些新特性上的实现方式并不太统一。  这是百度统计最近六个月的数据，ie6和ie7合起来还是有9.03%，360是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blogcdn.affecthing.com/compatibility-1.png">
+<meta property="og:image" content="http://blogcdn.affecthing.com/compatibility-2.png">
+<meta property="og:image" content="http://blogcdn.affecthing.com/compatibility-3.png">
+<meta property="article:published_time" content="2015-12-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-09T02:27:34.353Z">
+<meta property="article:author" content="桃源小盼">
+<meta property="article:tag" content="兼容性">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blogcdn.affecthing.com/compatibility-1.png">
+
+
+<link rel="canonical" href="http://www.affecthing.com/20151204/compatibility/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;www.affecthing.com&#x2F;20151204&#x2F;compatibility&#x2F;&quot;,&quot;path&quot;:&quot;20151204&#x2F;compatibility&#x2F;&quot;,&quot;title&quot;:&quot;小谈网站建设的兼容性&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>小谈网站建设的兼容性 | 桃源小盼聊技术</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?da43f566d2f30854d287949fe923820a"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">桃源小盼聊技术</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">桃源小盼博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-book"><a href="/book/" rel="section"><i class="fa fa-book fa-fw"></i>book</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">关于浏览器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">文档模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E5%88%86%E8%BE%A8%E7%8E%87"><span class="nav-number">3.</span> <span class="nav-text">显示分辨率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css%E6%A0%B7%E5%BC%8F%E5%92%8CJquery"><span class="nav-number">4.</span> <span class="nav-text">css样式和Jquery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E6%80%A7%E8%83%BD"><span class="nav-number">5.</span> <span class="nav-text">网站性能</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="桃源小盼"
+      src="https://blogcdn.affecthing.com/profile-200.jpeg">
+  <p class="site-author-name" itemprop="name">桃源小盼</p>
+  <div class="site-description" itemprop="description">新鲜中带着历史、主观里带着务实</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hanmingpan" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hanmingpan" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/1646274942" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;1646274942" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:page@111.com" title="E-Mail → mailto:page@111.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.affecthing.com/20151204/compatibility/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://blogcdn.affecthing.com/profile-200.jpeg">
+      <meta itemprop="name" content="桃源小盼">
+      <meta itemprop="description" content="新鲜中带着历史、主观里带着务实">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="桃源小盼聊技术">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          小谈网站建设的兼容性
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2015-12-04 00:00:00" itemprop="dateCreated datePublished" datetime="2015-12-04T00:00:00+08:00">2015-12-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-09 10:27:34" itemprop="dateModified" datetime="2021-06-09T10:27:34+08:00">2021-06-09</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><em>本文属于原创文章，转载请注明–来自<a target="_blank" rel="noopener" href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>本文的兼容性包含了更多的意思，一些和网站开发注意的实际问题。对注重seo的网站帮助更多一些。</p>
+<h2 id="关于浏览器"><a href="#关于浏览器" class="headerlink" title="关于浏览器"></a>关于浏览器</h2><p>现在的前端开发已经开始放弃兼容ie6,ie7,并且也在有条件的放弃ie8。像chrome这样的现代浏览器对新特性支持度都很棒，只是在某些新特性上的实现方式并不太统一。</p>
+<blockquote>
+<p>这是百度统计最近六个月的数据，ie6和ie7合起来还是有9.03%，360是被统计到各种内核中了。</p>
+<p><img src="//blogcdn.affecthing.com/compatibility-1.png" alt="compatibility-1"></p>
+</blockquote>
+<p>而现在需要我们考虑的就是ie浏览器了。对于ie6,ie7需要去写很多hack代码，非常丑陋并且还要花费大把的时间去调试，然而现在真正使用这两个浏览器的人却是不多的，与其这样还不如把精力投入到大部分用户群体上，为他们提供更好的体验。</p>
+<p>所以是时候放弃兼容他们了，但是我们也不能把使用这两个浏览器的用户放弃掉，所以我们应该加一些让他们更新浏览器的提示，像下面这样：</p>
+<span id="more"></span>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--[if lte IE 8]&gt;</span></span><br><span class="line"><span class="comment">    &lt;div&gt;</span></span><br><span class="line"><span class="comment">     您正在使用的浏览器版本过低，无法达到最佳体验效果。建议使用以下浏览器：</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://se.360.cn&quot; target=&quot;_blank&quot;&gt;360浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://ie.sogou.com&quot; target=&quot;_blank&quot;&gt;搜狗浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://browser.qq.com&quot; target=&quot;_blank&quot;&gt;QQ浏览器&lt;/a&gt;/</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html&quot;</span></span><br><span class="line"><span class="comment">      target=&quot;_blank&quot;&gt;Chrome&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://http://www.firefox.com.cn&quot; target=&quot;_blank&quot;&gt;火狐浏览器&lt;/a&gt;</span></span><br><span class="line"><span class="comment">    &lt;/div&gt;</span></span><br><span class="line"><span class="comment">&lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><em>之所以把喜爱的chrome放到后面，是因为既然他们正在使用低版本浏览器就并不太会使用chrome,而国产浏览器更适合大多数人使用</em></p>
+<h2 id="文档模式"><a href="#文档模式" class="headerlink" title="文档模式"></a>文档模式</h2><p>ie8在win7和XP下的表现也是不同的，因为文档模式，在旧有的文档模式下，并不能正确识别HTML5的新标签。这是最近六个月的操作系统统计数据：</p>
+<p><img src="//blogcdn.affecthing.com/compatibility-2.png" alt="compatibility-2"></p>
+<p>首先在head加文档模式的选择，和浏览器内核的选择</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;x-ua-compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;renderer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;webkit&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>而xp系统下的ie8并没有edge文档模式，所以这里使用<a target="_blank" rel="noopener" href="https://github.com/Modernizr/Modernizr">modernizr</a>,它能让你放心使用HTML5标签，并且还能检测浏览器的能力，根据不同的能力来实现不同的东西。压缩版已经足够小了，这里把它放到头部。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/dep/Modernizr/modernizr.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="显示分辨率"><a href="#显示分辨率" class="headerlink" title="显示分辨率"></a>显示分辨率</h2><p>现在屏幕的分辨率也是各种尺寸了，下面是各种分辨率的统计数据：</p>
+<p><img src="//blogcdn.affecthing.com/compatibility-3.png" alt="compatibility-3"></p>
+<p>大屏已经是趋势了，但是1024*768这个附近应该还有不少，分辨率这个问题我们不能像浏览器那样提示更换显示器吧，毕竟有不小成本，所以还是要借助代码来实现响应式，对于比较复杂的网页实现1200px和1000px就可以了，因为桌面端的网站并不适合手机端，就算你使用响应式，也存在很多其他问题。尤其ie8并不能识别<code>@media</code>语法，所以要借助<a target="_blank" rel="noopener" href="https://github.com/scottjehl/Respond">Respond.js</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--[if lt IE 9]&gt;</span></span><br><span class="line"><span class="comment">    &lt;script src=&quot;/dep/respond/dest/respond.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">&lt;!--&lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>到这里我们的头部看起来是这样的:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">class</span>=<span class="string">&quot;no-js&quot;</span> <span class="attr">lang</span>=<span class="string">&quot;zh-CN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;x-ua-compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>网站建设<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;keywords&quot;</span> <span class="attr">content</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;description&quot;</span> <span class="attr">content</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;renderer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;webkit&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;shortcut icon&quot;</span> <span class="attr">type</span>=<span class="string">&quot;image/x-icon&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/favicon.ico&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/static/main.css&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/dep/Modernizr/modernizr.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--[if lt IE 9]&gt;</span></span><br><span class="line"><span class="comment">    &lt;script src=&quot;/dep/respond/dest/respond.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">    &lt;!--&lt;![endif]--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--[if lte IE 8]&gt;</span></span><br><span class="line"><span class="comment">    &lt;div&gt;</span></span><br><span class="line"><span class="comment">        您正在使用的浏览器版本过低，无法达到最佳体验效果。建议使用以下浏览器：</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://se.360.cn&quot; target=&quot;_blank&quot;&gt;360浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://ie.sogou.com&quot; target=&quot;_blank&quot;&gt;搜狗浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://browser.qq.com&quot; target=&quot;_blank&quot;&gt;QQ浏览器&lt;/a&gt;/</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html&quot;</span></span><br><span class="line"><span class="comment">         target=&quot;_blank&quot;&gt;Chrome&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://http://www.firefox.com.cn&quot; target=&quot;_blank&quot;&gt;火狐浏览器&lt;/a&gt;</span></span><br><span class="line"><span class="comment">    &lt;/div&gt;</span></span><br><span class="line"><span class="comment">    &lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="css样式和Jquery"><a href="#css样式和Jquery" class="headerlink" title="css样式和Jquery"></a>css样式和Jquery</h2><p>现在的前端开发已经翻天覆地了，less和sass大行其道，没有使用小伙伴赶快尝试吧。css3的新属性需要写很多兼容方式，想下面这种写法应该很烦了吧。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.gradient</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-moz-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>, <span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-webkit-gradient</span>(linear, left top, left bottom,</span><br><span class="line">                                 <span class="built_in">color-stop</span>(<span class="number">0%</span>,<span class="number">#000000</span>), <span class="built_in">color-stop</span>(<span class="number">100%</span>,<span class="number">#ffffff</span>));</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-webkit-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-o-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-ms-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to bottom, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  所以我们要感谢<code>Autoprefixer</code>这样的工具，这里借助自动化方案结合它使用是很爽的。只要写标准的方式即可，其他的都交给它吧。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.gradient</span>&#123;</span><br><span class="line">        <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to bottom, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Jquery已经快出生十年了，它就是为了解决浏览器的兼容性而生的，对于桌面端开发我们还是建议采用<code>jquery-1.11.1</code>这个版本。而我们也很清楚它的性能并不高，比原生的js性能最多能差出几十倍，所以我们也不一定并非要使用它，要根据自己网站的真实用户统计数据来决定未来的解决方案，不断的引导自己网站用户使用更新的浏览器，当低端浏览器的份额足够低的时候，就是你可以抛弃jquery的时候了。</p>
+<h2 id="网站性能"><a href="#网站性能" class="headerlink" title="网站性能"></a>网站性能</h2><p>网站性能其实也能和兼容性搭上个边，服务器开启gzip,前端压缩合并各种静态资源，一方面减轻了整个网站的大小，同时也能减轻http的请求数量，而这对于性能不够好的浏览器能更好的减轻他们的负担。</p>
+<p>而关于这方面的东西都是需要结合自动化解决方案的，这方面的文章请看<a target="_blank" rel="noopener" href="https://github.com/fouber/blog">fouber</a>老师的个人博客</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%85%BC%E5%AE%B9%E6%80%A7/" rel="tag"># 兼容性</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/20150920/socket_io/" rel="prev" title="socket.io Get started/chat">
+                  <i class="fa fa-chevron-left"></i> socket.io Get started/chat
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/20160311/array1/" rel="next" title="爱上Javascript数组Array（一）——基础介绍">
+                  爱上Javascript数组Array（一）——基础介绍 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="http://www.beian.miit.gov.cn/" target="_blank">鲁ICP备14032062号-1</a></span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

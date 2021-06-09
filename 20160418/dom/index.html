@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;www.affecthing.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;right&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:false,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文属于原创文章，转载请注明–来自桃源小盼聊技术 原生js处理dom节点的各种方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dom节点处理">
+<meta property="og:url" content="http://www.affecthing.com/20160418/dom/index.html">
+<meta property="og:site_name" content="桃源小盼聊技术">
+<meta property="og:description" content="本文属于原创文章，转载请注明–来自桃源小盼聊技术 原生js处理dom节点的各种方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-04-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-09T02:27:34.354Z">
+<meta property="article:author" content="桃源小盼">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="DOM">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.affecthing.com/20160418/dom/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;www.affecthing.com&#x2F;20160418&#x2F;dom&#x2F;&quot;,&quot;path&quot;:&quot;20160418&#x2F;dom&#x2F;&quot;,&quot;title&quot;:&quot;dom节点处理&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>dom节点处理 | 桃源小盼聊技术</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?da43f566d2f30854d287949fe923820a"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">桃源小盼聊技术</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">桃源小盼博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-book"><a href="/book/" rel="section"><i class="fa fa-book fa-fw"></i>book</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#html%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">html结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#document-getElementById"><span class="nav-number">2.</span> <span class="nav-text">document.getElementById()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parent-getElementsByName"><span class="nav-number">3.</span> <span class="nav-text">parent.getElementsByName()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parent-getElementByTagNmae"><span class="nav-number">4.</span> <span class="nav-text">parent.getElementByTagNmae()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parent-firstChild"><span class="nav-number">5.</span> <span class="nav-text">parent.firstChild</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parent-lastChild"><span class="nav-number">6.</span> <span class="nav-text">parent.lastChild</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parent-childNodes"><span class="nav-number">7.</span> <span class="nav-text">parent.childNodes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#near-previousSibling"><span class="nav-number">8.</span> <span class="nav-text">near.previousSibling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#near-nextSibling"><span class="nav-number">9.</span> <span class="nav-text">near.nextSibling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#near-parentNode"><span class="nav-number">10.</span> <span class="nav-text">near.parentNode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#node-nodeName"><span class="nav-number">11.</span> <span class="nav-text">node.nodeName</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#node-getAttribute"><span class="nav-number">12.</span> <span class="nav-text">node.getAttribute()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#node-setAttribute"><span class="nav-number">13.</span> <span class="nav-text">node.setAttribute()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#document-createElement"><span class="nav-number">14.</span> <span class="nav-text">document.createElement()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parent-appendChild"><span class="nav-number">15.</span> <span class="nav-text">parent.appendChild()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTML5%E6%96%B0%E5%A2%9E"><span class="nav-number"></span> <span class="nav-text">HTML5新增</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#parent-getElementsByClassName"><span class="nav-number">1.</span> <span class="nav-text">parent.getElementsByClassName()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parent-firstElementChild"><span class="nav-number">2.</span> <span class="nav-text">parent.firstElementChild</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parent-lastElementChild"><span class="nav-number">3.</span> <span class="nav-text">parent.lastElementChild</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#near-previousElementSibling"><span class="nav-number">4.</span> <span class="nav-text">near.previousElementSibling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#near-nextElementSibling"><span class="nav-number">5.</span> <span class="nav-text">near.nextElementSibling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#document-querySelector"><span class="nav-number">6.</span> <span class="nav-text">document.querySelector()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#document-querySelectorAll"><span class="nav-number">7.</span> <span class="nav-text">document.querySelectorAll()</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="桃源小盼"
+      src="https://blogcdn.affecthing.com/profile-200.jpeg">
+  <p class="site-author-name" itemprop="name">桃源小盼</p>
+  <div class="site-description" itemprop="description">新鲜中带着历史、主观里带着务实</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hanmingpan" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hanmingpan" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/1646274942" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;1646274942" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:page@111.com" title="E-Mail → mailto:page@111.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.affecthing.com/20160418/dom/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://blogcdn.affecthing.com/profile-200.jpeg">
+      <meta itemprop="name" content="桃源小盼">
+      <meta itemprop="description" content="新鲜中带着历史、主观里带着务实">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="桃源小盼聊技术">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dom节点处理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-04-18 00:00:00" itemprop="dateCreated datePublished" datetime="2016-04-18T00:00:00+08:00">2016-04-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-09 10:27:34" itemprop="dateModified" datetime="2021-06-09T10:27:34+08:00">2021-06-09</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><em>本文属于原创文章，转载请注明–来自<a target="_blank" rel="noopener" href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>原生js处理dom节点的各种方法。</p>
+<span id="more"></span>
+
+<h2 id="html结构"><a href="#html结构" class="headerlink" title="html结构"></a>html结构</h2><pre><code>&lt;div id=&quot;content&quot;&gt;
+    &lt;div class=&quot;left&quot;&gt;
+        left
+    &lt;/div&gt;
+    &lt;div id=&quot;main&quot;&gt;
+        main
+    &lt;/div&gt;
+    &lt;div class=&quot;right&quot;&gt;
+        right
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="document-getElementById"><a href="#document-getElementById" class="headerlink" title="document.getElementById()"></a>document.getElementById()</h2><p>通过id获取dom对象，参数大写小敏感。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);  // #content
+</code></pre>
+<h2 id="parent-getElementsByName"><a href="#parent-getElementsByName" class="headerlink" title="parent.getElementsByName()"></a>parent.getElementsByName()</h2><p>通过元素的name属性来获取dom对象，返回一个数组。</p>
+<pre><code>var arr = document.getElementByName(&#39;user&#39;);  // [input, input]
+</code></pre>
+<h2 id="parent-getElementByTagNmae"><a href="#parent-getElementByTagNmae" class="headerlink" title="parent.getElementByTagNmae()"></a>parent.getElementByTagNmae()</h2><p>通过节点名称获取dom属性，返回一个数组。(ie8只支持document对象)</p>
+<pre><code>var arr = document.getElementByTagName(&#39;input&#39;);  // [input, input]
+</code></pre>
+<h2 id="parent-firstChild"><a href="#parent-firstChild" class="headerlink" title="parent.firstChild"></a>parent.firstChild</h2><p>获取父节点的第一个子节点，然而这是个坑，如果父节点与子节点元素之间有空格，那么获取到的第一个是个text，<br>实际使用时需要封装方法，加上判断nodeType是否等于1。</p>
+<h2 id="parent-lastChild"><a href="#parent-lastChild" class="headerlink" title="parent.lastChild"></a>parent.lastChild</h2><p>获取父节点的最后一个子节点，坑同上。</p>
+<h2 id="parent-childNodes"><a href="#parent-childNodes" class="headerlink" title="parent.childNodes"></a>parent.childNodes</h2><p>获取子节点数组，坑同上。</p>
+<h2 id="near-previousSibling"><a href="#near-previousSibling" class="headerlink" title="near.previousSibling"></a>near.previousSibling</h2><p>获取同辈的前一个元素，坑同上。near 代表同辈元素。</p>
+<h2 id="near-nextSibling"><a href="#near-nextSibling" class="headerlink" title="near.nextSibling"></a>near.nextSibling</h2><p>获取同辈的下一个元素，坑同上。</p>
+<h2 id="near-parentNode"><a href="#near-parentNode" class="headerlink" title="near.parentNode"></a>near.parentNode</h2><p>获取父元素节点</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+var p = ele.parentNode; // .content
+</code></pre>
+<h2 id="node-nodeName"><a href="#node-nodeName" class="headerlink" title="node.nodeName"></a>node.nodeName</h2><p>获取节点名称</p>
+<h2 id="node-getAttribute"><a href="#node-getAttribute" class="headerlink" title="node.getAttribute()"></a>node.getAttribute()</h2><p>获取节点指定属性值。</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+ele.getAttribute(&#39;id&#39;);
+</code></pre>
+<h2 id="node-setAttribute"><a href="#node-setAttribute" class="headerlink" title="node.setAttribute()"></a>node.setAttribute()</h2><p>设置节点指定属性值</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+ele.serAttribute(&#39;class&#39;, &#39;show&#39;);
+</code></pre>
+<h2 id="document-createElement"><a href="#document-createElement" class="headerlink" title="document.createElement()"></a>document.createElement()</h2><p>创建元素</p>
+<h2 id="parent-appendChild"><a href="#parent-appendChild" class="headerlink" title="parent.appendChild()"></a>parent.appendChild()</h2><p>插入元素到父元素的末尾</p>
+<pre><code>var p = document.createElement(&#39;p&#39;);
+var ele = document.getElementById(&#39;main&#39;);
+ele.appenChild(p);
+</code></pre>
+<h1 id="HTML5新增"><a href="#HTML5新增" class="headerlink" title="HTML5新增"></a>HTML5新增</h1><h2 id="parent-getElementsByClassName"><a href="#parent-getElementsByClassName" class="headerlink" title="parent.getElementsByClassName()"></a>parent.getElementsByClassName()</h2><p>通过class属性获得dom对象，返回一个数组。parent作为查找根节点。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);
+var arr = document.getElementsByClassName(&#39;red&#39;);
+var arr = ele.getElementsByClassName(&#39;left red&#39;);
+</code></pre>
+<h2 id="parent-firstElementChild"><a href="#parent-firstElementChild" class="headerlink" title="parent.firstElementChild"></a>parent.firstElementChild</h2><p>获取父节点的第一个子节点。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);
+var first = ele.firstElementChild;  // .left
+</code></pre>
+<h2 id="parent-lastElementChild"><a href="#parent-lastElementChild" class="headerlink" title="parent.lastElementChild"></a>parent.lastElementChild</h2><p>获取父节点的最后一个子节点。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);
+var last = ele.lastElementChild;  // .right
+</code></pre>
+<h2 id="near-previousElementSibling"><a href="#near-previousElementSibling" class="headerlink" title="near.previousElementSibling"></a>near.previousElementSibling</h2><p>获取同辈的前一个元素。</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+var prev = ele.previousElementSibling; // .left
+</code></pre>
+<h2 id="near-nextElementSibling"><a href="#near-nextElementSibling" class="headerlink" title="near.nextElementSibling"></a>near.nextElementSibling</h2><p>获取同辈的后一个元素。</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+var next = ele.nextElementSibling;  // .right
+</code></pre>
+<h2 id="document-querySelector"><a href="#document-querySelector" class="headerlink" title="document.querySelector()"></a>document.querySelector()</h2><p>css方式选择器,只选择匹配到的第一个。</p>
+<p>var main = document.querySelector(‘#content #main’);</p>
+<h2 id="document-querySelectorAll"><a href="#document-querySelectorAll" class="headerlink" title="document.querySelectorAll()"></a>document.querySelectorAll()</h2><p>css方式选择器,返回一个数组。</p>
+<p>var main = document.querySelectorAll(‘#content div);</p>
+<p>function getElementsByClassName(node, classname){<br>    if(node.getElementsByClassName){<br>        //使用现有方法<br>        return node.getElementsByClassName(classname);<br>    }else{<br>        var results = new Array();<br>        var elems = node.getElementsByTagName(“*”);<br>        for(var i=0; i&lt;elems.length; i++){<br>            if(elems[i].className.indexOf(classname) != -1){<br>                results[results.length] = elems[i];<br>            }<br>        }<br>        return results;<br>    }<br>}</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/DOM/" rel="tag"># DOM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/20160330/number/" rel="prev" title="Javascript中的Number和Math">
+                  <i class="fa fa-chevron-left"></i> Javascript中的Number和Math
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/20170524/http/" rel="next" title="HTTP——需要知道的协议">
+                  HTTP——需要知道的协议 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="http://www.beian.miit.gov.cn/" target="_blank">鲁ICP备14032062号-1</a></span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

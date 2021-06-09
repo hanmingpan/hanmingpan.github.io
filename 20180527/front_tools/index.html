@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;www.affecthing.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;right&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:false,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文属于原创文章，转载请注明–来自桃源小盼聊技术 最近因工作原因，需要重新配置开发环境。尝试过很多的开发工具，有些是尝鲜的，有些一直用下来了，只有时间和实际场景能让你知道，会不会长久地使用这个工具。我依然还会去尝试很多新工具，这次推荐前端的长期使用软件集合。 不分工种的工具Homebrewmac上的快速安装软件，软件包管理器。免去先下载、再安装的繁琐，安装只需要一行命令。 iTerm2我最喜欢的命">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mac前端开发工具集">
+<meta property="og:url" content="http://www.affecthing.com/20180527/front_tools/index.html">
+<meta property="og:site_name" content="桃源小盼聊技术">
+<meta property="og:description" content="本文属于原创文章，转载请注明–来自桃源小盼聊技术 最近因工作原因，需要重新配置开发环境。尝试过很多的开发工具，有些是尝鲜的，有些一直用下来了，只有时间和实际场景能让你知道，会不会长久地使用这个工具。我依然还会去尝试很多新工具，这次推荐前端的长期使用软件集合。 不分工种的工具Homebrewmac上的快速安装软件，软件包管理器。免去先下载、再安装的繁琐，安装只需要一行命令。 iTerm2我最喜欢的命">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-09T02:27:34.355Z">
+<meta property="article:author" content="桃源小盼">
+<meta property="article:tag" content="macOS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.affecthing.com/20180527/front_tools/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;www.affecthing.com&#x2F;20180527&#x2F;front_tools&#x2F;&quot;,&quot;path&quot;:&quot;20180527&#x2F;front_tools&#x2F;&quot;,&quot;title&quot;:&quot;mac前端开发工具集&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>mac前端开发工具集 | 桃源小盼聊技术</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?da43f566d2f30854d287949fe923820a"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">桃源小盼聊技术</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">桃源小盼博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-book"><a href="/book/" rel="section"><i class="fa fa-book fa-fw"></i>book</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8D%E5%88%86%E5%B7%A5%E7%A7%8D%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">不分工种的工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Homebrew"><span class="nav-number">1.1.</span> <span class="nav-text">Homebrew</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iTerm2"><span class="nav-number">1.2.</span> <span class="nav-text">iTerm2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpaceLauncher"><span class="nav-number">1.3.</span> <span class="nav-text">SpaceLauncher</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chrome"><span class="nav-number">1.4.</span> <span class="nav-text">Chrome</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SourceTree"><span class="nav-number">1.5.</span> <span class="nav-text">SourceTree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E9%81%93%E8%AF%8D%E5%85%B8"><span class="nav-number">1.6.</span> <span class="nav-text">有道词典</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%9A%E6%9E%9C%E4%BA%91"><span class="nav-number">1.7.</span> <span class="nav-text">坚果云</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Beyond-Compare"><span class="nav-number">1.8.</span> <span class="nav-text">Beyond Compare</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">网络工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Lantern"><span class="nav-number">2.1.</span> <span class="nav-text">Lantern</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ShadowSocks"><span class="nav-number">2.2.</span> <span class="nav-text">ShadowSocks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Charles"><span class="nav-number">2.3.</span> <span class="nav-text">Charles</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Weinre"><span class="nav-number">2.4.</span> <span class="nav-text">Weinre</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IDE%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">IDE编辑器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="桃源小盼"
+      src="https://blogcdn.affecthing.com/profile-200.jpeg">
+  <p class="site-author-name" itemprop="name">桃源小盼</p>
+  <div class="site-description" itemprop="description">新鲜中带着历史、主观里带着务实</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hanmingpan" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hanmingpan" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/1646274942" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;1646274942" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:page@111.com" title="E-Mail → mailto:page@111.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.affecthing.com/20180527/front_tools/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://blogcdn.affecthing.com/profile-200.jpeg">
+      <meta itemprop="name" content="桃源小盼">
+      <meta itemprop="description" content="新鲜中带着历史、主观里带着务实">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="桃源小盼聊技术">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mac前端开发工具集
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-05-27 00:00:00" itemprop="dateCreated datePublished" datetime="2018-05-27T00:00:00+08:00">2018-05-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-09 10:27:34" itemprop="dateModified" datetime="2021-06-09T10:27:34+08:00">2021-06-09</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><em>本文属于原创文章，转载请注明–来自<a target="_blank" rel="noopener" href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>最近因工作原因，需要重新配置开发环境。尝试过很多的开发工具，有些是尝鲜的，有些一直用下来了，只有时间和实际场景能让你知道，会不会长久地使用这个工具。我依然还会去尝试很多新工具，这次推荐前端的长期使用软件集合。</p>
+<h1 id="不分工种的工具"><a href="#不分工种的工具" class="headerlink" title="不分工种的工具"></a>不分工种的工具</h1><h2 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h2><p>mac上的快速安装软件，软件包管理器。免去先下载、再安装的繁琐，安装只需要一行命令。</p>
+<h2 id="iTerm2"><a href="#iTerm2" class="headerlink" title="iTerm2"></a>iTerm2</h2><p>我最喜欢的命令行工具，好处体现在细节，用过才知道。再配合<code>oh my zsh</code>就更爽了。</p>
+<span id="more"></span>
+
+<h2 id="SpaceLauncher"><a href="#SpaceLauncher" class="headerlink" title="SpaceLauncher"></a>SpaceLauncher</h2><p>全局快捷键定义，因为使用了空格键，跟其他软件快捷键无冲突，快速在各个工具间切换，那个感觉怎个爽啊。</p>
+<h2 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h2><p>几款实用插件</p>
+<ul>
+<li><code>postman</code> 接口api调试工具，可配各种方式，登录账户还能保存记录。</li>
+<li><code>OneTab</code> 保存当前的所有标签页，避免了开一堆标签页的眼花缭乱，也避免卡顿。</li>
+<li><code>User-Agent Switcher</code> 修改UA，在调试特定场景下，很管用。</li>
+<li><code>vue</code>和<code>react</code> 框架调试工具</li>
+<li><code>有道笔记</code> 和 <code>印象剪藏</code> 网页快速保存到笔记工具，很多网址会失效，存下来才是王道。</li>
+</ul>
+<h2 id="SourceTree"><a href="#SourceTree" class="headerlink" title="SourceTree"></a>SourceTree</h2><p>几乎人人在用的git可视化客户端工具，建议配置工作目录，也自定义下常用按钮，个人感觉<code>刷新</code>按钮很常用。</p>
+<h2 id="有道词典"><a href="#有道词典" class="headerlink" title="有道词典"></a>有道词典</h2><p>用过好几款词典，换来换去还是有道好用，翻译得精准，也没有广告。主要是查询一些变量命名和翻译大段文档。<br>在这里推荐一个好用的变量命名网站<a target="_blank" rel="noopener" href="https://unbug.github.io/codelf/">CODELF</a></p>
+<h2 id="坚果云"><a href="#坚果云" class="headerlink" title="坚果云"></a>坚果云</h2><p>国内好用的云存储同步工具，自身已经盈利，不用担心关闭的问题。但免费的上传流量有限，不适合大文件。日常零碎的文件很适合。</p>
+<h2 id="Beyond-Compare"><a href="#Beyond-Compare" class="headerlink" title="Beyond Compare"></a>Beyond Compare</h2><p>文件比对工具，可能80%的情况下用不到它，一旦用得上是很感激的，肉眼对比是真的累。</p>
+<h1 id="网络工具"><a href="#网络工具" class="headerlink" title="网络工具"></a>网络工具</h1><h2 id="Lantern"><a href="#Lantern" class="headerlink" title="Lantern"></a>Lantern</h2><p>科学工具，解决广大程序猿的上网烦恼。建议买两年划算。</p>
+<h2 id="ShadowSocks"><a href="#ShadowSocks" class="headerlink" title="ShadowSocks"></a>ShadowSocks</h2><p>第二个科学工具，但得自己购买服务。</p>
+<h2 id="Charles"><a href="#Charles" class="headerlink" title="Charles"></a>Charles</h2><p>抓包工具，何人不抓包呢，现在可是移动端的天下。附带<a target="_blank" rel="noopener" href="https://www.zzzmode.com/mytools/charles/">破解地址</a></p>
+<h2 id="Weinre"><a href="#Weinre" class="headerlink" title="Weinre"></a>Weinre</h2><p>线上调试工具，这个能解决抓包工具做不到的线上调试。这个<a target="_blank" rel="noopener" href="https://blog.csdn.net/hzaini89/article/details/51745832">教程</a>很不错。</p>
+<h1 id="IDE编辑器"><a href="#IDE编辑器" class="headerlink" title="IDE编辑器"></a>IDE编辑器</h1><p>以下这三款可同时安装，atom较轻量，打开速度快、免费。</p>
+<ul>
+<li>WebStorm</li>
+<li>VSCode</li>
+<li>Atom</li>
+</ul>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
+<li>微信开发者工具</li>
+<li><a target="_blank" rel="noopener" href="http://wit-web.azurewebsites.net/en/assistor/download">Assistor PS</a> ps切图插件</li>
+<li><code>nvm</code> node版本管理工具</li>
+<li>有道云笔记</li>
+<li>印象笔记</li>
+<li>kindle读书软件</li>
+<li><code>draw.io</code> 流程图工具</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/macOS/" rel="tag"># macOS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/20170524/http/" rel="prev" title="HTTP——需要知道的协议">
+                  <i class="fa fa-chevron-left"></i> HTTP——需要知道的协议
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/20180620/flexible/" rel="next" title="淘宝flexible深度解读">
+                  淘宝flexible深度解读 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="http://www.beian.miit.gov.cn/" target="_blank">鲁ICP备14032062号-1</a></span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
