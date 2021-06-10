@@ -115,40 +115,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Javascript中的Number和Math</title>
-    <url>/20160330/number/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<h1 id="Number"><a href="#Number" class="headerlink" title="Number"></a>Number</h1><h2 id="number-toExponential"><a href="#number-toExponential" class="headerlink" title="number.toExponential()"></a>number.toExponential()</h2><p>以指数表示法返回一个字符串，参数用来指定小数点后的位数。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num = <span class="number">123.456</span>;</span><br><span class="line">num.toExponential();  <span class="comment">// &quot;1.23456e+2&quot;</span></span><br><span class="line">num.toExponential(<span class="number">1</span>);  <span class="comment">// &quot;1.2e+2&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="number-toFixed"><a href="#number-toFixed" class="headerlink" title="number.toFixed()"></a>number.toFixed()</h2><p>返回一个指定小数点后位数的字符串，参数默认为0。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num = <span class="number">123.456</span>;</span><br><span class="line">num.toFixed();      <span class="comment">// &quot;123&quot;</span></span><br><span class="line">num.toFixed(<span class="number">1</span>);     <span class="comment">// &quot;123.4&quot;</span></span><br><span class="line">num.toFixed(<span class="number">4</span>);     <span class="comment">// &quot;123.4560&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="number">123.456</span>.toFixed();  <span class="comment">// &quot;123&quot;;</span></span><br><span class="line">+<span class="number">123.456</span>.toFixed(); <span class="comment">// 123  (由于操作符优先级，返回数字)</span></span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<h2 id="isNaN"><a href="#isNaN" class="headerlink" title="isNaN()"></a>isNaN()</h2><p>判断是否是NaN，然而这个方法并不准确。新增加的number.isNaN()还不能广泛使用。<br>使用(x !== x) 到是可以检测。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="literal">NaN</span>;</span><br><span class="line"><span class="keyword">var</span> y = <span class="literal">undefined</span>;</span><br><span class="line"><span class="keyword">var</span> z = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">isNaN</span>(x); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">isNaN</span>(y); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">isNaN</span>(z); <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line">x !== x;  <span class="comment">// true</span></span><br><span class="line">y !== y;  <span class="comment">// false</span></span><br><span class="line">z !== z;  <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="parseInt"><a href="#parseInt" class="headerlink" title="parseInt()"></a>parseInt()</h2><p>将字符串转换成整数</p>
-<h2 id="parseFloat"><a href="#parseFloat" class="headerlink" title="parseFloat()"></a>parseFloat()</h2><p>将字符串转换成浮点数字</p>
-<h1 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h1><p>Math相关的属性和方法都是静态的，直接使用即可。</p>
-<ul>
-<li>  Math.abs()       // 取绝对值</li>
-<li>  Math.ceil()      // 向上取整</li>
-<li>  Math.floor()     // 向下取整</li>
-<li>  Math.max()       // 返回一组数据中的最大值（非数组）</li>
-<li>  Math.min()       // 返回一组数据中的最小值</li>
-<li>  Math.pow(x, y)   // 计算次幂结果</li>
-<li>  Math.random()    // 返回[0,1]之间的伪随机浮点数</li>
-<li>  Math.round()     // 四舍五入，返回整数</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>javascript</tag>
-        <tag>Number</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>小谈网站建设的兼容性</title>
     <url>/20151204/compatibility/</url>
     <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
@@ -193,6 +159,40 @@
 ]]></content>
       <tags>
         <tag>兼容性</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Javascript中的Number和Math</title>
+    <url>/20160330/number/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<h1 id="Number"><a href="#Number" class="headerlink" title="Number"></a>Number</h1><h2 id="number-toExponential"><a href="#number-toExponential" class="headerlink" title="number.toExponential()"></a>number.toExponential()</h2><p>以指数表示法返回一个字符串，参数用来指定小数点后的位数。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num = <span class="number">123.456</span>;</span><br><span class="line">num.toExponential();  <span class="comment">// &quot;1.23456e+2&quot;</span></span><br><span class="line">num.toExponential(<span class="number">1</span>);  <span class="comment">// &quot;1.2e+2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="number-toFixed"><a href="#number-toFixed" class="headerlink" title="number.toFixed()"></a>number.toFixed()</h2><p>返回一个指定小数点后位数的字符串，参数默认为0。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num = <span class="number">123.456</span>;</span><br><span class="line">num.toFixed();      <span class="comment">// &quot;123&quot;</span></span><br><span class="line">num.toFixed(<span class="number">1</span>);     <span class="comment">// &quot;123.4&quot;</span></span><br><span class="line">num.toFixed(<span class="number">4</span>);     <span class="comment">// &quot;123.4560&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="number">123.456</span>.toFixed();  <span class="comment">// &quot;123&quot;;</span></span><br><span class="line">+<span class="number">123.456</span>.toFixed(); <span class="comment">// 123  (由于操作符优先级，返回数字)</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="isNaN"><a href="#isNaN" class="headerlink" title="isNaN()"></a>isNaN()</h2><p>判断是否是NaN，然而这个方法并不准确。新增加的number.isNaN()还不能广泛使用。<br>使用(x !== x) 到是可以检测。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="literal">NaN</span>;</span><br><span class="line"><span class="keyword">var</span> y = <span class="literal">undefined</span>;</span><br><span class="line"><span class="keyword">var</span> z = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">isNaN</span>(x); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">isNaN</span>(y); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">isNaN</span>(z); <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line">x !== x;  <span class="comment">// true</span></span><br><span class="line">y !== y;  <span class="comment">// false</span></span><br><span class="line">z !== z;  <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="parseInt"><a href="#parseInt" class="headerlink" title="parseInt()"></a>parseInt()</h2><p>将字符串转换成整数</p>
+<h2 id="parseFloat"><a href="#parseFloat" class="headerlink" title="parseFloat()"></a>parseFloat()</h2><p>将字符串转换成浮点数字</p>
+<h1 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h1><p>Math相关的属性和方法都是静态的，直接使用即可。</p>
+<ul>
+<li>  Math.abs()       // 取绝对值</li>
+<li>  Math.ceil()      // 向上取整</li>
+<li>  Math.floor()     // 向下取整</li>
+<li>  Math.max()       // 返回一组数据中的最大值（非数组）</li>
+<li>  Math.min()       // 返回一组数据中的最小值</li>
+<li>  Math.pow(x, y)   // 计算次幂结果</li>
+<li>  Math.random()    // 返回[0,1]之间的伪随机浮点数</li>
+<li>  Math.round()     // 四舍五入，返回整数</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+        <tag>Number</tag>
       </tags>
   </entry>
   <entry>
@@ -868,29 +868,6 @@ var next = ele.nextElementSibling;  // .right
       </tags>
   </entry>
   <entry>
-    <title>给孤傲的程序员们：软件开发是一项团体运动</title>
-    <url>/20201101/cooperation/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
-<p>记得有个程序员调查报告显示：</p>
-<blockquote>
-<p>近 70％的受访者表示他们的能力高于平均水平，而不到 10％的受访者认为他们的能力低于平均水平。</p>
-</blockquote>
-<p>大部分人认为自己比其他同事水平要好或者不低于。</p>
-<span id="more"></span>
-
-<p>孤傲的我们总认为自己是那个扫地憎，完美地完成每个任务，拯救世上的软件。我不得不说程序员们太孤傲了，包括我自己。一度很流行“10 倍工程师”这个说法，很快就遭到了一众业界大佬的嘲讽。</p>
-<p>回到自然界，人类为什么战胜了狮子老虎，统治了世界。并不是因为你是武松，也不是因为你手里有刀，是围猎，是合作。最终的全球化，大范围地让不认识的人合作生产。</p>
-<p>强大如张无忌也差点在围攻光明顶时挂掉。大家爱玩的王者荣耀也不是1v5，而是5v5。超级计算中并没有超级芯片，而是几万个普通芯片的组合。合作的力量太强大了，合作是人类文明独有的超级核武。</p>
-<p>到了目前这个阶段，你不得不合作，产品经理、设计师、前端、后端、算法、人工智能、测试、运维。没有身兼数职的人，每一次开发任务都是多方沟通。这意味着开发不再是闷头搞大事，而是合作商量大事，各自去执行你擅长的部分。</p>
-<p>合作过程中的沟通是频繁，我知道很多人不喜欢被打断，我也尤其不喜欢在思考一个复杂问题时被打断，因为确实很影响继续工作的心流状态。越是不喜欢被打扰，现实中就越是经常被打扰或者被临时拉去开会。我们只能尽量提前规划一些沟通的时间段，或者每隔两三个小时主动看一下合作方的最新消息。</p>
-<p>软件开发显然是一项团体运动，写下代码前一些疑问，如果能提前沟通可能经常节省你不少的时间。当你给产品经理讲述新技术时，可能他帮你找到了用武之地。接口文档的提前约定，提前梳理了你在处理异常情况时的流程。</p>
-<p>拥抱合作，Peace and Love。</p>
-]]></content>
-      <tags>
-        <tag>合作</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>程序员综合能力参考清单</title>
     <url>/20190924/ability/</url>
     <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
@@ -933,6 +910,29 @@ var next = ele.nextElementSibling;  // .right
       <tags>
         <tag>全栈工程师</tag>
         <tag>能力参考清单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>给孤傲的程序员们：软件开发是一项团体运动</title>
+    <url>/20201101/cooperation/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<p>记得有个程序员调查报告显示：</p>
+<blockquote>
+<p>近 70％的受访者表示他们的能力高于平均水平，而不到 10％的受访者认为他们的能力低于平均水平。</p>
+</blockquote>
+<p>大部分人认为自己比其他同事水平要好或者不低于。</p>
+<span id="more"></span>
+
+<p>孤傲的我们总认为自己是那个扫地憎，完美地完成每个任务，拯救世上的软件。我不得不说程序员们太孤傲了，包括我自己。一度很流行“10 倍工程师”这个说法，很快就遭到了一众业界大佬的嘲讽。</p>
+<p>回到自然界，人类为什么战胜了狮子老虎，统治了世界。并不是因为你是武松，也不是因为你手里有刀，是围猎，是合作。最终的全球化，大范围地让不认识的人合作生产。</p>
+<p>强大如张无忌也差点在围攻光明顶时挂掉。大家爱玩的王者荣耀也不是1v5，而是5v5。超级计算中并没有超级芯片，而是几万个普通芯片的组合。合作的力量太强大了，合作是人类文明独有的超级核武。</p>
+<p>到了目前这个阶段，你不得不合作，产品经理、设计师、前端、后端、算法、人工智能、测试、运维。没有身兼数职的人，每一次开发任务都是多方沟通。这意味着开发不再是闷头搞大事，而是合作商量大事，各自去执行你擅长的部分。</p>
+<p>合作过程中的沟通是频繁，我知道很多人不喜欢被打断，我也尤其不喜欢在思考一个复杂问题时被打断，因为确实很影响继续工作的心流状态。越是不喜欢被打扰，现实中就越是经常被打扰或者被临时拉去开会。我们只能尽量提前规划一些沟通的时间段，或者每隔两三个小时主动看一下合作方的最新消息。</p>
+<p>软件开发显然是一项团体运动，写下代码前一些疑问，如果能提前沟通可能经常节省你不少的时间。当你给产品经理讲述新技术时，可能他帮你找到了用武之地。接口文档的提前约定，提前梳理了你在处理异常情况时的流程。</p>
+<p>拥抱合作，Peace and Love。</p>
+]]></content>
+      <tags>
+        <tag>合作</tag>
       </tags>
   </entry>
   <entry>
@@ -1010,6 +1010,59 @@ var next = ele.nextElementSibling;  // .right
       <tags>
         <tag>基本类型</tag>
         <tag>类型检测</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用JavaScript模拟事件循环</title>
+    <url>/20210609/eventloop/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<h2 id="哇叽哇叽"><a href="#哇叽哇叽" class="headerlink" title="哇叽哇叽"></a>哇叽哇叽</h2><p>对于很多概念性的原理，可能三两句话就能概括，但必然损失了很多细节。而实际的代码呢，无法忽略细节，最多是简化一些。</p>
+<p>那么就让我们一起来用代码来模拟事件循环机制吧。</p>
+<p><em>Talk is cheap. Show me the code.</em></p>
+<p>说起来容易做起来难，历史上的马谡可能是最佳反面代表人物了。</p>
+<h2 id="为什么是事件循环机制，而不是别的机制？"><a href="#为什么是事件循环机制，而不是别的机制？" class="headerlink" title="为什么是事件循环机制，而不是别的机制？"></a>为什么是事件循环机制，而不是别的机制？</h2><p>js主线程要做各种类型的任务，例如：dom事件、布局计算、js任务、用户输入、动画、定时器。</p>
+<h3 id="如何解决未来的新任务？"><a href="#如何解决未来的新任务？" class="headerlink" title="如何解决未来的新任务？"></a>如何解决未来的新任务？</h3><p>各种事件不可能是同一时间执行，会在未来产生新的事件，所以就需要有一个机制像前台接待员一样，一直守在那里，时刻检测是否有新任务了，一有新任务就执行它，这就是事件循环机制。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  doSomething()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="如何解决积攒的新任务？"><a href="#如何解决积攒的新任务？" class="headerlink" title="如何解决积攒的新任务？"></a>如何解决积攒的新任务？</h2><p>新任务太多了，前台接待员无法同时处理多个任务，只能让大家排队了，这就是任务队列机制。</p>
+<p>为什么无法同时处理多个任务？因为js(渲染进程的主线程)是单线程执行模式。</p>
+<p>队列是先进先出的数据结构，在js中可以理解为数组。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> queue = []</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.unshift()</span><br><span class="line">  task()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="高优先级任务被阻塞了"><a href="#高优先级任务被阻塞了" class="headerlink" title="高优先级任务被阻塞了"></a>高优先级任务被阻塞了</h2><p>如果只有一个消息队列，那么高优先级的任务一直在等待，可能会产生页面卡顿。<br>所以按照任务的类型分了几种队列。优先级依次向下。</p>
+<ul>
+<li>用户交互</li>
+<li>合成页面</li>
+<li>默认（资源加载、定时器等）</li>
+<li>空闲（垃圾回收等）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">  handleQueue = []  <span class="comment">// 交互队列</span></span><br><span class="line">  composeQueue = [] <span class="comment">// 合成队列</span></span><br><span class="line">  baseQueue = []    <span class="comment">// 默认队列</span></span><br><span class="line">  freeQueue = []    <span class="comment">// 空闲队列</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 插入新任务</span></span><br><span class="line">  <span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (type === <span class="string">&#x27;handle&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.handleQueue.push(task)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;compose&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.composeQueue.push(task)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;base&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.baseQueue.push(task)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;free&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.freeQueue.push(task)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取一个任务</span></span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> queue = []</span><br><span class="line">    <span class="keyword">if</span> (handleQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = handleQueue</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (composeQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = composeQueue</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (baseQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = baseQueue</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (freeQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = freeQueue</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> queue.unshift()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="页面在不同阶段，高优目标是不同的"><a href="#页面在不同阶段，高优目标是不同的" class="headerlink" title="页面在不同阶段，高优目标是不同的"></a>页面在不同阶段，高优目标是不同的</h2><p>页面在加载阶段，第一目标是先把页面渲染出来。<br>页面在交互阶段，第一目标是及时响应用户的操作。</p>
+<p>为了满足不同阶段的目标，需要调整不同阶段任务队列的优先级。</p>
+<p><img src="//blogcdn.affecthing.com/eventloop-1" alt="natapp1"></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">  handleQueue = []</span><br><span class="line">  composeQueue = []</span><br><span class="line">  baseQueue = []</span><br><span class="line">  freeQueue = []</span><br><span class="line">  priority = []</span><br><span class="line">  <span class="comment">// 设置优先级</span></span><br><span class="line">  <span class="function"><span class="title">setPriority</span>(<span class="params">lifecycle</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;pageload&#x27;</span>) &#123; <span class="comment">// 页面加载</span></span><br><span class="line">      <span class="built_in">this</span>.priority = [<span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;handle&#x27;</span>) &#123; <span class="comment">// 交互阶段</span></span><br><span class="line">      <span class="built_in">this</span>.priority = [<span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>, <span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>]</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;free&#x27;</span>) &#123; <span class="comment">// 空闲阶段</span></span><br><span class="line">      <span class="built_in">this</span>.priority = [<span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> curr = []</span><br><span class="line">    <span class="comment">// 根据优先级顺序来获取任务</span></span><br><span class="line">    <span class="built_in">this</span>.priority.forEach(<span class="function"><span class="params">priority</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> queue = <span class="built_in">this</span>[priority]</span><br><span class="line">      <span class="keyword">if</span> (queue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> queue.unshift()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 省略</span></span><br><span class="line">  <span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">queue.setPriority(<span class="string">&#x27;pageload&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="如何在渲染前做一些任务？"><a href="#如何在渲染前做一些任务？" class="headerlink" title="如何在渲染前做一些任务？"></a>如何在渲染前做一些任务？</h2><p>有时候我们想在当前任务完成前再紧接着做一些任务，但是如果插入到队伍末尾，那么需要的时间可能长，可能短，这就无法稳定地按照预期来做了。</p>
+<p>所以增加了微任务队列，在当前任务即将完成时，再执行一些事情，不用等太久。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span> </span>&#123;</span><br><span class="line">  microQueue = []</span><br><span class="line">  <span class="comment">// 执行任务</span></span><br><span class="line">  <span class="function"><span class="title">do</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// start doSomething</span></span><br><span class="line">    <span class="comment">// doSomething</span></span><br><span class="line">    <span class="comment">// end doSomething</span></span><br><span class="line">    <span class="comment">// 检查微任务队列</span></span><br><span class="line">    <span class="keyword">if</span> (microQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      microQueue.forEach(<span class="function"><span class="params">microTask</span> =&gt;</span> microTask())</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 添加微任务</span></span><br><span class="line">  <span class="function"><span class="title">addMicro</span>(<span class="params">microTask</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.microQueue(microTask)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略，同上</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">setPriority</span>(<span class="params">lifecycle</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line">queue.add(<span class="keyword">new</span> Task(), <span class="string">&#x27;base&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task.do()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="低级任务饿死现象"><a href="#低级任务饿死现象" class="headerlink" title="低级任务饿死现象"></a>低级任务饿死现象</h2><p>一直在执行高优任务，低级任务就会出现饿死现象，所以连续执行一定数量的高优任务后，需要执行一次低级任务。</p>
+<h2 id="异步回调"><a href="#异步回调" class="headerlink" title="异步回调"></a>异步回调</h2><p>这里先说一个常识，js虽然是单线程执行，但是浏览器却是多进程的。</p>
+<p>一个异步任务，可能是由浏览器的其他进程或者线程去执行，然后再将执行结果利用 IPC 的方式通知渲染进程，之后渲染进程再将对应的消息添加到消息队列中。</p>
+<h2 id="setTimeout实现机制有何不同之处？"><a href="#setTimeout实现机制有何不同之处？" class="headerlink" title="setTimeout实现机制有何不同之处？"></a>setTimeout实现机制有何不同之处？</h2><p>由于存在时间的概念，并不能直接放入消息队列中。浏览器又增加了一个延迟队列，还有其他的一些延迟任务都在这里执行。每次执行完消息队列中的一个任务，就要检查一遍延迟队列。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> delayQueue = []</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查延迟队列中的任务，是否到时间了</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkDelayQueue</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  delayQueue.map(<span class="function"><span class="params">task</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="string">&#x27;到期了&#x27;</span>) &#123;</span><br><span class="line">      task()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task.do()</span><br><span class="line"></span><br><span class="line">  checkDelayQueue()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>以上代码不是实际的浏览器实现，只是为了更好理解事件循环机制提供帮助。</p>
+<p>希望你也写出自己的实现版本。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li>《浏览器工作原理与实践》</li>
+<li>《JavaScript忍者秘籍》</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>事件循环</tag>
       </tags>
   </entry>
   <entry>
@@ -1409,64 +1462,6 @@ If-None-Match:&quot;a384-54ebb4b41af00;89-3f26bd17a2f00-gzip&quot;
       <tags>
         <tag>http</tag>
         <tag>https</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>用JavaScript模拟事件循环</title>
-    <url>/20210609/eventloop/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
-<h2 id="哇叽哇叽"><a href="#哇叽哇叽" class="headerlink" title="哇叽哇叽"></a>哇叽哇叽</h2><p>对于很多概念性的原理，可能三两句话就能概括，但必然损失了很多细节。而实际的代码呢，无法忽略细节，最多是简化一些。</p>
-<p>那么就让我们一起来用代码来模拟事件循环机制吧。</p>
-<p><em>Talk is cheap. Show me the code.</em></p>
-<p>说起来容易做起来难，历史上的马谡可能是最佳反面代表人物了。</p>
-<h2 id="为什么是事件循环机制，而不是别的机制？"><a href="#为什么是事件循环机制，而不是别的机制？" class="headerlink" title="为什么是事件循环机制，而不是别的机制？"></a>为什么是事件循环机制，而不是别的机制？</h2><p>js主线程要做各种类型的任务，例如：dom事件、布局计算、js任务、用户输入、动画、定时器。</p>
-<h3 id="如何解决未来的新任务？"><a href="#如何解决未来的新任务？" class="headerlink" title="如何解决未来的新任务？"></a>如何解决未来的新任务？</h3><p>各种事件不可能是同一时间执行，会在未来产生新的事件，所以就需要有一个机制像前台接待员一样，一直守在那里，时刻检测是否有新任务了，一有新任务就执行它，这就是事件循环机制。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	doSomething()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="如何解决积攒的新任务？"><a href="#如何解决积攒的新任务？" class="headerlink" title="如何解决积攒的新任务？"></a>如何解决积攒的新任务？</h2><p>新任务太多了，前台接待员无法同时处理多个任务，只能让大家排队了，这就是任务队列机制。</p>
-<p>为什么无法同时处理多个任务？因为js(渲染进程的主线程)是单线程执行模式。</p>
-<p>队列是先进先出的数据结构，在js中可以理解为数组。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> queue = []</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> task = queue.unshift()</span><br><span class="line">	task()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 退出标志</span></span><br><span class="line">	<span class="keyword">if</span> (stop) &#123;</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="高优先级任务被阻塞了"><a href="#高优先级任务被阻塞了" class="headerlink" title="高优先级任务被阻塞了"></a>高优先级任务被阻塞了</h2><p>如果只有一个消息队列，那么高优先级的任务一直在等待，可能会产生页面卡顿。<br>所以按照任务的类型分了几种队列。优先级依次向下。</p>
-<ul>
-<li>用户交互</li>
-<li>合成页面</li>
-<li>默认（资源加载、定时器等）</li>
-<li>空闲（垃圾回收等）</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">	handleQueue = []</span><br><span class="line">	composeQueue = []</span><br><span class="line">	baseQueue = []</span><br><span class="line">	freeQueue = []</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (type === <span class="string">&#x27;handle&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.handleQueue.push(task)</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;compose&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.composeQueue.push(task)</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;base&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.baseQueue.push(task)</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;free&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.freeQueue.push(task)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">const</span> queue = []</span><br><span class="line">		<span class="keyword">if</span> (handleQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			queue = handleQueue</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (composeQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			queue = composeQueue</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (baseQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			queue = baseQueue</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (freeQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			queue = freeQueue</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> queue.unshift()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> task = queue.get()</span><br><span class="line">	task()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 退出标志</span></span><br><span class="line">	<span class="keyword">if</span> (stop) &#123;</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="页面在不同阶段，高优目标是不同的"><a href="#页面在不同阶段，高优目标是不同的" class="headerlink" title="页面在不同阶段，高优目标是不同的"></a>页面在不同阶段，高优目标是不同的</h2><p>页面在加载阶段，第一目标是先把页面渲染出来。<br>页面在交互阶段，第一目标是及时响应用户的操作。</p>
-<p>为了满足不同阶段的目标，需要调整不同阶段任务队列的优先级。</p>
-<p><img src="//blogcdn.affecthing.com/eventloop-1" alt="natapp1"></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">	handleQueue = []</span><br><span class="line">	composeQueue = []</span><br><span class="line">	baseQueue = []</span><br><span class="line">	freeQueue = []</span><br><span class="line">	priority = []</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">setPriority</span>(<span class="params">lifecycle</span>)</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (lifecycle === <span class="string">&#x27;pageload&#x27;</span>) &#123;</span><br><span class="line">		  	<span class="built_in">this</span>.priority = [</span><br><span class="line">		<span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>]</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;handle&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.priority = [</span><br><span class="line">		<span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>, <span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>]</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;free&#x27;</span>) &#123;</span><br><span class="line">			<span class="built_in">this</span>.priority = [</span><br><span class="line">		<span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>]</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 省略</span></span><br><span class="line">	<span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">const</span> curr = []</span><br><span class="line"></span><br><span class="line">		<span class="built_in">this</span>.priority.forEach(<span class="function"><span class="params">priority</span> =&gt;</span> &#123;</span><br><span class="line">			<span class="keyword">const</span> queue = <span class="built_in">this</span>[priority]</span><br><span class="line">			<span class="keyword">if</span> (queue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				<span class="keyword">return</span> queue.unshift()</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">queue.setPriority(<span class="string">&#x27;pageload&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> task = queue.get()</span><br><span class="line">	task()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 退出标志</span></span><br><span class="line">	<span class="keyword">if</span> (stop) &#123;</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="如何在渲染前做一些任务？"><a href="#如何在渲染前做一些任务？" class="headerlink" title="如何在渲染前做一些任务？"></a>如何在渲染前做一些任务？</h2><p>有时候我们想在当前任务完成前再紧接着做一些任务，但是如果插入到队伍末尾，那么需要的时间可能长，可能短，这就无法稳定地按照预期来做了。</p>
-<p>所以增加了微任务队列，在当前任务即将完成时，再执行一些事情，不用等太久。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span> </span>&#123;</span><br><span class="line">	microQueue = []</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">do</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="comment">// 执行任务</span></span><br><span class="line">		<span class="keyword">if</span> (microQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			microQueue.forEach(<span class="function"><span class="params">microTask</span> =&gt;</span> microTask())</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">addMicro</span>(<span class="params">microTask</span>)</span> &#123;</span><br><span class="line">		<span class="built_in">this</span>.microQueue(microTask)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">setPriority</span>(<span class="params">lifecycle</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line">queue.add(<span class="keyword">new</span> Task(), <span class="string">&#x27;base&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> task = queue.get()</span><br><span class="line">	task.do()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 退出标志</span></span><br><span class="line">	<span class="keyword">if</span> (stop) &#123;</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="低级任务饿死现象"><a href="#低级任务饿死现象" class="headerlink" title="低级任务饿死现象"></a>低级任务饿死现象</h2><p>一直在执行高优任务，低级任务就会出现饿死现象，所以连续执行一定数量的高优任务后，需要执行一次低级任务。</p>
-<h2 id="异步回调"><a href="#异步回调" class="headerlink" title="异步回调"></a>异步回调</h2><p>这里先说一个常识，js虽然是单线程执行，但是浏览器却是多进程的。</p>
-<p>一个异步任务，可能是由浏览器的其他进程或者线程去执行，然后再将执行结果利用 IPC 的方式通知渲染进程，之后渲染进程再将对应的消息添加到消息队列中。</p>
-<h2 id="setTimeout实现机制有何不同之处？"><a href="#setTimeout实现机制有何不同之处？" class="headerlink" title="setTimeout实现机制有何不同之处？"></a>setTimeout实现机制有何不同之处？</h2><p>由于存在时间的概念，并不能直接放入消息队列中。浏览器又增加了一个延迟队列，还有其他的一些延迟任务都在这里执行。每次执行完消息队列中的一个任务，就要检查一遍延迟队列。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> delayQueue = []</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkDelayQueue</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	delayQueue.map(<span class="function"><span class="params">task</span> =&gt;</span> &#123; <span class="keyword">if</span> (<span class="string">&#x27;到期了&#x27;</span>) &#123;</span><br><span class="line">			task()</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span>() </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">	<span class="keyword">const</span> task = queue.get()</span><br><span class="line">	task.do()</span><br><span class="line"></span><br><span class="line">	checkDelayQueue()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 退出标志</span></span><br><span class="line">	<span class="keyword">if</span> (stop) &#123;</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="setTimeout的一些问题"><a href="#setTimeout的一些问题" class="headerlink" title="setTimeout的一些问题"></a>setTimeout的一些问题</h3><ul>
-<li>当前任务执行太久，会影响定制器任务</li>
-<li>setTimeout嵌套，系统最短间隔是4ms，即使设置为0</li>
-<li>未激活的页面（非当前标签页），执行最小时间是1000ms</li>
-<li>延迟时间有最大值，受限于最大数字32bit</li>
-</ul>
-<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>以上代码不是实际的浏览器实现，只是为了更好理解事件循环机制提供帮助。</p>
-<p>希望你也写出自己的实现版本。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li>《浏览器工作原理与实践》</li>
-<li>《JavaScript忍者秘籍》</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>事件循环</tag>
       </tags>
   </entry>
 </search>
