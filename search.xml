@@ -162,6 +162,176 @@
       </tags>
   </entry>
   <entry>
+    <title>mac前端开发工具集</title>
+    <url>/20180527/front_tools/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>最近因工作原因，需要重新配置开发环境。尝试过很多的开发工具，有些是尝鲜的，有些一直用下来了，只有时间和实际场景能让你知道，会不会长久地使用这个工具。我依然还会去尝试很多新工具，这次推荐前端的长期使用软件集合。</p>
+<h1 id="不分工种的工具"><a href="#不分工种的工具" class="headerlink" title="不分工种的工具"></a>不分工种的工具</h1><h2 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h2><p>mac上的快速安装软件，软件包管理器。免去先下载、再安装的繁琐，安装只需要一行命令。</p>
+<h2 id="iTerm2"><a href="#iTerm2" class="headerlink" title="iTerm2"></a>iTerm2</h2><p>我最喜欢的命令行工具，好处体现在细节，用过才知道。再配合<code>oh my zsh</code>就更爽了。</p>
+<span id="more"></span>
+
+<h2 id="SpaceLauncher"><a href="#SpaceLauncher" class="headerlink" title="SpaceLauncher"></a>SpaceLauncher</h2><p>全局快捷键定义，因为使用了空格键，跟其他软件快捷键无冲突，快速在各个工具间切换，那个感觉怎个爽啊。</p>
+<h2 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h2><p>几款实用插件</p>
+<ul>
+<li><code>postman</code> 接口api调试工具，可配各种方式，登录账户还能保存记录。</li>
+<li><code>OneTab</code> 保存当前的所有标签页，避免了开一堆标签页的眼花缭乱，也避免卡顿。</li>
+<li><code>User-Agent Switcher</code> 修改UA，在调试特定场景下，很管用。</li>
+<li><code>vue</code>和<code>react</code> 框架调试工具</li>
+<li><code>有道笔记</code> 和 <code>印象剪藏</code> 网页快速保存到笔记工具，很多网址会失效，存下来才是王道。</li>
+</ul>
+<h2 id="SourceTree"><a href="#SourceTree" class="headerlink" title="SourceTree"></a>SourceTree</h2><p>几乎人人在用的git可视化客户端工具，建议配置工作目录，也自定义下常用按钮，个人感觉<code>刷新</code>按钮很常用。</p>
+<h2 id="有道词典"><a href="#有道词典" class="headerlink" title="有道词典"></a>有道词典</h2><p>用过好几款词典，换来换去还是有道好用，翻译得精准，也没有广告。主要是查询一些变量命名和翻译大段文档。<br>在这里推荐一个好用的变量命名网站<a href="https://unbug.github.io/codelf/">CODELF</a></p>
+<h2 id="坚果云"><a href="#坚果云" class="headerlink" title="坚果云"></a>坚果云</h2><p>国内好用的云存储同步工具，自身已经盈利，不用担心关闭的问题。但免费的上传流量有限，不适合大文件。日常零碎的文件很适合。</p>
+<h2 id="Beyond-Compare"><a href="#Beyond-Compare" class="headerlink" title="Beyond Compare"></a>Beyond Compare</h2><p>文件比对工具，可能80%的情况下用不到它，一旦用得上是很感激的，肉眼对比是真的累。</p>
+<h1 id="网络工具"><a href="#网络工具" class="headerlink" title="网络工具"></a>网络工具</h1><h2 id="Lantern"><a href="#Lantern" class="headerlink" title="Lantern"></a>Lantern</h2><p>科学工具，解决广大程序猿的上网烦恼。建议买两年划算。</p>
+<h2 id="ShadowSocks"><a href="#ShadowSocks" class="headerlink" title="ShadowSocks"></a>ShadowSocks</h2><p>第二个科学工具，但得自己购买服务。</p>
+<h2 id="Charles"><a href="#Charles" class="headerlink" title="Charles"></a>Charles</h2><p>抓包工具，何人不抓包呢，现在可是移动端的天下。附带<a href="https://www.zzzmode.com/mytools/charles/">破解地址</a></p>
+<h2 id="Weinre"><a href="#Weinre" class="headerlink" title="Weinre"></a>Weinre</h2><p>线上调试工具，这个能解决抓包工具做不到的线上调试。这个<a href="https://blog.csdn.net/hzaini89/article/details/51745832">教程</a>很不错。</p>
+<h1 id="IDE编辑器"><a href="#IDE编辑器" class="headerlink" title="IDE编辑器"></a>IDE编辑器</h1><p>以下这三款可同时安装，atom较轻量，打开速度快、免费。</p>
+<ul>
+<li>WebStorm</li>
+<li>VSCode</li>
+<li>Atom</li>
+</ul>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
+<li>微信开发者工具</li>
+<li><a href="http://wit-web.azurewebsites.net/en/assistor/download">Assistor PS</a> ps切图插件</li>
+<li><code>nvm</code> node版本管理工具</li>
+<li>有道云笔记</li>
+<li>印象笔记</li>
+<li>kindle读书软件</li>
+<li><code>draw.io</code> 流程图工具</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>macOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>代理本地服务到公网-natapp内网穿透工具</title>
+    <url>/20181213/natapp/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>开发一些服务时，想把本地服务映射到公网可访问状态，方便开发调试。</p>
+<p>适合调试微信小程序，混合型app客户端等</p>
+<p><em>本工具免费稳定，也有高级付费版</em></p>
+<span id="more"></span>
+
+<h2 id="注册下载"><a href="#注册下载" class="headerlink" title="注册下载"></a>注册下载</h2><ol>
+<li>打开<a href="https://natapp.cn/">https://natapp.cn</a></li>
+<li>购买免费型</li>
+<li>下载客户端</li>
+<li>修改客户端权限</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd 下载目录</span><br><span class="line">chmod a+x natapp</span><br></pre></td></tr></table></figure>
+
+<p><img src="//blogcdn.affecthing.com/natapp1.png" alt="natapp1"></p>
+<h2 id="普通使用"><a href="#普通使用" class="headerlink" title="普通使用"></a>普通使用</h2><ol>
+<li>配置本地地址 127.0.0.1</li>
+<li>配置本地端口 8080</li>
+<li>复制authtoken</li>
+<li>运行客户端</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">// 运行客户端，出现online代表已通</span><br><span class="line">./natapp -authtoken=复制的authtoken</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>额外配置</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 如果使用了webpack，增加配置</span></span><br><span class="line"><span class="attr">devServer</span>: &#123;</span><br><span class="line">    <span class="attr">disableHostCheck</span>: <span class="literal">true</span> <span class="comment">// 绕过主机检查</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="//blogcdn.affecthing.com/natapp2.png" alt="natapp2"></p>
+<h2 id="高级使用-固定域名"><a href="#高级使用-固定域名" class="headerlink" title="高级使用-固定域名"></a>高级使用-固定域名</h2><ul>
+<li>购买付费服务，多种可选</li>
+<li>域名服务下增加一条CNAME解析</li>
+<li>将已备案域名绑定到natapp</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>内网穿透</tag>
+        <tag>远程调试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我用HTML写简历</title>
+    <url>/20180923/resume/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>每次换工作写简历都是有点痛苦的事情，尤其是下载word模板，各种注册流程，有的还得买积分，冲会员，甚是不爽。就算下载好了，修改其中的一些细节也不太熟悉各种功能，由于长期不用word，早把很多设置功能抛之脑后。</p>
+<p>忽然有一天灵感涌上，这种简易的模板样式，对于一个前端工程师来说，写个页面分分钟的事，只要能把html转成pdf格式这事就成了。</p>
+<span id="more"></span>
+
+<h2 id="Puppeteer"><a href="#Puppeteer" class="headerlink" title="Puppeteer"></a>Puppeteer</h2><p>Puppeteer是谷歌出的一个headless自动化工具。</p>
+<ul>
+<li>利用网页生成PDF、图片</li>
+<li>抓取网站内容</li>
+<li>自动化表单提交、UI测试、键盘输入等</li>
+<li>创建一个最新的自动化测试环境</li>
+</ul>
+<p>用来把html转换pdf，虽然是有点大材小用，但是很适合，渲染效果也是足够放心的。</p>
+<h3 id="install"><a href="#install" class="headerlink" title="install"></a>install</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> &gt; Node v6.4.0</span></span><br><span class="line">npm i puppeteer --save</span><br></pre></td></tr></table></figure>
+
+<p>但是安装这里有坑位，还好前人踩过坑了，失败的人点<a href="https://juejin.im/post/5b99c9ece51d450e51625630">这里</a>，笔者也是下载失败了~~~</p>
+<h2 id="index-html"><a href="#index-html" class="headerlink" title="index.html"></a>index.html</h2><p>具体怎么写得养眼，就是自己的事情了，这里提供一个简单的模板。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>我的简历<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1.0, maximum-scale=1.0, user-scalable=0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">    主要内容</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="gulpfile-js"><a href="#gulpfile-js" class="headerlink" title="gulpfile.js"></a>gulpfile.js</h2><p>既然想要写得爽，怎么也得来个热更新吧，搞个简单的自动化工具。<br>Puppeteer只能访问http地址，所以还需要静态资源服务</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm i --save browser-sync gulp gulp-notify</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>browser-sync 提供静态服务器和热更新</li>
+<li>gulp 自动化工具</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> notify = <span class="built_in">require</span>(<span class="string">&#x27;gulp-notify&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> browserSync = <span class="built_in">require</span>(<span class="string">&#x27;browser-sync&#x27;</span>).create()</span><br><span class="line"><span class="keyword">const</span> reload = browserSync.reload</span><br><span class="line"></span><br><span class="line"><span class="comment">// 热更新</span></span><br><span class="line">gulp.task(<span class="string">&#x27;styles&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">&#x27;src/*.css&#x27;</span>)</span><br><span class="line">        .pipe(reload(&#123;<span class="attr">stream</span>: <span class="literal">true</span>&#125;))</span><br><span class="line">        .pipe(notify(&#123;<span class="attr">message</span>: <span class="string">&#x27;Styles complete&#x27;</span>&#125;))</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态资源服务</span></span><br><span class="line">gulp.task(<span class="string">&#x27;serve&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>], <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    browserSync.init(&#123;</span><br><span class="line">        <span class="attr">server</span>: &#123;</span><br><span class="line">            <span class="attr">baseDir</span>: <span class="string">&quot;./src&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">port</span>: <span class="number">7000</span>,</span><br><span class="line">        <span class="comment">// 关闭右上角通知</span></span><br><span class="line">        <span class="attr">notify</span>: <span class="literal">false</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.css&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>])</span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.html&#x27;</span>, reload)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="build-js"><a href="#build-js" class="headerlink" title="build.js"></a>build.js</h2><p>只差转换生成了，这里用到了await语法，否则层级太深。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">&#x27;puppeteer&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch()</span><br><span class="line">    <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage()</span><br><span class="line">    <span class="keyword">await</span> page.goto(<span class="string">&#x27;http://localhost:7000&#x27;</span>)</span><br><span class="line">    <span class="keyword">await</span> page.pdf(&#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&#x27;resume.pdf&#x27;</span>,</span><br><span class="line">        <span class="attr">format</span>: <span class="string">&#x27;A4&#x27;</span>,</span><br><span class="line">        <span class="comment">// 打印背景色</span></span><br><span class="line">        <span class="attr">printBackground</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> browser.close()</span><br><span class="line">    <span class="built_in">console</span>.info(<span class="string">&#x27;build done&#x27;</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后写简历的事情，也被我们工程化了，想想也是省心省力。可以发挥我们的想象，加入各种好玩的东西，再也没人有跟我一样的简历样式了。</p>
+<p>这里写了一个简单的项目，仅供参考<a href="https://github.com/hanmingpan/better-resume">demo地址</a></p>
+]]></content>
+      <tags>
+        <tag>puppeteer</tag>
+        <tag>简历</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>淘宝flexible深度解读</title>
+    <url>/20180620/flexible/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>关于flexible的第一篇介绍文章是<code>大漠</code>的《<a href="https://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html">使用Flexible实现手淘H5页面的终端适配</a>》。请先阅读这篇文章再来看本文。</p>
+<p>三年前看的时候就一个感觉<code>Perfect</code>，还有这么神奇的操作，但是深入到原理就有点似懂非懂，向其他同学推荐的时候，总有些细节讲不清楚。究其原因是自己没有深入了解“为什么会产生这样的解决方案？”。</p>
+<span id="more"></span>
+
+<h2 id="rem如何计算？"><a href="#rem如何计算？" class="headerlink" title="rem如何计算？"></a>rem如何计算？</h2><p>这种方案受到<code>vw</code>这个单位的启发，100vw等于设备宽度，跟具体像素无关，有点类似100%。但百分比无法解决宽高比的问题。</p>
+<p>rem单位是参照根节点的font-size为依据，所以只要根据设备宽度来除以100份，动态计算根节点的字体大小，就能hack这个vw的效果。</p>
+<pre><code>1vw = (ClietWidth/100)= htmlFontSize = 1rem
+</code></pre>
+<p>flexible将页面分成了10份，为什么不像vw单位一样是100份呢？拿iPhone4举例，宽度为320px，如果是100份，1rem=3.2px，目前大部分浏览器不支持12px以下的字体大小，所以320/12=26.67，最多可以将页面分成26份，方便计算取整数10，1rem=(320/10)=32px。</p>
+<h2 id="dpr有什么用？"><a href="#dpr有什么用？" class="headerlink" title="dpr有什么用？"></a>dpr有什么用？</h2><p>先看一下设备的实际像素与css像素的统计图。</p>
+<p><img src="//blogcdn.affecthing.com/flexible-1.png" alt="flexible-1"></p>
+<p>在iphone4之前没有视网膜屏幕，一个设备像素等于一个css像素。最开始的移动端网站大多是按照240px或320px的设计图开发，iphone3GS就是320px，那么在iPhone4的640px上，整个网站只能显示一半，看起来很奇怪。就算厂商会自动缩放整个网站来适配<br>屏幕，也无法解决固定像素的问题。</p>
+<p><img src="//blogcdn.affecthing.com/flexible-2.png" alt="flexible-2"></p>
+<p>考虑到这方面的影响，iPhone4的物理像素比（devicePixelRatio）dpr=2，将一个像素的宽度和高度都扩大二倍，手机在底层对网站进行了显示上的放大，这样一来屏幕对于原有的网站还是320px。</p>
+<h2 id="viewport的改变能带来什么？"><a href="#viewport的改变能带来什么？" class="headerlink" title="viewport的改变能带来什么？"></a>viewport的改变能带来什么？</h2><p>这是计算rem的关键代码</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> docEl = <span class="built_in">document</span>.documentElement</span><br><span class="line"><span class="keyword">var</span> rem = docEl.clientWidth / <span class="number">10</span></span><br><span class="line">docEl.style.fontSize = rem + <span class="string">&#x27;px&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>clientWidth</code>是根元素的可视宽度，如果viewport缩放scale=1.0，那么对于iPhone4的clientWidth=320px，如果scale=0.5，那么clientWidth=640px，无论如何改变viewport值，rem都等于根节点可视宽度的1/10。</p>
+<p><code>老版本0.3.2</code>里有这样一段。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> isAndroid = win.navigator.appVersion.match(<span class="regexp">/android/gi</span>);</span><br><span class="line"><span class="keyword">var</span> isIPhone = win.navigator.appVersion.match(<span class="regexp">/iphone/gi</span>);</span><br><span class="line"><span class="keyword">var</span> devicePixelRatio = win.devicePixelRatio;</span><br><span class="line"><span class="keyword">if</span> (isIPhone) &#123;</span><br><span class="line">  <span class="comment">// iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案</span></span><br><span class="line">  <span class="keyword">if</span> (devicePixelRatio &gt;= <span class="number">3</span> &amp;&amp; (!dpr || dpr &gt;= <span class="number">3</span>)) &#123;</span><br><span class="line">      dpr = <span class="number">3</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (devicePixelRatio &gt;= <span class="number">2</span> &amp;&amp; (!dpr || dpr &gt;= <span class="number">2</span>)) &#123;</span><br><span class="line">      dpr = <span class="number">2</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      dpr = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// 其他设备下，仍旧使用1倍的方案</span></span><br><span class="line">  dpr = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">scale = <span class="number">1</span> / dpr;</span><br></pre></td></tr></table></figure>
+
+<p>动态去计算scale，并不影响rem的计算，好处是解决了1px的问题，坏处是破坏了css媒介media。<br>老版本对android不支持高清方案，是个缺陷。</p>
+<p><code>新版本2.0</code>里面则去掉了动态计算scale的方式，改为检测是否支持0.5px的特性，通过添加类名<code>hairlines</code>来向下兼容</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// detect 0.5px supports</span></span><br><span class="line"><span class="keyword">if</span> (dpr &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> fakeBody = <span class="built_in">document</span>.createElement(<span class="string">&#x27;body&#x27;</span>)</span><br><span class="line">    <span class="keyword">var</span> testElement = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">    testElement.style.border = <span class="string">&#x27;.5px solid transparent&#x27;</span></span><br><span class="line">    fakeBody.appendChild(testElement)</span><br><span class="line">    docEl.appendChild(fakeBody)</span><br><span class="line">    <span class="keyword">if</span> (testElement.offsetHeight === <span class="number">1</span>) &#123;</span><br><span class="line">        docEl.classList.add(<span class="string">&#x27;hairlines&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    docEl.removeChild(fakeBody)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="效果图和rem计算方式的联系是什么？"><a href="#效果图和rem计算方式的联系是什么？" class="headerlink" title="效果图和rem计算方式的联系是什么？"></a>效果图和rem计算方式的联系是什么？</h2><p>css里的1rem=clientWidth/10，效果图与设备像素计算的共同关联是都把屏幕分成10份，那么iphone4效果图里的1rem=(640/10)=64px。<br>所以css的转化基础永远是width/10。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这篇文章主要是记录思考为什么这样做的解答。希望有更多的疑问来让我们一起思考。</p>
+<p>如今淘宝家也升级了适配方案，拥抱真正的vw。参考大漠后来的文章《<a href="https://www.w3cplus.com/css/vw-for-layout.html">再聊移动端页面的适配》</a></p>
+]]></content>
+      <tags>
+        <tag>rem响应式</tag>
+        <tag>flexible</tag>
+        <tag>dpi</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Javascript中的Number和Math</title>
     <url>/20160330/number/</url>
     <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
@@ -655,176 +825,6 @@ var next = ele.nextElementSibling;  // .right
       </tags>
   </entry>
   <entry>
-    <title>mac前端开发工具集</title>
-    <url>/20180527/front_tools/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<p>最近因工作原因，需要重新配置开发环境。尝试过很多的开发工具，有些是尝鲜的，有些一直用下来了，只有时间和实际场景能让你知道，会不会长久地使用这个工具。我依然还会去尝试很多新工具，这次推荐前端的长期使用软件集合。</p>
-<h1 id="不分工种的工具"><a href="#不分工种的工具" class="headerlink" title="不分工种的工具"></a>不分工种的工具</h1><h2 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h2><p>mac上的快速安装软件，软件包管理器。免去先下载、再安装的繁琐，安装只需要一行命令。</p>
-<h2 id="iTerm2"><a href="#iTerm2" class="headerlink" title="iTerm2"></a>iTerm2</h2><p>我最喜欢的命令行工具，好处体现在细节，用过才知道。再配合<code>oh my zsh</code>就更爽了。</p>
-<span id="more"></span>
-
-<h2 id="SpaceLauncher"><a href="#SpaceLauncher" class="headerlink" title="SpaceLauncher"></a>SpaceLauncher</h2><p>全局快捷键定义，因为使用了空格键，跟其他软件快捷键无冲突，快速在各个工具间切换，那个感觉怎个爽啊。</p>
-<h2 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h2><p>几款实用插件</p>
-<ul>
-<li><code>postman</code> 接口api调试工具，可配各种方式，登录账户还能保存记录。</li>
-<li><code>OneTab</code> 保存当前的所有标签页，避免了开一堆标签页的眼花缭乱，也避免卡顿。</li>
-<li><code>User-Agent Switcher</code> 修改UA，在调试特定场景下，很管用。</li>
-<li><code>vue</code>和<code>react</code> 框架调试工具</li>
-<li><code>有道笔记</code> 和 <code>印象剪藏</code> 网页快速保存到笔记工具，很多网址会失效，存下来才是王道。</li>
-</ul>
-<h2 id="SourceTree"><a href="#SourceTree" class="headerlink" title="SourceTree"></a>SourceTree</h2><p>几乎人人在用的git可视化客户端工具，建议配置工作目录，也自定义下常用按钮，个人感觉<code>刷新</code>按钮很常用。</p>
-<h2 id="有道词典"><a href="#有道词典" class="headerlink" title="有道词典"></a>有道词典</h2><p>用过好几款词典，换来换去还是有道好用，翻译得精准，也没有广告。主要是查询一些变量命名和翻译大段文档。<br>在这里推荐一个好用的变量命名网站<a href="https://unbug.github.io/codelf/">CODELF</a></p>
-<h2 id="坚果云"><a href="#坚果云" class="headerlink" title="坚果云"></a>坚果云</h2><p>国内好用的云存储同步工具，自身已经盈利，不用担心关闭的问题。但免费的上传流量有限，不适合大文件。日常零碎的文件很适合。</p>
-<h2 id="Beyond-Compare"><a href="#Beyond-Compare" class="headerlink" title="Beyond Compare"></a>Beyond Compare</h2><p>文件比对工具，可能80%的情况下用不到它，一旦用得上是很感激的，肉眼对比是真的累。</p>
-<h1 id="网络工具"><a href="#网络工具" class="headerlink" title="网络工具"></a>网络工具</h1><h2 id="Lantern"><a href="#Lantern" class="headerlink" title="Lantern"></a>Lantern</h2><p>科学工具，解决广大程序猿的上网烦恼。建议买两年划算。</p>
-<h2 id="ShadowSocks"><a href="#ShadowSocks" class="headerlink" title="ShadowSocks"></a>ShadowSocks</h2><p>第二个科学工具，但得自己购买服务。</p>
-<h2 id="Charles"><a href="#Charles" class="headerlink" title="Charles"></a>Charles</h2><p>抓包工具，何人不抓包呢，现在可是移动端的天下。附带<a href="https://www.zzzmode.com/mytools/charles/">破解地址</a></p>
-<h2 id="Weinre"><a href="#Weinre" class="headerlink" title="Weinre"></a>Weinre</h2><p>线上调试工具，这个能解决抓包工具做不到的线上调试。这个<a href="https://blog.csdn.net/hzaini89/article/details/51745832">教程</a>很不错。</p>
-<h1 id="IDE编辑器"><a href="#IDE编辑器" class="headerlink" title="IDE编辑器"></a>IDE编辑器</h1><p>以下这三款可同时安装，atom较轻量，打开速度快、免费。</p>
-<ul>
-<li>WebStorm</li>
-<li>VSCode</li>
-<li>Atom</li>
-</ul>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
-<li>微信开发者工具</li>
-<li><a href="http://wit-web.azurewebsites.net/en/assistor/download">Assistor PS</a> ps切图插件</li>
-<li><code>nvm</code> node版本管理工具</li>
-<li>有道云笔记</li>
-<li>印象笔记</li>
-<li>kindle读书软件</li>
-<li><code>draw.io</code> 流程图工具</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>macOS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>代理本地服务到公网-natapp内网穿透工具</title>
-    <url>/20181213/natapp/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<p>开发一些服务时，想把本地服务映射到公网可访问状态，方便开发调试。</p>
-<p>适合调试微信小程序，混合型app客户端等</p>
-<p><em>本工具免费稳定，也有高级付费版</em></p>
-<span id="more"></span>
-
-<h2 id="注册下载"><a href="#注册下载" class="headerlink" title="注册下载"></a>注册下载</h2><ol>
-<li>打开<a href="https://natapp.cn/">https://natapp.cn</a></li>
-<li>购买免费型</li>
-<li>下载客户端</li>
-<li>修改客户端权限</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd 下载目录</span><br><span class="line">chmod a+x natapp</span><br></pre></td></tr></table></figure>
-
-<p><img src="//blogcdn.affecthing.com/natapp1.png" alt="natapp1"></p>
-<h2 id="普通使用"><a href="#普通使用" class="headerlink" title="普通使用"></a>普通使用</h2><ol>
-<li>配置本地地址 127.0.0.1</li>
-<li>配置本地端口 8080</li>
-<li>复制authtoken</li>
-<li>运行客户端</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">// 运行客户端，出现online代表已通</span><br><span class="line">./natapp -authtoken=复制的authtoken</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>额外配置</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 如果使用了webpack，增加配置</span></span><br><span class="line"><span class="attr">devServer</span>: &#123;</span><br><span class="line">    <span class="attr">disableHostCheck</span>: <span class="literal">true</span> <span class="comment">// 绕过主机检查</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="//blogcdn.affecthing.com/natapp2.png" alt="natapp2"></p>
-<h2 id="高级使用-固定域名"><a href="#高级使用-固定域名" class="headerlink" title="高级使用-固定域名"></a>高级使用-固定域名</h2><ul>
-<li>购买付费服务，多种可选</li>
-<li>域名服务下增加一条CNAME解析</li>
-<li>将已备案域名绑定到natapp</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>内网穿透</tag>
-        <tag>远程调试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>我用HTML写简历</title>
-    <url>/20180923/resume/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>每次换工作写简历都是有点痛苦的事情，尤其是下载word模板，各种注册流程，有的还得买积分，冲会员，甚是不爽。就算下载好了，修改其中的一些细节也不太熟悉各种功能，由于长期不用word，早把很多设置功能抛之脑后。</p>
-<p>忽然有一天灵感涌上，这种简易的模板样式，对于一个前端工程师来说，写个页面分分钟的事，只要能把html转成pdf格式这事就成了。</p>
-<span id="more"></span>
-
-<h2 id="Puppeteer"><a href="#Puppeteer" class="headerlink" title="Puppeteer"></a>Puppeteer</h2><p>Puppeteer是谷歌出的一个headless自动化工具。</p>
-<ul>
-<li>利用网页生成PDF、图片</li>
-<li>抓取网站内容</li>
-<li>自动化表单提交、UI测试、键盘输入等</li>
-<li>创建一个最新的自动化测试环境</li>
-</ul>
-<p>用来把html转换pdf，虽然是有点大材小用，但是很适合，渲染效果也是足够放心的。</p>
-<h3 id="install"><a href="#install" class="headerlink" title="install"></a>install</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> &gt; Node v6.4.0</span></span><br><span class="line">npm i puppeteer --save</span><br></pre></td></tr></table></figure>
-
-<p>但是安装这里有坑位，还好前人踩过坑了，失败的人点<a href="https://juejin.im/post/5b99c9ece51d450e51625630">这里</a>，笔者也是下载失败了~~~</p>
-<h2 id="index-html"><a href="#index-html" class="headerlink" title="index.html"></a>index.html</h2><p>具体怎么写得养眼，就是自己的事情了，这里提供一个简单的模板。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>我的简历<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1.0, maximum-scale=1.0, user-scalable=0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">    主要内容</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="gulpfile-js"><a href="#gulpfile-js" class="headerlink" title="gulpfile.js"></a>gulpfile.js</h2><p>既然想要写得爽，怎么也得来个热更新吧，搞个简单的自动化工具。<br>Puppeteer只能访问http地址，所以还需要静态资源服务</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm i --save browser-sync gulp gulp-notify</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>browser-sync 提供静态服务器和热更新</li>
-<li>gulp 自动化工具</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> notify = <span class="built_in">require</span>(<span class="string">&#x27;gulp-notify&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> browserSync = <span class="built_in">require</span>(<span class="string">&#x27;browser-sync&#x27;</span>).create()</span><br><span class="line"><span class="keyword">const</span> reload = browserSync.reload</span><br><span class="line"></span><br><span class="line"><span class="comment">// 热更新</span></span><br><span class="line">gulp.task(<span class="string">&#x27;styles&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">&#x27;src/*.css&#x27;</span>)</span><br><span class="line">        .pipe(reload(&#123;<span class="attr">stream</span>: <span class="literal">true</span>&#125;))</span><br><span class="line">        .pipe(notify(&#123;<span class="attr">message</span>: <span class="string">&#x27;Styles complete&#x27;</span>&#125;))</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态资源服务</span></span><br><span class="line">gulp.task(<span class="string">&#x27;serve&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>], <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    browserSync.init(&#123;</span><br><span class="line">        <span class="attr">server</span>: &#123;</span><br><span class="line">            <span class="attr">baseDir</span>: <span class="string">&quot;./src&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">port</span>: <span class="number">7000</span>,</span><br><span class="line">        <span class="comment">// 关闭右上角通知</span></span><br><span class="line">        <span class="attr">notify</span>: <span class="literal">false</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.css&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>])</span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.html&#x27;</span>, reload)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="build-js"><a href="#build-js" class="headerlink" title="build.js"></a>build.js</h2><p>只差转换生成了，这里用到了await语法，否则层级太深。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">&#x27;puppeteer&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch()</span><br><span class="line">    <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage()</span><br><span class="line">    <span class="keyword">await</span> page.goto(<span class="string">&#x27;http://localhost:7000&#x27;</span>)</span><br><span class="line">    <span class="keyword">await</span> page.pdf(&#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&#x27;resume.pdf&#x27;</span>,</span><br><span class="line">        <span class="attr">format</span>: <span class="string">&#x27;A4&#x27;</span>,</span><br><span class="line">        <span class="comment">// 打印背景色</span></span><br><span class="line">        <span class="attr">printBackground</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> browser.close()</span><br><span class="line">    <span class="built_in">console</span>.info(<span class="string">&#x27;build done&#x27;</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
-
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后写简历的事情，也被我们工程化了，想想也是省心省力。可以发挥我们的想象，加入各种好玩的东西，再也没人有跟我一样的简历样式了。</p>
-<p>这里写了一个简单的项目，仅供参考<a href="https://github.com/hanmingpan/better-resume">demo地址</a></p>
-]]></content>
-      <tags>
-        <tag>puppeteer</tag>
-        <tag>简历</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>淘宝flexible深度解读</title>
-    <url>/20180620/flexible/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<p>关于flexible的第一篇介绍文章是<code>大漠</code>的《<a href="https://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html">使用Flexible实现手淘H5页面的终端适配</a>》。请先阅读这篇文章再来看本文。</p>
-<p>三年前看的时候就一个感觉<code>Perfect</code>，还有这么神奇的操作，但是深入到原理就有点似懂非懂，向其他同学推荐的时候，总有些细节讲不清楚。究其原因是自己没有深入了解“为什么会产生这样的解决方案？”。</p>
-<span id="more"></span>
-
-<h2 id="rem如何计算？"><a href="#rem如何计算？" class="headerlink" title="rem如何计算？"></a>rem如何计算？</h2><p>这种方案受到<code>vw</code>这个单位的启发，100vw等于设备宽度，跟具体像素无关，有点类似100%。但百分比无法解决宽高比的问题。</p>
-<p>rem单位是参照根节点的font-size为依据，所以只要根据设备宽度来除以100份，动态计算根节点的字体大小，就能hack这个vw的效果。</p>
-<pre><code>1vw = (ClietWidth/100)= htmlFontSize = 1rem
-</code></pre>
-<p>flexible将页面分成了10份，为什么不像vw单位一样是100份呢？拿iPhone4举例，宽度为320px，如果是100份，1rem=3.2px，目前大部分浏览器不支持12px以下的字体大小，所以320/12=26.67，最多可以将页面分成26份，方便计算取整数10，1rem=(320/10)=32px。</p>
-<h2 id="dpr有什么用？"><a href="#dpr有什么用？" class="headerlink" title="dpr有什么用？"></a>dpr有什么用？</h2><p>先看一下设备的实际像素与css像素的统计图。</p>
-<p><img src="//blogcdn.affecthing.com/flexible-1.png" alt="flexible-1"></p>
-<p>在iphone4之前没有视网膜屏幕，一个设备像素等于一个css像素。最开始的移动端网站大多是按照240px或320px的设计图开发，iphone3GS就是320px，那么在iPhone4的640px上，整个网站只能显示一半，看起来很奇怪。就算厂商会自动缩放整个网站来适配<br>屏幕，也无法解决固定像素的问题。</p>
-<p><img src="//blogcdn.affecthing.com/flexible-2.png" alt="flexible-2"></p>
-<p>考虑到这方面的影响，iPhone4的物理像素比（devicePixelRatio）dpr=2，将一个像素的宽度和高度都扩大二倍，手机在底层对网站进行了显示上的放大，这样一来屏幕对于原有的网站还是320px。</p>
-<h2 id="viewport的改变能带来什么？"><a href="#viewport的改变能带来什么？" class="headerlink" title="viewport的改变能带来什么？"></a>viewport的改变能带来什么？</h2><p>这是计算rem的关键代码</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> docEl = <span class="built_in">document</span>.documentElement</span><br><span class="line"><span class="keyword">var</span> rem = docEl.clientWidth / <span class="number">10</span></span><br><span class="line">docEl.style.fontSize = rem + <span class="string">&#x27;px&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>clientWidth</code>是根元素的可视宽度，如果viewport缩放scale=1.0，那么对于iPhone4的clientWidth=320px，如果scale=0.5，那么clientWidth=640px，无论如何改变viewport值，rem都等于根节点可视宽度的1/10。</p>
-<p><code>老版本0.3.2</code>里有这样一段。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> isAndroid = win.navigator.appVersion.match(<span class="regexp">/android/gi</span>);</span><br><span class="line"><span class="keyword">var</span> isIPhone = win.navigator.appVersion.match(<span class="regexp">/iphone/gi</span>);</span><br><span class="line"><span class="keyword">var</span> devicePixelRatio = win.devicePixelRatio;</span><br><span class="line"><span class="keyword">if</span> (isIPhone) &#123;</span><br><span class="line">  <span class="comment">// iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案</span></span><br><span class="line">  <span class="keyword">if</span> (devicePixelRatio &gt;= <span class="number">3</span> &amp;&amp; (!dpr || dpr &gt;= <span class="number">3</span>)) &#123;</span><br><span class="line">      dpr = <span class="number">3</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (devicePixelRatio &gt;= <span class="number">2</span> &amp;&amp; (!dpr || dpr &gt;= <span class="number">2</span>)) &#123;</span><br><span class="line">      dpr = <span class="number">2</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      dpr = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// 其他设备下，仍旧使用1倍的方案</span></span><br><span class="line">  dpr = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">scale = <span class="number">1</span> / dpr;</span><br></pre></td></tr></table></figure>
-
-<p>动态去计算scale，并不影响rem的计算，好处是解决了1px的问题，坏处是破坏了css媒介media。<br>老版本对android不支持高清方案，是个缺陷。</p>
-<p><code>新版本2.0</code>里面则去掉了动态计算scale的方式，改为检测是否支持0.5px的特性，通过添加类名<code>hairlines</code>来向下兼容</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// detect 0.5px supports</span></span><br><span class="line"><span class="keyword">if</span> (dpr &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> fakeBody = <span class="built_in">document</span>.createElement(<span class="string">&#x27;body&#x27;</span>)</span><br><span class="line">    <span class="keyword">var</span> testElement = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">    testElement.style.border = <span class="string">&#x27;.5px solid transparent&#x27;</span></span><br><span class="line">    fakeBody.appendChild(testElement)</span><br><span class="line">    docEl.appendChild(fakeBody)</span><br><span class="line">    <span class="keyword">if</span> (testElement.offsetHeight === <span class="number">1</span>) &#123;</span><br><span class="line">        docEl.classList.add(<span class="string">&#x27;hairlines&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    docEl.removeChild(fakeBody)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="效果图和rem计算方式的联系是什么？"><a href="#效果图和rem计算方式的联系是什么？" class="headerlink" title="效果图和rem计算方式的联系是什么？"></a>效果图和rem计算方式的联系是什么？</h2><p>css里的1rem=clientWidth/10，效果图与设备像素计算的共同关联是都把屏幕分成10份，那么iphone4效果图里的1rem=(640/10)=64px。<br>所以css的转化基础永远是width/10。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这篇文章主要是记录思考为什么这样做的解答。希望有更多的疑问来让我们一起思考。</p>
-<p>如今淘宝家也升级了适配方案，拥抱真正的vw。参考大漠后来的文章《<a href="https://www.w3cplus.com/css/vw-for-layout.html">再聊移动端页面的适配》</a></p>
-]]></content>
-      <tags>
-        <tag>rem响应式</tag>
-        <tag>flexible</tag>
-        <tag>dpi</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>我想让你先了解重构，然后深入重构</title>
     <url>/20190615/refactoring/</url>
     <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
@@ -1017,9 +1017,11 @@ var next = ele.nextElementSibling;  // .right
     <url>/20210609/eventloop/</url>
     <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
 <h2 id="哇叽哇叽"><a href="#哇叽哇叽" class="headerlink" title="哇叽哇叽"></a>哇叽哇叽</h2><p>对于很多概念性的原理，可能三两句话就能概括，但必然损失了很多细节。而实际的代码呢，无法忽略细节，最多是简化一些。</p>
-<p>那么就让我们一起来用代码来模拟事件循环机制吧。</p>
+<p>那么就让我们一起来用伪代码来模拟事件循环机制吧。</p>
 <p><em>Talk is cheap. Show me the code.</em></p>
 <p>说起来容易做起来难，历史上的马谡可能是最佳反面代表人物了。</p>
+<span id="more"></span>
+
 <h2 id="为什么是事件循环机制，而不是别的机制？"><a href="#为什么是事件循环机制，而不是别的机制？" class="headerlink" title="为什么是事件循环机制，而不是别的机制？"></a>为什么是事件循环机制，而不是别的机制？</h2><p>js主线程要做各种类型的任务，例如：dom事件、布局计算、js任务、用户输入、动画、定时器。</p>
 <h3 id="如何解决未来的新任务？"><a href="#如何解决未来的新任务？" class="headerlink" title="如何解决未来的新任务？"></a>如何解决未来的新任务？</h3><p>各种事件不可能是同一时间执行，会在未来产生新的事件，所以就需要有一个机制像前台接待员一样，一直守在那里，时刻检测是否有新任务了，一有新任务就执行它，这就是事件循环机制。</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  doSomething()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
