@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://www.affecthing.com/20210802/eslintidea/</loc>
+    <lastmod>2021-08-02</lastmod>
+  </url>
+  <url>
     <loc>http://www.affecthing.com/20210609/eventloop/</loc>
     <lastmod>2021-07-26</lastmod>
   </url>
@@ -13,6 +17,10 @@
     <lastmod>2021-06-09</lastmod>
   </url>
   <url>
+    <loc>http://www.affecthing.com/20190615/refactoring/</loc>
+    <lastmod>2021-06-09</lastmod>
+  </url>
+  <url>
     <loc>http://www.affecthing.com/20190924/ability/</loc>
     <lastmod>2021-06-09</lastmod>
   </url>
@@ -21,19 +29,15 @@
     <lastmod>2021-06-09</lastmod>
   </url>
   <url>
-    <loc>http://www.affecthing.com/20190615/refactoring/</loc>
-    <lastmod>2021-06-09</lastmod>
-  </url>
-  <url>
     <loc>http://www.affecthing.com/20180527/front_tools/</loc>
     <lastmod>2021-06-09</lastmod>
   </url>
   <url>
-    <loc>http://www.affecthing.com/20180923/resume/</loc>
+    <loc>http://www.affecthing.com/20181213/natapp/</loc>
     <lastmod>2021-06-09</lastmod>
   </url>
   <url>
-    <loc>http://www.affecthing.com/20181213/natapp/</loc>
+    <loc>http://www.affecthing.com/20180923/resume/</loc>
     <lastmod>2021-06-09</lastmod>
   </url>
   <url>
@@ -45,7 +49,7 @@
     <lastmod>2021-06-09</lastmod>
   </url>
   <url>
-    <loc>http://www.affecthing.com/20160323/string/</loc>
+    <loc>http://www.affecthing.com/20160418/dom/</loc>
     <lastmod>2021-06-09</lastmod>
   </url>
   <url>
@@ -53,19 +57,19 @@
     <lastmod>2021-06-09</lastmod>
   </url>
   <url>
-    <loc>http://www.affecthing.com/20160418/dom/</loc>
-    <lastmod>2021-06-09</lastmod>
-  </url>
-  <url>
     <loc>http://www.affecthing.com/20160313/array2/</loc>
     <lastmod>2021-06-09</lastmod>
   </url>
   <url>
-    <loc>http://www.affecthing.com/20150920/socket_io/</loc>
+    <loc>http://www.affecthing.com/20160323/string/</loc>
     <lastmod>2021-06-09</lastmod>
   </url>
   <url>
     <loc>http://www.affecthing.com/20151204/compatibility/</loc>
+    <lastmod>2021-06-09</lastmod>
+  </url>
+  <url>
+    <loc>http://www.affecthing.com/20150920/socket_io/</loc>
     <lastmod>2021-06-09</lastmod>
   </url>
 </urlset> 

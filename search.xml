@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>小谈网站建设的兼容性</title>
+    <url>/20151204/compatibility/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>本文的兼容性包含了更多的意思，一些和网站开发注意的实际问题。对注重seo的网站帮助更多一些。</p>
+<h2 id="关于浏览器"><a href="#关于浏览器" class="headerlink" title="关于浏览器"></a>关于浏览器</h2><p>现在的前端开发已经开始放弃兼容ie6,ie7,并且也在有条件的放弃ie8。像chrome这样的现代浏览器对新特性支持度都很棒，只是在某些新特性上的实现方式并不太统一。</p>
+<blockquote>
+<p>这是百度统计最近六个月的数据，ie6和ie7合起来还是有9.03%，360是被统计到各种内核中了。</p>
+<p><img src="//blogcdn.affecthing.com/compatibility-1.png" alt="compatibility-1"></p>
+</blockquote>
+<p>而现在需要我们考虑的就是ie浏览器了。对于ie6,ie7需要去写很多hack代码，非常丑陋并且还要花费大把的时间去调试，然而现在真正使用这两个浏览器的人却是不多的，与其这样还不如把精力投入到大部分用户群体上，为他们提供更好的体验。</p>
+<p>所以是时候放弃兼容他们了，但是我们也不能把使用这两个浏览器的用户放弃掉，所以我们应该加一些让他们更新浏览器的提示，像下面这样：</p>
+<span id="more"></span>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--[if lte IE 8]&gt;</span></span><br><span class="line"><span class="comment">    &lt;div&gt;</span></span><br><span class="line"><span class="comment">     您正在使用的浏览器版本过低，无法达到最佳体验效果。建议使用以下浏览器：</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://se.360.cn&quot; target=&quot;_blank&quot;&gt;360浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://ie.sogou.com&quot; target=&quot;_blank&quot;&gt;搜狗浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://browser.qq.com&quot; target=&quot;_blank&quot;&gt;QQ浏览器&lt;/a&gt;/</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html&quot;</span></span><br><span class="line"><span class="comment">      target=&quot;_blank&quot;&gt;Chrome&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://http://www.firefox.com.cn&quot; target=&quot;_blank&quot;&gt;火狐浏览器&lt;/a&gt;</span></span><br><span class="line"><span class="comment">    &lt;/div&gt;</span></span><br><span class="line"><span class="comment">&lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><em>之所以把喜爱的chrome放到后面，是因为既然他们正在使用低版本浏览器就并不太会使用chrome,而国产浏览器更适合大多数人使用</em></p>
+<h2 id="文档模式"><a href="#文档模式" class="headerlink" title="文档模式"></a>文档模式</h2><p>ie8在win7和XP下的表现也是不同的，因为文档模式，在旧有的文档模式下，并不能正确识别HTML5的新标签。这是最近六个月的操作系统统计数据：</p>
+<p><img src="//blogcdn.affecthing.com/compatibility-2.png" alt="compatibility-2"></p>
+<p>首先在head加文档模式的选择，和浏览器内核的选择</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;x-ua-compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;renderer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;webkit&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>而xp系统下的ie8并没有edge文档模式，所以这里使用<a href="https://github.com/Modernizr/Modernizr">modernizr</a>,它能让你放心使用HTML5标签，并且还能检测浏览器的能力，根据不同的能力来实现不同的东西。压缩版已经足够小了，这里把它放到头部。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/dep/Modernizr/modernizr.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="显示分辨率"><a href="#显示分辨率" class="headerlink" title="显示分辨率"></a>显示分辨率</h2><p>现在屏幕的分辨率也是各种尺寸了，下面是各种分辨率的统计数据：</p>
+<p><img src="//blogcdn.affecthing.com/compatibility-3.png" alt="compatibility-3"></p>
+<p>大屏已经是趋势了，但是1024*768这个附近应该还有不少，分辨率这个问题我们不能像浏览器那样提示更换显示器吧，毕竟有不小成本，所以还是要借助代码来实现响应式，对于比较复杂的网页实现1200px和1000px就可以了，因为桌面端的网站并不适合手机端，就算你使用响应式，也存在很多其他问题。尤其ie8并不能识别<code>@media</code>语法，所以要借助<a href="https://github.com/scottjehl/Respond">Respond.js</a></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--[if lt IE 9]&gt;</span></span><br><span class="line"><span class="comment">    &lt;script src=&quot;/dep/respond/dest/respond.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">&lt;!--&lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>到这里我们的头部看起来是这样的:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">class</span>=<span class="string">&quot;no-js&quot;</span> <span class="attr">lang</span>=<span class="string">&quot;zh-CN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;x-ua-compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>网站建设<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;keywords&quot;</span> <span class="attr">content</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;description&quot;</span> <span class="attr">content</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;renderer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;webkit&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;shortcut icon&quot;</span> <span class="attr">type</span>=<span class="string">&quot;image/x-icon&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/favicon.ico&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/static/main.css&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/dep/Modernizr/modernizr.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--[if lt IE 9]&gt;</span></span><br><span class="line"><span class="comment">    &lt;script src=&quot;/dep/respond/dest/respond.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">    &lt;!--&lt;![endif]--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--[if lte IE 8]&gt;</span></span><br><span class="line"><span class="comment">    &lt;div&gt;</span></span><br><span class="line"><span class="comment">        您正在使用的浏览器版本过低，无法达到最佳体验效果。建议使用以下浏览器：</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://se.360.cn&quot; target=&quot;_blank&quot;&gt;360浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://ie.sogou.com&quot; target=&quot;_blank&quot;&gt;搜狗浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://browser.qq.com&quot; target=&quot;_blank&quot;&gt;QQ浏览器&lt;/a&gt;/</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html&quot;</span></span><br><span class="line"><span class="comment">         target=&quot;_blank&quot;&gt;Chrome&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://http://www.firefox.com.cn&quot; target=&quot;_blank&quot;&gt;火狐浏览器&lt;/a&gt;</span></span><br><span class="line"><span class="comment">    &lt;/div&gt;</span></span><br><span class="line"><span class="comment">    &lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="css样式和Jquery"><a href="#css样式和Jquery" class="headerlink" title="css样式和Jquery"></a>css样式和Jquery</h2><p>现在的前端开发已经翻天覆地了，less和sass大行其道，没有使用小伙伴赶快尝试吧。css3的新属性需要写很多兼容方式，想下面这种写法应该很烦了吧。</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.gradient</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-moz-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>, <span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-webkit-gradient</span>(linear, left top, left bottom,</span><br><span class="line">                                 <span class="built_in">color-stop</span>(<span class="number">0%</span>,<span class="number">#000000</span>), <span class="built_in">color-stop</span>(<span class="number">100%</span>,<span class="number">#ffffff</span>));</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-webkit-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-o-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-ms-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to bottom, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  所以我们要感谢<code>Autoprefixer</code>这样的工具，这里借助自动化方案结合它使用是很爽的。只要写标准的方式即可，其他的都交给它吧。</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.gradient</span>&#123;</span><br><span class="line">        <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to bottom, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Jquery已经快出生十年了，它就是为了解决浏览器的兼容性而生的，对于桌面端开发我们还是建议采用<code>jquery-1.11.1</code>这个版本。而我们也很清楚它的性能并不高，比原生的js性能最多能差出几十倍，所以我们也不一定并非要使用它，要根据自己网站的真实用户统计数据来决定未来的解决方案，不断的引导自己网站用户使用更新的浏览器，当低端浏览器的份额足够低的时候，就是你可以抛弃jquery的时候了。</p>
+<h2 id="网站性能"><a href="#网站性能" class="headerlink" title="网站性能"></a>网站性能</h2><p>网站性能其实也能和兼容性搭上个边，服务器开启gzip,前端压缩合并各种静态资源，一方面减轻了整个网站的大小，同时也能减轻http的请求数量，而这对于性能不够好的浏览器能更好的减轻他们的负担。</p>
+<p>而关于这方面的东西都是需要结合自动化解决方案的，这方面的文章请看<a href="https://github.com/fouber/blog">fouber</a>老师的个人博客</p>
+]]></content>
+      <tags>
+        <tag>兼容性</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>socket.io Get started/chat</title>
     <url>/20150920/socket_io/</url>
     <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
@@ -115,53 +162,6 @@
       </tags>
   </entry>
   <entry>
-    <title>小谈网站建设的兼容性</title>
-    <url>/20151204/compatibility/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<p>本文的兼容性包含了更多的意思，一些和网站开发注意的实际问题。对注重seo的网站帮助更多一些。</p>
-<h2 id="关于浏览器"><a href="#关于浏览器" class="headerlink" title="关于浏览器"></a>关于浏览器</h2><p>现在的前端开发已经开始放弃兼容ie6,ie7,并且也在有条件的放弃ie8。像chrome这样的现代浏览器对新特性支持度都很棒，只是在某些新特性上的实现方式并不太统一。</p>
-<blockquote>
-<p>这是百度统计最近六个月的数据，ie6和ie7合起来还是有9.03%，360是被统计到各种内核中了。</p>
-<p><img src="//blogcdn.affecthing.com/compatibility-1.png" alt="compatibility-1"></p>
-</blockquote>
-<p>而现在需要我们考虑的就是ie浏览器了。对于ie6,ie7需要去写很多hack代码，非常丑陋并且还要花费大把的时间去调试，然而现在真正使用这两个浏览器的人却是不多的，与其这样还不如把精力投入到大部分用户群体上，为他们提供更好的体验。</p>
-<p>所以是时候放弃兼容他们了，但是我们也不能把使用这两个浏览器的用户放弃掉，所以我们应该加一些让他们更新浏览器的提示，像下面这样：</p>
-<span id="more"></span>
-
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--[if lte IE 8]&gt;</span></span><br><span class="line"><span class="comment">    &lt;div&gt;</span></span><br><span class="line"><span class="comment">     您正在使用的浏览器版本过低，无法达到最佳体验效果。建议使用以下浏览器：</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://se.360.cn&quot; target=&quot;_blank&quot;&gt;360浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://ie.sogou.com&quot; target=&quot;_blank&quot;&gt;搜狗浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://browser.qq.com&quot; target=&quot;_blank&quot;&gt;QQ浏览器&lt;/a&gt;/</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html&quot;</span></span><br><span class="line"><span class="comment">      target=&quot;_blank&quot;&gt;Chrome&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">     &lt;a href=&quot;http://http://www.firefox.com.cn&quot; target=&quot;_blank&quot;&gt;火狐浏览器&lt;/a&gt;</span></span><br><span class="line"><span class="comment">    &lt;/div&gt;</span></span><br><span class="line"><span class="comment">&lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><em>之所以把喜爱的chrome放到后面，是因为既然他们正在使用低版本浏览器就并不太会使用chrome,而国产浏览器更适合大多数人使用</em></p>
-<h2 id="文档模式"><a href="#文档模式" class="headerlink" title="文档模式"></a>文档模式</h2><p>ie8在win7和XP下的表现也是不同的，因为文档模式，在旧有的文档模式下，并不能正确识别HTML5的新标签。这是最近六个月的操作系统统计数据：</p>
-<p><img src="//blogcdn.affecthing.com/compatibility-2.png" alt="compatibility-2"></p>
-<p>首先在head加文档模式的选择，和浏览器内核的选择</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;x-ua-compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;renderer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;webkit&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>而xp系统下的ie8并没有edge文档模式，所以这里使用<a href="https://github.com/Modernizr/Modernizr">modernizr</a>,它能让你放心使用HTML5标签，并且还能检测浏览器的能力，根据不同的能力来实现不同的东西。压缩版已经足够小了，这里把它放到头部。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/dep/Modernizr/modernizr.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="显示分辨率"><a href="#显示分辨率" class="headerlink" title="显示分辨率"></a>显示分辨率</h2><p>现在屏幕的分辨率也是各种尺寸了，下面是各种分辨率的统计数据：</p>
-<p><img src="//blogcdn.affecthing.com/compatibility-3.png" alt="compatibility-3"></p>
-<p>大屏已经是趋势了，但是1024*768这个附近应该还有不少，分辨率这个问题我们不能像浏览器那样提示更换显示器吧，毕竟有不小成本，所以还是要借助代码来实现响应式，对于比较复杂的网页实现1200px和1000px就可以了，因为桌面端的网站并不适合手机端，就算你使用响应式，也存在很多其他问题。尤其ie8并不能识别<code>@media</code>语法，所以要借助<a href="https://github.com/scottjehl/Respond">Respond.js</a></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--[if lt IE 9]&gt;</span></span><br><span class="line"><span class="comment">    &lt;script src=&quot;/dep/respond/dest/respond.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">&lt;!--&lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>到这里我们的头部看起来是这样的:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">class</span>=<span class="string">&quot;no-js&quot;</span> <span class="attr">lang</span>=<span class="string">&quot;zh-CN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;x-ua-compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>网站建设<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;keywords&quot;</span> <span class="attr">content</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;description&quot;</span> <span class="attr">content</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;renderer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;webkit&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;shortcut icon&quot;</span> <span class="attr">type</span>=<span class="string">&quot;image/x-icon&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/favicon.ico&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/static/main.css&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/dep/Modernizr/modernizr.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--[if lt IE 9]&gt;</span></span><br><span class="line"><span class="comment">    &lt;script src=&quot;/dep/respond/dest/respond.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">    &lt;!--&lt;![endif]--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--[if lte IE 8]&gt;</span></span><br><span class="line"><span class="comment">    &lt;div&gt;</span></span><br><span class="line"><span class="comment">        您正在使用的浏览器版本过低，无法达到最佳体验效果。建议使用以下浏览器：</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://se.360.cn&quot; target=&quot;_blank&quot;&gt;360浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://ie.sogou.com&quot; target=&quot;_blank&quot;&gt;搜狗浏览器&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://browser.qq.com&quot; target=&quot;_blank&quot;&gt;QQ浏览器&lt;/a&gt;/</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html&quot;</span></span><br><span class="line"><span class="comment">         target=&quot;_blank&quot;&gt;Chrome&lt;/a&gt; /</span></span><br><span class="line"><span class="comment">        &lt;a href=&quot;http://http://www.firefox.com.cn&quot; target=&quot;_blank&quot;&gt;火狐浏览器&lt;/a&gt;</span></span><br><span class="line"><span class="comment">    &lt;/div&gt;</span></span><br><span class="line"><span class="comment">    &lt;![endif]--&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="css样式和Jquery"><a href="#css样式和Jquery" class="headerlink" title="css样式和Jquery"></a>css样式和Jquery</h2><p>现在的前端开发已经翻天覆地了，less和sass大行其道，没有使用小伙伴赶快尝试吧。css3的新属性需要写很多兼容方式，想下面这种写法应该很烦了吧。</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.gradient</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-moz-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>, <span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-webkit-gradient</span>(linear, left top, left bottom,</span><br><span class="line">                                 <span class="built_in">color-stop</span>(<span class="number">0%</span>,<span class="number">#000000</span>), <span class="built_in">color-stop</span>(<span class="number">100%</span>,<span class="number">#ffffff</span>));</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-webkit-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-o-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">-ms-linear-gradient</span>(top, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to bottom, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>  所以我们要感谢<code>Autoprefixer</code>这样的工具，这里借助自动化方案结合它使用是很爽的。只要写标准的方式即可，其他的都交给它吧。</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.gradient</span>&#123;</span><br><span class="line">        <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to bottom, <span class="number">#000000</span> <span class="number">0%</span>,<span class="number">#ffffff</span> <span class="number">100%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Jquery已经快出生十年了，它就是为了解决浏览器的兼容性而生的，对于桌面端开发我们还是建议采用<code>jquery-1.11.1</code>这个版本。而我们也很清楚它的性能并不高，比原生的js性能最多能差出几十倍，所以我们也不一定并非要使用它，要根据自己网站的真实用户统计数据来决定未来的解决方案，不断的引导自己网站用户使用更新的浏览器，当低端浏览器的份额足够低的时候，就是你可以抛弃jquery的时候了。</p>
-<h2 id="网站性能"><a href="#网站性能" class="headerlink" title="网站性能"></a>网站性能</h2><p>网站性能其实也能和兼容性搭上个边，服务器开启gzip,前端压缩合并各种静态资源，一方面减轻了整个网站的大小，同时也能减轻http的请求数量，而这对于性能不够好的浏览器能更好的减轻他们的负担。</p>
-<p>而关于这方面的东西都是需要结合自动化解决方案的，这方面的文章请看<a href="https://github.com/fouber/blog">fouber</a>老师的个人博客</p>
-]]></content>
-      <tags>
-        <tag>兼容性</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Javascript中的Number和Math</title>
     <url>/20160330/number/</url>
     <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
@@ -193,6 +193,376 @@
       <tags>
         <tag>javascript</tag>
         <tag>Number</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>dom节点处理</title>
+    <url>/20160418/dom/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>原生js处理dom节点的各种方法。</p>
+<span id="more"></span>
+
+<h2 id="html结构"><a href="#html结构" class="headerlink" title="html结构"></a>html结构</h2><pre><code>&lt;div id=&quot;content&quot;&gt;
+    &lt;div class=&quot;left&quot;&gt;
+        left
+    &lt;/div&gt;
+    &lt;div id=&quot;main&quot;&gt;
+        main
+    &lt;/div&gt;
+    &lt;div class=&quot;right&quot;&gt;
+        right
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="document-getElementById"><a href="#document-getElementById" class="headerlink" title="document.getElementById()"></a>document.getElementById()</h2><p>通过id获取dom对象，参数大写小敏感。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);  // #content
+</code></pre>
+<h2 id="parent-getElementsByName"><a href="#parent-getElementsByName" class="headerlink" title="parent.getElementsByName()"></a>parent.getElementsByName()</h2><p>通过元素的name属性来获取dom对象，返回一个数组。</p>
+<pre><code>var arr = document.getElementByName(&#39;user&#39;);  // [input, input]
+</code></pre>
+<h2 id="parent-getElementByTagNmae"><a href="#parent-getElementByTagNmae" class="headerlink" title="parent.getElementByTagNmae()"></a>parent.getElementByTagNmae()</h2><p>通过节点名称获取dom属性，返回一个数组。(ie8只支持document对象)</p>
+<pre><code>var arr = document.getElementByTagName(&#39;input&#39;);  // [input, input]
+</code></pre>
+<h2 id="parent-firstChild"><a href="#parent-firstChild" class="headerlink" title="parent.firstChild"></a>parent.firstChild</h2><p>获取父节点的第一个子节点，然而这是个坑，如果父节点与子节点元素之间有空格，那么获取到的第一个是个text，<br>实际使用时需要封装方法，加上判断nodeType是否等于1。</p>
+<h2 id="parent-lastChild"><a href="#parent-lastChild" class="headerlink" title="parent.lastChild"></a>parent.lastChild</h2><p>获取父节点的最后一个子节点，坑同上。</p>
+<h2 id="parent-childNodes"><a href="#parent-childNodes" class="headerlink" title="parent.childNodes"></a>parent.childNodes</h2><p>获取子节点数组，坑同上。</p>
+<h2 id="near-previousSibling"><a href="#near-previousSibling" class="headerlink" title="near.previousSibling"></a>near.previousSibling</h2><p>获取同辈的前一个元素，坑同上。near 代表同辈元素。</p>
+<h2 id="near-nextSibling"><a href="#near-nextSibling" class="headerlink" title="near.nextSibling"></a>near.nextSibling</h2><p>获取同辈的下一个元素，坑同上。</p>
+<h2 id="near-parentNode"><a href="#near-parentNode" class="headerlink" title="near.parentNode"></a>near.parentNode</h2><p>获取父元素节点</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+var p = ele.parentNode; // .content
+</code></pre>
+<h2 id="node-nodeName"><a href="#node-nodeName" class="headerlink" title="node.nodeName"></a>node.nodeName</h2><p>获取节点名称</p>
+<h2 id="node-getAttribute"><a href="#node-getAttribute" class="headerlink" title="node.getAttribute()"></a>node.getAttribute()</h2><p>获取节点指定属性值。</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+ele.getAttribute(&#39;id&#39;);
+</code></pre>
+<h2 id="node-setAttribute"><a href="#node-setAttribute" class="headerlink" title="node.setAttribute()"></a>node.setAttribute()</h2><p>设置节点指定属性值</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+ele.serAttribute(&#39;class&#39;, &#39;show&#39;);
+</code></pre>
+<h2 id="document-createElement"><a href="#document-createElement" class="headerlink" title="document.createElement()"></a>document.createElement()</h2><p>创建元素</p>
+<h2 id="parent-appendChild"><a href="#parent-appendChild" class="headerlink" title="parent.appendChild()"></a>parent.appendChild()</h2><p>插入元素到父元素的末尾</p>
+<pre><code>var p = document.createElement(&#39;p&#39;);
+var ele = document.getElementById(&#39;main&#39;);
+ele.appenChild(p);
+</code></pre>
+<h1 id="HTML5新增"><a href="#HTML5新增" class="headerlink" title="HTML5新增"></a>HTML5新增</h1><h2 id="parent-getElementsByClassName"><a href="#parent-getElementsByClassName" class="headerlink" title="parent.getElementsByClassName()"></a>parent.getElementsByClassName()</h2><p>通过class属性获得dom对象，返回一个数组。parent作为查找根节点。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);
+var arr = document.getElementsByClassName(&#39;red&#39;);
+var arr = ele.getElementsByClassName(&#39;left red&#39;);
+</code></pre>
+<h2 id="parent-firstElementChild"><a href="#parent-firstElementChild" class="headerlink" title="parent.firstElementChild"></a>parent.firstElementChild</h2><p>获取父节点的第一个子节点。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);
+var first = ele.firstElementChild;  // .left
+</code></pre>
+<h2 id="parent-lastElementChild"><a href="#parent-lastElementChild" class="headerlink" title="parent.lastElementChild"></a>parent.lastElementChild</h2><p>获取父节点的最后一个子节点。</p>
+<pre><code>var ele = document.getElementById(&#39;content&#39;);
+var last = ele.lastElementChild;  // .right
+</code></pre>
+<h2 id="near-previousElementSibling"><a href="#near-previousElementSibling" class="headerlink" title="near.previousElementSibling"></a>near.previousElementSibling</h2><p>获取同辈的前一个元素。</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+var prev = ele.previousElementSibling; // .left
+</code></pre>
+<h2 id="near-nextElementSibling"><a href="#near-nextElementSibling" class="headerlink" title="near.nextElementSibling"></a>near.nextElementSibling</h2><p>获取同辈的后一个元素。</p>
+<pre><code>var ele = document.getElementById(&#39;main&#39;);
+var next = ele.nextElementSibling;  // .right
+</code></pre>
+<h2 id="document-querySelector"><a href="#document-querySelector" class="headerlink" title="document.querySelector()"></a>document.querySelector()</h2><p>css方式选择器,只选择匹配到的第一个。</p>
+<p>var main = document.querySelector(‘#content #main’);</p>
+<h2 id="document-querySelectorAll"><a href="#document-querySelectorAll" class="headerlink" title="document.querySelectorAll()"></a>document.querySelectorAll()</h2><p>css方式选择器,返回一个数组。</p>
+<p>var main = document.querySelectorAll(‘#content div);</p>
+<p>function getElementsByClassName(node, classname){<br>    if(node.getElementsByClassName){<br>        //使用现有方法<br>        return node.getElementsByClassName(classname);<br>    }else{<br>        var results = new Array();<br>        var elems = node.getElementsByTagName(“*”);<br>        for(var i=0; i&lt;elems.length; i++){<br>            if(elems[i].className.indexOf(classname) != -1){<br>                results[results.length] = elems[i];<br>            }<br>        }<br>        return results;<br>    }<br>}</p>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+        <tag>DOM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>爱上Javascript数组Array（一）——基础介绍</title>
+    <url>/20160311/array1/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>Javascript，一门神奇的语言，它的数组也同样独特。我们要去其糟粕，取其精华，把常用的最优实践总结出来。如有错误，请指出。</p>
+<p>javascript数组是一种类数组的对象，拥有对象的特性。当属性名是小而连续的整数时，应该使用数组，否则，使用对象。</p>
+<h2 id="数组来源"><a href="#数组来源" class="headerlink" title="数组来源"></a>数组来源</h2><p>所有的数组都是Array构造出来的，我们来测试一下constructor这个属性。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [];</span><br><span class="line">arr.constructor === <span class="built_in">Array</span>; <span class="comment">// true</span></span><br><span class="line">arr.constructor === <span class="built_in">Array</span>.prototype.constructor; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="创建数组"><a href="#创建数组" class="headerlink" title="创建数组"></a>创建数组</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//数组字面量方式</span></span><br><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]; <span class="comment">// [1,2,3]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//构造函数方式</span></span><br><span class="line"><span class="keyword">var</span> arr2 = <span class="keyword">new</span> <span class="built_in">Array</span>();        <span class="comment">// [] 空数组</span></span><br><span class="line"><span class="keyword">var</span> arr3 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="string">&#x27;9&#x27;</span>);     <span class="comment">// [&quot;9&quot;] 一个字符串元素</span></span><br><span class="line"><span class="keyword">var</span> arr4 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">9</span>);       <span class="comment">// [] 数组长度length为9</span></span><br><span class="line"><span class="keyword">var</span> arr5 = <span class="keyword">new</span> <span class="built_in">Array</span>([<span class="number">9</span>]);     <span class="comment">// [[9]] 相当于二维数组</span></span><br><span class="line"><span class="keyword">var</span> arr6 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>); <span class="comment">// [1, 2, 3]</span></span><br><span class="line"><span class="keyword">var</span> arr7 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">1</span>, <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>)</span>&#123;&#125;, &#123;<span class="attr">o</span> : <span class="number">6</span>&#125;, <span class="literal">null</span>,<span class="literal">undefined</span>,<span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 数组可以存储任意混合数据类型</span></span><br></pre></td></tr></table></figure>
+
+<p>由于arr4的方式，当只有一个数字参数传递到Array的构造函数中，构造函数会返回设置了length属性的空数组。所以<code>推荐使用数组字面量方式</code>，短小而简洁。</p>
+<span id="more"></span>
+
+<h2 id="检测对象是否为数组"><a href="#检测对象是否为数组" class="headerlink" title="检测对象是否为数组"></a>检测对象是否为数组</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">typeof</span>(arr1); <span class="comment">// object</span></span><br></pre></td></tr></table></figure>
+
+<p>众所周知，typeof不能正确检测类型。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1 <span class="keyword">instanceof</span> <span class="built_in">Array</span>; <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<p>instanceof 方式在一个网页内是没有问题，一旦嵌套其他网页，便存在两个全局作用域，互相调用时的检测就会出问题。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Array</span>.isArray(arr1); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>Array.isArray() 是ECMAScript5 新增的方法，没有缺陷。唯一的问题是ie8浏览器不支持，ie9浏览器在严格模式下也不支持。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Object</span>.prototype.toString.apply(arr1).slice(<span class="number">8</span>, -<span class="number">1</span>); <span class="comment">// Array</span></span><br></pre></td></tr></table></figure>
+
+<p>最后一种方式是检测类型的最好方法。</p>
+<h2 id="数组长度"><a href="#数组长度" class="headerlink" title="数组长度"></a>数组长度</h2><p>数组的length也是它的属性，增大length也不会发生越界错误。<br>length值等于数组最大的整数属性名加1。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [];</span><br><span class="line">arr1[<span class="number">9</span>] = <span class="number">1</span>; <span class="comment">// 长度为10，只包含一个元素的数组</span></span><br></pre></td></tr></table></figure>
+
+<p>设小值将将会把属性名大于等于length的属性删除。<br>如果将length值设为0，相当于清空数组。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr2.length = <span class="number">3</span>; <span class="comment">// [1, 2, 3]</span></span><br><span class="line">arr2.length = <span class="number">0</span>; <span class="comment">// []</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="数组遍历"><a href="#数组遍历" class="headerlink" title="数组遍历"></a>数组遍历</h2><p>遍历数组不要使用for in循环遍历数组，因为for in会遍历原型链上的所有属性，但我们并不需要这么多。推荐使用for循环的方式。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr1.test = <span class="number">9</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//for in 方式</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> prop <span class="keyword">in</span> arr1)&#123;</span><br><span class="line">    cosole.log(prop, arr1[prop]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出如下</span></span><br><span class="line"><span class="comment">// 0 1</span></span><br><span class="line"><span class="comment">// 1 2</span></span><br><span class="line"><span class="comment">// 2 3</span></span><br><span class="line"><span class="comment">// test 9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//for循环方式</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>, len = arr1.length; i &lt; len; i++)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(arr1[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出如下</span></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<p>我们看到for in方式多出了一个test值，可以使用<code>hasOwnProperty</code>函数排除，但那会比for循环的方式慢很多。<br>缓存数组长度很有必要的一步，每次访问是有性能开销的（最新的浏览器在这方面做了优化）。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>简单介绍了Array的相关基础知识，到这里也算是能对Array有更全面的理解了。下一篇介绍Array的方法。</p>
+<p>Javascript虽然有很多不太容易弄懂的地方，随着长时间的学习，我已经慢慢地爱上它了。</p>
+<p>下一篇<a href="/20160313/array2/">《爱上Javascript数组Array（二）——方法解读》</a>，这一篇详细介绍Array的所有方法。</p>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+        <tag>数组</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>爱上Javascript数组Array（二）——方法解读</title>
+    <url>/20160313/array2/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>接上一篇<a href="/20160311/array1/">《爱上Javascript数组Array（一）——基础介绍》</a>，这一篇详细介绍Array的所有方法。</p>
+<p>所有数组的方法都定义在Array.prototype上,而Array.prototype本身也是一个数组。</p>
+<h2 id="array-concat"><a href="#array-concat" class="headerlink" title="array.concat()"></a>array.concat()</h2><p>浅复制一份当前数组，并把接收到的参数附加到新数组的末尾。原数组不改变。</p>
+<p>语法</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.concat(value1, value2, ..., valueN)</span><br></pre></td></tr></table></figure>
+
+<p>参数为需要合并的数组或非数组值</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">animal</span> : <span class="string">&#x27;monkey&#x27;</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> arr2 = arr1.concat([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], obj, [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]);</span><br><span class="line"><span class="comment">// arr1 [1, 2, 3]</span></span><br><span class="line"><span class="comment">// arr2 [1, 2, 3, 4, 5, 6, &#123;animal : &#x27;monkey&#x27;&#125;, 7, 8, 9]</span></span><br><span class="line"></span><br><span class="line">obj.animal = <span class="string">&#x27;tiger&#x27;</span>;</span><br><span class="line"><span class="comment">// [1, 2, 3, 4, 5, 6, &#123;animal : &#x27;tiger&#x27;&#125;, 7, 8, 9]</span></span><br></pre></td></tr></table></figure>
+
+<p>可以合并数组或非数组值，但是要注意如果包含对象，对象还是引用原来的对象。</p>
+<span id="more"></span>
+
+<h2 id="array-join"><a href="#array-join" class="headerlink" title="array.join()"></a>array.join()</h2><p>返回一个将数组所有元素用分隔符拼接成的字符串，默认分隔符为逗号。</p>
+<p>语法</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.join(seperator)</span><br></pre></td></tr></table></figure>
+
+<p>参数为分割符</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> str = arr1.join(); <span class="comment">// 1,2,3</span></span><br><span class="line">str = arr1.join(<span class="string">&#x27;#&#x27;</span>); <span class="comment">// 1#2#3</span></span><br></pre></td></tr></table></figure>
+
+<p>当将大量字符串片段组装时，join方法比+元素运算符要快。</p>
+<p>利用new Array(3)将生成一个长度为三的空数组，同时结合join()方法，可以实现重复某段字符串。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">3</span>).join(<span class="string">&#x27;-+&#x27;</span>); <span class="comment">// -+-+</span></span><br></pre></td></tr></table></figure>
+
+<p>重复的次数就是数组长度减一，因为字符串是分隔符。</p>
+<p>由于数组本身是对象，拥有toString()方法，利用它也能实现将数组拼接成一个字符串，只不过分隔符只能是逗号了。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr1.toString(); <span class="comment">// 1,2,3</span></span><br></pre></td></tr></table></figure>
+
+<p>实际上它会先调用每一个元素的toString()方法。</p>
+<h2 id="array-push"><a href="#array-push" class="headerlink" title="array.push()"></a>array.push()</h2><p>把一个或多个参数附加在数组末尾，返回数组长度。改变数组自身。</p>
+<p>语法</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.push(value1, value2, ..., valueN);</span><br></pre></td></tr></table></figure>
+
+<p>实例</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> len = arr1.push(<span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(len); <span class="comment">// 5</span></span><br><span class="line"><span class="built_in">console</span>.log(arr1); <span class="comment">// [1, 2, 3, 4, 5]</span></span><br></pre></td></tr></table></figure>
+
+<p>另一种方法也可以实现在数组末尾插入值。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1[arr1.length] = <span class="number">6</span>; <span class="comment">// [1, 2, 3, 4, 5, 6]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-pop"><a href="#array-pop" class="headerlink" title="array.pop()"></a>array.pop()</h2><p>将数组最后一项删除，并返回删除项。改变数组自身。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr.pop(); <span class="comment">// [1, 2] 返回 3</span></span><br></pre></td></tr></table></figure>
+
+<p>如果数组为空，返回undefined。</p>
+<h2 id="array-unshift"><a href="#array-unshift" class="headerlink" title="array.unshift()"></a>array.unshift()</h2><p>把一个或多个参数插入到数组头部，返回数组长度。改变数组自身。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> len = arr1.unshift(<span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(len); <span class="comment">// 5</span></span><br><span class="line"><span class="built_in">console</span>.log(arr1); <span class="comment">// [4, 5, 1, 2, 3]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-shift"><a href="#array-shift" class="headerlink" title="array.shift()"></a>array.shift()</h2><p>将数组的第一项删除，并返回删除项。改变数组自身。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr.shift(); <span class="comment">// [2, 3] 返回 1</span></span><br></pre></td></tr></table></figure>
+
+<p>如果数组为空，返回undefined。</p>
+<h2 id="array-sort"><a href="#array-sort" class="headerlink" title="array.sort()"></a>array.sort()</h2><p>这个方法按照每个元素的toString()方法返回的值进行排序，所以一般得不到期望的结果。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">14</span>, <span class="number">24</span>];</span><br><span class="line">arr1.sort(); <span class="comment">// [1, 14, 2, 24, 3]</span></span><br></pre></td></tr></table></figure>
+
+<p>但是sort()方法可以接收一个我们自定义的函数进行比较。比较函数接受两个参数，尤其sort()默认是升序，所以如果想让第一个参数位于第二个参数前面就要返回负数，相等返回0，位于后面返回正数。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> compare = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a - b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr2 = [<span class="number">1</span>, <span class="number">12</span>, <span class="number">2</span>, <span class="number">23</span>, <span class="number">3</span> , <span class="number">5</span>, <span class="number">4</span>];</span><br><span class="line">arr2.sort(compare); <span class="comment">// [1, 2, 3, 4, 5, 12, 23]</span></span><br></pre></td></tr></table></figure>
+
+<p>比较字符串可以结合string.localeCompare()方法来用。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr3 = [<span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;E&#x27;</span>];</span><br><span class="line">arr3.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.localeCompare(b);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [&#x27;e&#x27;, &#x27;E&#x27;, &#x27;f&#x27;, &#x27;F&#x27;]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-reverse"><a href="#array-reverse" class="headerlink" title="array.reverse()"></a>array.reverse()</h2><p>反转数组元素顺序，返回数组自身。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>];</span><br><span class="line">arr1.reverse(); <span class="comment">// [2, 3, 4, 1]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-slice"><a href="#array-slice" class="headerlink" title="array.slice()"></a>array.slice()</h2><p>对数组浅复制其中的一段，不改变数组自身。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.slice(start, end);</span><br></pre></td></tr></table></figure>
+
+<p>方法接受两个参数，最后一个可以省略，默认是数组自身长度。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line"></span><br><span class="line">arr1.slice(<span class="number">4</span>); <span class="comment">// [5, 6]</span></span><br><span class="line">arr1.slice(<span class="number">2</span>, <span class="number">4</span>); <span class="comment">// [3, 4]</span></span><br><span class="line">arr1.slice(-<span class="number">3</span>); <span class="comment">// [4, 5, 6]</span></span><br></pre></td></tr></table></figure>
+
+<p>如果传入负数，那么会被自动加上数组的长度，试图变成非负数。<br>传入一个绝对值小于数组长度的值，就是从后向前取负数绝对值个数的元素。例如例子中取了后三个元素。</p>
+<p>另一个用法就是将函数参数arguments转换为一个正常的数组。数组太大，性能不太好，权衡一下再使用。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="array-splice"><a href="#array-splice" class="headerlink" title="array.splice()"></a>array.splice()</h2><p>这是数组中最强大也最常用对的方法了，可以实现删除，插入，替换。</p>
+<p>语法</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.slice(start, count, item);</span><br></pre></td></tr></table></figure>
+
+<p>该方法移除一个或多个元素，并用新的元素替代他们。start是开始的位置，count是删除的数量，item是新增加的元素（item不止一个，也可省略)，以数组形式返回删除的元素。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="comment">//删除</span></span><br><span class="line">arr1.splice(<span class="number">2</span>, <span class="number">1</span>); <span class="comment">// [1, 2, 4, 5]  返回 [3]</span></span><br><span class="line"><span class="comment">//插入</span></span><br><span class="line">arr1.splice(<span class="number">3</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">7</span>); <span class="comment">// [1, 2, 4, 6, 7, 5]</span></span><br><span class="line"><span class="comment">//替换</span></span><br><span class="line">arr1.splice(<span class="number">1</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">9</span>); <span class="comment">// [1, 8, 9, 6, 7, 5]  返回[2, 4]</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>下面介绍一些ECMAScript5新增的方法，主要是ie8不支持。</strong></p>
+<h2 id="indexOf-与-lastIndexOf"><a href="#indexOf-与-lastIndexOf" class="headerlink" title="indexOf() 与 lastIndexOf()"></a>indexOf() 与 lastIndexOf()</h2><p>查找对应项在数组中的索引位置，第二个参数表示对应查找方向的起始位置，返回第一个匹配的位置，如果没有找到则返回-1;<br>indexOf()是从前往后查找，lastIndexOf()是从后往前查找。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>];</span><br><span class="line">arr1.indexOf(<span class="number">2</span>); <span class="comment">// 1</span></span><br><span class="line">arr1.indexOf(<span class="number">2</span>, <span class="number">3</span>); <span class="comment">// 5</span></span><br><span class="line"></span><br><span class="line">arr1.lastIndexOf(<span class="number">3</span>); <span class="comment">// 4</span></span><br><span class="line">arr1.lastIndexOf(<span class="number">3</span>, <span class="number">4</span>) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="迭代方法"><a href="#迭代方法" class="headerlink" title="迭代方法"></a>迭代方法</h1><p>以下方法接受两个参数，第一个是每一项运行的函数，第二个函数运行的作用域。<br>运行函数有三个参数，分别是当前项，位置，数组本身。</p>
+<h2 id="array-every"><a href="#array-every" class="headerlink" title="array.every()"></a>array.every()</h2><p>运行给定函数，如果迭代每一项都返回true,则最终返回true。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr1.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item &gt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-some"><a href="#array-some" class="headerlink" title="array.some()"></a>array.some()</h2><p>运行给定函数，如果迭代中有一项返回true,则最终返回true。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item &gt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-map"><a href="#array-map" class="headerlink" title="array.map()"></a>array.map()</h2><p>运行给定函数，将迭代中返回的值组成数组，返回该数组。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item * <span class="number">2</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [2, 4, 6, 8, 10]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-filter"><a href="#array-filter" class="headerlink" title="array.filter()"></a>array.filter()</h2><p>运行给定函数，将迭代中返回true的元素以数组形式返回</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item &gt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [4, 5]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="array-forEach"><a href="#array-forEach" class="headerlink" title="array.forEach()"></a>array.forEach()</h2><p>运行给定函数，不返回任何值。类似于普通的for循环的功能。</p>
+<h1 id="归并方法"><a href="#归并方法" class="headerlink" title="归并方法"></a>归并方法</h1><p>函数接受两个参数，第一个参数是每一个运行的自定义函数，第二项是作为归并基础的初始值。<br>自定义函数接受四个参数，分别是前一项，当前项，位置，数组。</p>
+<h2 id="array-reduce-与-array-reduceRight"><a href="#array-reduce-与-array-reduceRight" class="headerlink" title="array.reduce() 与 array.reduceRight()"></a>array.reduce() 与 array.reduceRight()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> splitstr = <span class="function"><span class="keyword">function</span>(<span class="params">prev, item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> prev + <span class="string">&#x27;#&#x27;</span> + item;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr1.reduce(splitstr, <span class="number">8</span>); <span class="comment">// 8#1#2#3#4#5</span></span><br><span class="line">arr1.reduceRight(splitstr, <span class="number">8</span>); <span class="comment">// 8#5#4#3#2#1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这一篇介绍了数组方法的种种细节和注意问题，下一篇将会介绍数组更高级的用法。</p>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+        <tag>数组</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mac前端开发工具集</title>
+    <url>/20180527/front_tools/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>最近因工作原因，需要重新配置开发环境。尝试过很多的开发工具，有些是尝鲜的，有些一直用下来了，只有时间和实际场景能让你知道，会不会长久地使用这个工具。我依然还会去尝试很多新工具，这次推荐前端的长期使用软件集合。</p>
+<h1 id="不分工种的工具"><a href="#不分工种的工具" class="headerlink" title="不分工种的工具"></a>不分工种的工具</h1><h2 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h2><p>mac上的快速安装软件，软件包管理器。免去先下载、再安装的繁琐，安装只需要一行命令。</p>
+<h2 id="iTerm2"><a href="#iTerm2" class="headerlink" title="iTerm2"></a>iTerm2</h2><p>我最喜欢的命令行工具，好处体现在细节，用过才知道。再配合<code>oh my zsh</code>就更爽了。</p>
+<span id="more"></span>
+
+<h2 id="SpaceLauncher"><a href="#SpaceLauncher" class="headerlink" title="SpaceLauncher"></a>SpaceLauncher</h2><p>全局快捷键定义，因为使用了空格键，跟其他软件快捷键无冲突，快速在各个工具间切换，那个感觉怎个爽啊。</p>
+<h2 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h2><p>几款实用插件</p>
+<ul>
+<li><code>postman</code> 接口api调试工具，可配各种方式，登录账户还能保存记录。</li>
+<li><code>OneTab</code> 保存当前的所有标签页，避免了开一堆标签页的眼花缭乱，也避免卡顿。</li>
+<li><code>User-Agent Switcher</code> 修改UA，在调试特定场景下，很管用。</li>
+<li><code>vue</code>和<code>react</code> 框架调试工具</li>
+<li><code>有道笔记</code> 和 <code>印象剪藏</code> 网页快速保存到笔记工具，很多网址会失效，存下来才是王道。</li>
+</ul>
+<h2 id="SourceTree"><a href="#SourceTree" class="headerlink" title="SourceTree"></a>SourceTree</h2><p>几乎人人在用的git可视化客户端工具，建议配置工作目录，也自定义下常用按钮，个人感觉<code>刷新</code>按钮很常用。</p>
+<h2 id="有道词典"><a href="#有道词典" class="headerlink" title="有道词典"></a>有道词典</h2><p>用过好几款词典，换来换去还是有道好用，翻译得精准，也没有广告。主要是查询一些变量命名和翻译大段文档。<br>在这里推荐一个好用的变量命名网站<a href="https://unbug.github.io/codelf/">CODELF</a></p>
+<h2 id="坚果云"><a href="#坚果云" class="headerlink" title="坚果云"></a>坚果云</h2><p>国内好用的云存储同步工具，自身已经盈利，不用担心关闭的问题。但免费的上传流量有限，不适合大文件。日常零碎的文件很适合。</p>
+<h2 id="Beyond-Compare"><a href="#Beyond-Compare" class="headerlink" title="Beyond Compare"></a>Beyond Compare</h2><p>文件比对工具，可能80%的情况下用不到它，一旦用得上是很感激的，肉眼对比是真的累。</p>
+<h1 id="网络工具"><a href="#网络工具" class="headerlink" title="网络工具"></a>网络工具</h1><h2 id="Lantern"><a href="#Lantern" class="headerlink" title="Lantern"></a>Lantern</h2><p>科学工具，解决广大程序猿的上网烦恼。建议买两年划算。</p>
+<h2 id="ShadowSocks"><a href="#ShadowSocks" class="headerlink" title="ShadowSocks"></a>ShadowSocks</h2><p>第二个科学工具，但得自己购买服务。</p>
+<h2 id="Charles"><a href="#Charles" class="headerlink" title="Charles"></a>Charles</h2><p>抓包工具，何人不抓包呢，现在可是移动端的天下。附带<a href="https://www.zzzmode.com/mytools/charles/">破解地址</a></p>
+<h2 id="Weinre"><a href="#Weinre" class="headerlink" title="Weinre"></a>Weinre</h2><p>线上调试工具，这个能解决抓包工具做不到的线上调试。这个<a href="https://blog.csdn.net/hzaini89/article/details/51745832">教程</a>很不错。</p>
+<h1 id="IDE编辑器"><a href="#IDE编辑器" class="headerlink" title="IDE编辑器"></a>IDE编辑器</h1><p>以下这三款可同时安装，atom较轻量，打开速度快、免费。</p>
+<ul>
+<li>WebStorm</li>
+<li>VSCode</li>
+<li>Atom</li>
+</ul>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
+<li>微信开发者工具</li>
+<li><a href="http://wit-web.azurewebsites.net/en/assistor/download">Assistor PS</a> ps切图插件</li>
+<li><code>nvm</code> node版本管理工具</li>
+<li>有道云笔记</li>
+<li>印象笔记</li>
+<li>kindle读书软件</li>
+<li><code>draw.io</code> 流程图工具</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>macOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>代理本地服务到公网-natapp内网穿透工具</title>
+    <url>/20181213/natapp/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>开发一些服务时，想把本地服务映射到公网可访问状态，方便开发调试。</p>
+<p>适合调试微信小程序，混合型app客户端等</p>
+<p><em>本工具免费稳定，也有高级付费版</em></p>
+<span id="more"></span>
+
+<h2 id="注册下载"><a href="#注册下载" class="headerlink" title="注册下载"></a>注册下载</h2><ol>
+<li>打开<a href="https://natapp.cn/">https://natapp.cn</a></li>
+<li>购买免费型</li>
+<li>下载客户端</li>
+<li>修改客户端权限</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd 下载目录</span><br><span class="line">chmod a+x natapp</span><br></pre></td></tr></table></figure>
+
+<p><img src="//blogcdn.affecthing.com/natapp1.png" alt="natapp1"></p>
+<h2 id="普通使用"><a href="#普通使用" class="headerlink" title="普通使用"></a>普通使用</h2><ol>
+<li>配置本地地址 127.0.0.1</li>
+<li>配置本地端口 8080</li>
+<li>复制authtoken</li>
+<li>运行客户端</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">// 运行客户端，出现online代表已通</span><br><span class="line">./natapp -authtoken=复制的authtoken</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>额外配置</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 如果使用了webpack，增加配置</span></span><br><span class="line"><span class="attr">devServer</span>: &#123;</span><br><span class="line">    <span class="attr">disableHostCheck</span>: <span class="literal">true</span> <span class="comment">// 绕过主机检查</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="//blogcdn.affecthing.com/natapp2.png" alt="natapp2"></p>
+<h2 id="高级使用-固定域名"><a href="#高级使用-固定域名" class="headerlink" title="高级使用-固定域名"></a>高级使用-固定域名</h2><ul>
+<li>购买付费服务，多种可选</li>
+<li>域名服务下增加一条CNAME解析</li>
+<li>将已备案域名绑定到natapp</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>内网穿透</tag>
+        <tag>远程调试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我用HTML写简历</title>
+    <url>/20180923/resume/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>每次换工作写简历都是有点痛苦的事情，尤其是下载word模板，各种注册流程，有的还得买积分，冲会员，甚是不爽。就算下载好了，修改其中的一些细节也不太熟悉各种功能，由于长期不用word，早把很多设置功能抛之脑后。</p>
+<p>忽然有一天灵感涌上，这种简易的模板样式，对于一个前端工程师来说，写个页面分分钟的事，只要能把html转成pdf格式这事就成了。</p>
+<span id="more"></span>
+
+<h2 id="Puppeteer"><a href="#Puppeteer" class="headerlink" title="Puppeteer"></a>Puppeteer</h2><p>Puppeteer是谷歌出的一个headless自动化工具。</p>
+<ul>
+<li>利用网页生成PDF、图片</li>
+<li>抓取网站内容</li>
+<li>自动化表单提交、UI测试、键盘输入等</li>
+<li>创建一个最新的自动化测试环境</li>
+</ul>
+<p>用来把html转换pdf，虽然是有点大材小用，但是很适合，渲染效果也是足够放心的。</p>
+<h3 id="install"><a href="#install" class="headerlink" title="install"></a>install</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> &gt; Node v6.4.0</span></span><br><span class="line">npm i puppeteer --save</span><br></pre></td></tr></table></figure>
+
+<p>但是安装这里有坑位，还好前人踩过坑了，失败的人点<a href="https://juejin.im/post/5b99c9ece51d450e51625630">这里</a>，笔者也是下载失败了~~~</p>
+<h2 id="index-html"><a href="#index-html" class="headerlink" title="index.html"></a>index.html</h2><p>具体怎么写得养眼，就是自己的事情了，这里提供一个简单的模板。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>我的简历<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1.0, maximum-scale=1.0, user-scalable=0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">    主要内容</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="gulpfile-js"><a href="#gulpfile-js" class="headerlink" title="gulpfile.js"></a>gulpfile.js</h2><p>既然想要写得爽，怎么也得来个热更新吧，搞个简单的自动化工具。<br>Puppeteer只能访问http地址，所以还需要静态资源服务</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm i --save browser-sync gulp gulp-notify</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>browser-sync 提供静态服务器和热更新</li>
+<li>gulp 自动化工具</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> notify = <span class="built_in">require</span>(<span class="string">&#x27;gulp-notify&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> browserSync = <span class="built_in">require</span>(<span class="string">&#x27;browser-sync&#x27;</span>).create()</span><br><span class="line"><span class="keyword">const</span> reload = browserSync.reload</span><br><span class="line"></span><br><span class="line"><span class="comment">// 热更新</span></span><br><span class="line">gulp.task(<span class="string">&#x27;styles&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">&#x27;src/*.css&#x27;</span>)</span><br><span class="line">        .pipe(reload(&#123;<span class="attr">stream</span>: <span class="literal">true</span>&#125;))</span><br><span class="line">        .pipe(notify(&#123;<span class="attr">message</span>: <span class="string">&#x27;Styles complete&#x27;</span>&#125;))</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态资源服务</span></span><br><span class="line">gulp.task(<span class="string">&#x27;serve&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>], <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    browserSync.init(&#123;</span><br><span class="line">        <span class="attr">server</span>: &#123;</span><br><span class="line">            <span class="attr">baseDir</span>: <span class="string">&quot;./src&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">port</span>: <span class="number">7000</span>,</span><br><span class="line">        <span class="comment">// 关闭右上角通知</span></span><br><span class="line">        <span class="attr">notify</span>: <span class="literal">false</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.css&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>])</span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.html&#x27;</span>, reload)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="build-js"><a href="#build-js" class="headerlink" title="build.js"></a>build.js</h2><p>只差转换生成了，这里用到了await语法，否则层级太深。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">&#x27;puppeteer&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch()</span><br><span class="line">    <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage()</span><br><span class="line">    <span class="keyword">await</span> page.goto(<span class="string">&#x27;http://localhost:7000&#x27;</span>)</span><br><span class="line">    <span class="keyword">await</span> page.pdf(&#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&#x27;resume.pdf&#x27;</span>,</span><br><span class="line">        <span class="attr">format</span>: <span class="string">&#x27;A4&#x27;</span>,</span><br><span class="line">        <span class="comment">// 打印背景色</span></span><br><span class="line">        <span class="attr">printBackground</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> browser.close()</span><br><span class="line">    <span class="built_in">console</span>.info(<span class="string">&#x27;build done&#x27;</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后写简历的事情，也被我们工程化了，想想也是省心省力。可以发挥我们的想象，加入各种好玩的东西，再也没人有跟我一样的简历样式了。</p>
+<p>这里写了一个简单的项目，仅供参考<a href="https://github.com/hanmingpan/better-resume">demo地址</a></p>
+]]></content>
+      <tags>
+        <tag>puppeteer</tag>
+        <tag>简历</tag>
       </tags>
   </entry>
   <entry>
@@ -416,376 +786,6 @@ var str4 = JSON.stringify(obj, null, 4);
       </tags>
   </entry>
   <entry>
-    <title>爱上Javascript数组Array（一）——基础介绍</title>
-    <url>/20160311/array1/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<p>Javascript，一门神奇的语言，它的数组也同样独特。我们要去其糟粕，取其精华，把常用的最优实践总结出来。如有错误，请指出。</p>
-<p>javascript数组是一种类数组的对象，拥有对象的特性。当属性名是小而连续的整数时，应该使用数组，否则，使用对象。</p>
-<h2 id="数组来源"><a href="#数组来源" class="headerlink" title="数组来源"></a>数组来源</h2><p>所有的数组都是Array构造出来的，我们来测试一下constructor这个属性。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [];</span><br><span class="line">arr.constructor === <span class="built_in">Array</span>; <span class="comment">// true</span></span><br><span class="line">arr.constructor === <span class="built_in">Array</span>.prototype.constructor; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="创建数组"><a href="#创建数组" class="headerlink" title="创建数组"></a>创建数组</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//数组字面量方式</span></span><br><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]; <span class="comment">// [1,2,3]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//构造函数方式</span></span><br><span class="line"><span class="keyword">var</span> arr2 = <span class="keyword">new</span> <span class="built_in">Array</span>();        <span class="comment">// [] 空数组</span></span><br><span class="line"><span class="keyword">var</span> arr3 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="string">&#x27;9&#x27;</span>);     <span class="comment">// [&quot;9&quot;] 一个字符串元素</span></span><br><span class="line"><span class="keyword">var</span> arr4 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">9</span>);       <span class="comment">// [] 数组长度length为9</span></span><br><span class="line"><span class="keyword">var</span> arr5 = <span class="keyword">new</span> <span class="built_in">Array</span>([<span class="number">9</span>]);     <span class="comment">// [[9]] 相当于二维数组</span></span><br><span class="line"><span class="keyword">var</span> arr6 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>); <span class="comment">// [1, 2, 3]</span></span><br><span class="line"><span class="keyword">var</span> arr7 = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">1</span>, <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>)</span>&#123;&#125;, &#123;<span class="attr">o</span> : <span class="number">6</span>&#125;, <span class="literal">null</span>,<span class="literal">undefined</span>,<span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 数组可以存储任意混合数据类型</span></span><br></pre></td></tr></table></figure>
-
-<p>由于arr4的方式，当只有一个数字参数传递到Array的构造函数中，构造函数会返回设置了length属性的空数组。所以<code>推荐使用数组字面量方式</code>，短小而简洁。</p>
-<span id="more"></span>
-
-<h2 id="检测对象是否为数组"><a href="#检测对象是否为数组" class="headerlink" title="检测对象是否为数组"></a>检测对象是否为数组</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">typeof</span>(arr1); <span class="comment">// object</span></span><br></pre></td></tr></table></figure>
-
-<p>众所周知，typeof不能正确检测类型。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1 <span class="keyword">instanceof</span> <span class="built_in">Array</span>; <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
-
-<p>instanceof 方式在一个网页内是没有问题，一旦嵌套其他网页，便存在两个全局作用域，互相调用时的检测就会出问题。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Array</span>.isArray(arr1); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<p>Array.isArray() 是ECMAScript5 新增的方法，没有缺陷。唯一的问题是ie8浏览器不支持，ie9浏览器在严格模式下也不支持。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Object</span>.prototype.toString.apply(arr1).slice(<span class="number">8</span>, -<span class="number">1</span>); <span class="comment">// Array</span></span><br></pre></td></tr></table></figure>
-
-<p>最后一种方式是检测类型的最好方法。</p>
-<h2 id="数组长度"><a href="#数组长度" class="headerlink" title="数组长度"></a>数组长度</h2><p>数组的length也是它的属性，增大length也不会发生越界错误。<br>length值等于数组最大的整数属性名加1。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [];</span><br><span class="line">arr1[<span class="number">9</span>] = <span class="number">1</span>; <span class="comment">// 长度为10，只包含一个元素的数组</span></span><br></pre></td></tr></table></figure>
-
-<p>设小值将将会把属性名大于等于length的属性删除。<br>如果将length值设为0，相当于清空数组。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr2.length = <span class="number">3</span>; <span class="comment">// [1, 2, 3]</span></span><br><span class="line">arr2.length = <span class="number">0</span>; <span class="comment">// []</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="数组遍历"><a href="#数组遍历" class="headerlink" title="数组遍历"></a>数组遍历</h2><p>遍历数组不要使用for in循环遍历数组，因为for in会遍历原型链上的所有属性，但我们并不需要这么多。推荐使用for循环的方式。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr1.test = <span class="number">9</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//for in 方式</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> prop <span class="keyword">in</span> arr1)&#123;</span><br><span class="line">    cosole.log(prop, arr1[prop]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出如下</span></span><br><span class="line"><span class="comment">// 0 1</span></span><br><span class="line"><span class="comment">// 1 2</span></span><br><span class="line"><span class="comment">// 2 3</span></span><br><span class="line"><span class="comment">// test 9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//for循环方式</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>, len = arr1.length; i &lt; len; i++)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(arr1[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出如下</span></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
-
-<p>我们看到for in方式多出了一个test值，可以使用<code>hasOwnProperty</code>函数排除，但那会比for循环的方式慢很多。<br>缓存数组长度很有必要的一步，每次访问是有性能开销的（最新的浏览器在这方面做了优化）。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>简单介绍了Array的相关基础知识，到这里也算是能对Array有更全面的理解了。下一篇介绍Array的方法。</p>
-<p>Javascript虽然有很多不太容易弄懂的地方，随着长时间的学习，我已经慢慢地爱上它了。</p>
-<p>下一篇<a href="/20160313/array2/">《爱上Javascript数组Array（二）——方法解读》</a>，这一篇详细介绍Array的所有方法。</p>
-]]></content>
-      <tags>
-        <tag>javascript</tag>
-        <tag>数组</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>dom节点处理</title>
-    <url>/20160418/dom/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<p>原生js处理dom节点的各种方法。</p>
-<span id="more"></span>
-
-<h2 id="html结构"><a href="#html结构" class="headerlink" title="html结构"></a>html结构</h2><pre><code>&lt;div id=&quot;content&quot;&gt;
-    &lt;div class=&quot;left&quot;&gt;
-        left
-    &lt;/div&gt;
-    &lt;div id=&quot;main&quot;&gt;
-        main
-    &lt;/div&gt;
-    &lt;div class=&quot;right&quot;&gt;
-        right
-    &lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
-<h2 id="document-getElementById"><a href="#document-getElementById" class="headerlink" title="document.getElementById()"></a>document.getElementById()</h2><p>通过id获取dom对象，参数大写小敏感。</p>
-<pre><code>var ele = document.getElementById(&#39;content&#39;);  // #content
-</code></pre>
-<h2 id="parent-getElementsByName"><a href="#parent-getElementsByName" class="headerlink" title="parent.getElementsByName()"></a>parent.getElementsByName()</h2><p>通过元素的name属性来获取dom对象，返回一个数组。</p>
-<pre><code>var arr = document.getElementByName(&#39;user&#39;);  // [input, input]
-</code></pre>
-<h2 id="parent-getElementByTagNmae"><a href="#parent-getElementByTagNmae" class="headerlink" title="parent.getElementByTagNmae()"></a>parent.getElementByTagNmae()</h2><p>通过节点名称获取dom属性，返回一个数组。(ie8只支持document对象)</p>
-<pre><code>var arr = document.getElementByTagName(&#39;input&#39;);  // [input, input]
-</code></pre>
-<h2 id="parent-firstChild"><a href="#parent-firstChild" class="headerlink" title="parent.firstChild"></a>parent.firstChild</h2><p>获取父节点的第一个子节点，然而这是个坑，如果父节点与子节点元素之间有空格，那么获取到的第一个是个text，<br>实际使用时需要封装方法，加上判断nodeType是否等于1。</p>
-<h2 id="parent-lastChild"><a href="#parent-lastChild" class="headerlink" title="parent.lastChild"></a>parent.lastChild</h2><p>获取父节点的最后一个子节点，坑同上。</p>
-<h2 id="parent-childNodes"><a href="#parent-childNodes" class="headerlink" title="parent.childNodes"></a>parent.childNodes</h2><p>获取子节点数组，坑同上。</p>
-<h2 id="near-previousSibling"><a href="#near-previousSibling" class="headerlink" title="near.previousSibling"></a>near.previousSibling</h2><p>获取同辈的前一个元素，坑同上。near 代表同辈元素。</p>
-<h2 id="near-nextSibling"><a href="#near-nextSibling" class="headerlink" title="near.nextSibling"></a>near.nextSibling</h2><p>获取同辈的下一个元素，坑同上。</p>
-<h2 id="near-parentNode"><a href="#near-parentNode" class="headerlink" title="near.parentNode"></a>near.parentNode</h2><p>获取父元素节点</p>
-<pre><code>var ele = document.getElementById(&#39;main&#39;);
-var p = ele.parentNode; // .content
-</code></pre>
-<h2 id="node-nodeName"><a href="#node-nodeName" class="headerlink" title="node.nodeName"></a>node.nodeName</h2><p>获取节点名称</p>
-<h2 id="node-getAttribute"><a href="#node-getAttribute" class="headerlink" title="node.getAttribute()"></a>node.getAttribute()</h2><p>获取节点指定属性值。</p>
-<pre><code>var ele = document.getElementById(&#39;main&#39;);
-ele.getAttribute(&#39;id&#39;);
-</code></pre>
-<h2 id="node-setAttribute"><a href="#node-setAttribute" class="headerlink" title="node.setAttribute()"></a>node.setAttribute()</h2><p>设置节点指定属性值</p>
-<pre><code>var ele = document.getElementById(&#39;main&#39;);
-ele.serAttribute(&#39;class&#39;, &#39;show&#39;);
-</code></pre>
-<h2 id="document-createElement"><a href="#document-createElement" class="headerlink" title="document.createElement()"></a>document.createElement()</h2><p>创建元素</p>
-<h2 id="parent-appendChild"><a href="#parent-appendChild" class="headerlink" title="parent.appendChild()"></a>parent.appendChild()</h2><p>插入元素到父元素的末尾</p>
-<pre><code>var p = document.createElement(&#39;p&#39;);
-var ele = document.getElementById(&#39;main&#39;);
-ele.appenChild(p);
-</code></pre>
-<h1 id="HTML5新增"><a href="#HTML5新增" class="headerlink" title="HTML5新增"></a>HTML5新增</h1><h2 id="parent-getElementsByClassName"><a href="#parent-getElementsByClassName" class="headerlink" title="parent.getElementsByClassName()"></a>parent.getElementsByClassName()</h2><p>通过class属性获得dom对象，返回一个数组。parent作为查找根节点。</p>
-<pre><code>var ele = document.getElementById(&#39;content&#39;);
-var arr = document.getElementsByClassName(&#39;red&#39;);
-var arr = ele.getElementsByClassName(&#39;left red&#39;);
-</code></pre>
-<h2 id="parent-firstElementChild"><a href="#parent-firstElementChild" class="headerlink" title="parent.firstElementChild"></a>parent.firstElementChild</h2><p>获取父节点的第一个子节点。</p>
-<pre><code>var ele = document.getElementById(&#39;content&#39;);
-var first = ele.firstElementChild;  // .left
-</code></pre>
-<h2 id="parent-lastElementChild"><a href="#parent-lastElementChild" class="headerlink" title="parent.lastElementChild"></a>parent.lastElementChild</h2><p>获取父节点的最后一个子节点。</p>
-<pre><code>var ele = document.getElementById(&#39;content&#39;);
-var last = ele.lastElementChild;  // .right
-</code></pre>
-<h2 id="near-previousElementSibling"><a href="#near-previousElementSibling" class="headerlink" title="near.previousElementSibling"></a>near.previousElementSibling</h2><p>获取同辈的前一个元素。</p>
-<pre><code>var ele = document.getElementById(&#39;main&#39;);
-var prev = ele.previousElementSibling; // .left
-</code></pre>
-<h2 id="near-nextElementSibling"><a href="#near-nextElementSibling" class="headerlink" title="near.nextElementSibling"></a>near.nextElementSibling</h2><p>获取同辈的后一个元素。</p>
-<pre><code>var ele = document.getElementById(&#39;main&#39;);
-var next = ele.nextElementSibling;  // .right
-</code></pre>
-<h2 id="document-querySelector"><a href="#document-querySelector" class="headerlink" title="document.querySelector()"></a>document.querySelector()</h2><p>css方式选择器,只选择匹配到的第一个。</p>
-<p>var main = document.querySelector(‘#content #main’);</p>
-<h2 id="document-querySelectorAll"><a href="#document-querySelectorAll" class="headerlink" title="document.querySelectorAll()"></a>document.querySelectorAll()</h2><p>css方式选择器,返回一个数组。</p>
-<p>var main = document.querySelectorAll(‘#content div);</p>
-<p>function getElementsByClassName(node, classname){<br>    if(node.getElementsByClassName){<br>        //使用现有方法<br>        return node.getElementsByClassName(classname);<br>    }else{<br>        var results = new Array();<br>        var elems = node.getElementsByTagName(“*”);<br>        for(var i=0; i&lt;elems.length; i++){<br>            if(elems[i].className.indexOf(classname) != -1){<br>                results[results.length] = elems[i];<br>            }<br>        }<br>        return results;<br>    }<br>}</p>
-]]></content>
-      <tags>
-        <tag>javascript</tag>
-        <tag>DOM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>爱上Javascript数组Array（二）——方法解读</title>
-    <url>/20160313/array2/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<p>接上一篇<a href="/20160311/array1/">《爱上Javascript数组Array（一）——基础介绍》</a>，这一篇详细介绍Array的所有方法。</p>
-<p>所有数组的方法都定义在Array.prototype上,而Array.prototype本身也是一个数组。</p>
-<h2 id="array-concat"><a href="#array-concat" class="headerlink" title="array.concat()"></a>array.concat()</h2><p>浅复制一份当前数组，并把接收到的参数附加到新数组的末尾。原数组不改变。</p>
-<p>语法</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.concat(value1, value2, ..., valueN)</span><br></pre></td></tr></table></figure>
-
-<p>参数为需要合并的数组或非数组值</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">animal</span> : <span class="string">&#x27;monkey&#x27;</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> arr2 = arr1.concat([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], obj, [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]);</span><br><span class="line"><span class="comment">// arr1 [1, 2, 3]</span></span><br><span class="line"><span class="comment">// arr2 [1, 2, 3, 4, 5, 6, &#123;animal : &#x27;monkey&#x27;&#125;, 7, 8, 9]</span></span><br><span class="line"></span><br><span class="line">obj.animal = <span class="string">&#x27;tiger&#x27;</span>;</span><br><span class="line"><span class="comment">// [1, 2, 3, 4, 5, 6, &#123;animal : &#x27;tiger&#x27;&#125;, 7, 8, 9]</span></span><br></pre></td></tr></table></figure>
-
-<p>可以合并数组或非数组值，但是要注意如果包含对象，对象还是引用原来的对象。</p>
-<span id="more"></span>
-
-<h2 id="array-join"><a href="#array-join" class="headerlink" title="array.join()"></a>array.join()</h2><p>返回一个将数组所有元素用分隔符拼接成的字符串，默认分隔符为逗号。</p>
-<p>语法</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.join(seperator)</span><br></pre></td></tr></table></figure>
-
-<p>参数为分割符</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> str = arr1.join(); <span class="comment">// 1,2,3</span></span><br><span class="line">str = arr1.join(<span class="string">&#x27;#&#x27;</span>); <span class="comment">// 1#2#3</span></span><br></pre></td></tr></table></figure>
-
-<p>当将大量字符串片段组装时，join方法比+元素运算符要快。</p>
-<p>利用new Array(3)将生成一个长度为三的空数组，同时结合join()方法，可以实现重复某段字符串。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">3</span>).join(<span class="string">&#x27;-+&#x27;</span>); <span class="comment">// -+-+</span></span><br></pre></td></tr></table></figure>
-
-<p>重复的次数就是数组长度减一，因为字符串是分隔符。</p>
-<p>由于数组本身是对象，拥有toString()方法，利用它也能实现将数组拼接成一个字符串，只不过分隔符只能是逗号了。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr1.toString(); <span class="comment">// 1,2,3</span></span><br></pre></td></tr></table></figure>
-
-<p>实际上它会先调用每一个元素的toString()方法。</p>
-<h2 id="array-push"><a href="#array-push" class="headerlink" title="array.push()"></a>array.push()</h2><p>把一个或多个参数附加在数组末尾，返回数组长度。改变数组自身。</p>
-<p>语法</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.push(value1, value2, ..., valueN);</span><br></pre></td></tr></table></figure>
-
-<p>实例</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> len = arr1.push(<span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(len); <span class="comment">// 5</span></span><br><span class="line"><span class="built_in">console</span>.log(arr1); <span class="comment">// [1, 2, 3, 4, 5]</span></span><br></pre></td></tr></table></figure>
-
-<p>另一种方法也可以实现在数组末尾插入值。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1[arr1.length] = <span class="number">6</span>; <span class="comment">// [1, 2, 3, 4, 5, 6]</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="array-pop"><a href="#array-pop" class="headerlink" title="array.pop()"></a>array.pop()</h2><p>将数组最后一项删除，并返回删除项。改变数组自身。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr.pop(); <span class="comment">// [1, 2] 返回 3</span></span><br></pre></td></tr></table></figure>
-
-<p>如果数组为空，返回undefined。</p>
-<h2 id="array-unshift"><a href="#array-unshift" class="headerlink" title="array.unshift()"></a>array.unshift()</h2><p>把一个或多个参数插入到数组头部，返回数组长度。改变数组自身。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> len = arr1.unshift(<span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(len); <span class="comment">// 5</span></span><br><span class="line"><span class="built_in">console</span>.log(arr1); <span class="comment">// [4, 5, 1, 2, 3]</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="array-shift"><a href="#array-shift" class="headerlink" title="array.shift()"></a>array.shift()</h2><p>将数组的第一项删除，并返回删除项。改变数组自身。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr.shift(); <span class="comment">// [2, 3] 返回 1</span></span><br></pre></td></tr></table></figure>
-
-<p>如果数组为空，返回undefined。</p>
-<h2 id="array-sort"><a href="#array-sort" class="headerlink" title="array.sort()"></a>array.sort()</h2><p>这个方法按照每个元素的toString()方法返回的值进行排序，所以一般得不到期望的结果。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">14</span>, <span class="number">24</span>];</span><br><span class="line">arr1.sort(); <span class="comment">// [1, 14, 2, 24, 3]</span></span><br></pre></td></tr></table></figure>
-
-<p>但是sort()方法可以接收一个我们自定义的函数进行比较。比较函数接受两个参数，尤其sort()默认是升序，所以如果想让第一个参数位于第二个参数前面就要返回负数，相等返回0，位于后面返回正数。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> compare = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a - b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr2 = [<span class="number">1</span>, <span class="number">12</span>, <span class="number">2</span>, <span class="number">23</span>, <span class="number">3</span> , <span class="number">5</span>, <span class="number">4</span>];</span><br><span class="line">arr2.sort(compare); <span class="comment">// [1, 2, 3, 4, 5, 12, 23]</span></span><br></pre></td></tr></table></figure>
-
-<p>比较字符串可以结合string.localeCompare()方法来用。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr3 = [<span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;E&#x27;</span>];</span><br><span class="line">arr3.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.localeCompare(b);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [&#x27;e&#x27;, &#x27;E&#x27;, &#x27;f&#x27;, &#x27;F&#x27;]</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="array-reverse"><a href="#array-reverse" class="headerlink" title="array.reverse()"></a>array.reverse()</h2><p>反转数组元素顺序，返回数组自身。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>];</span><br><span class="line">arr1.reverse(); <span class="comment">// [2, 3, 4, 1]</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="array-slice"><a href="#array-slice" class="headerlink" title="array.slice()"></a>array.slice()</h2><p>对数组浅复制其中的一段，不改变数组自身。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.slice(start, end);</span><br></pre></td></tr></table></figure>
-
-<p>方法接受两个参数，最后一个可以省略，默认是数组自身长度。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line"></span><br><span class="line">arr1.slice(<span class="number">4</span>); <span class="comment">// [5, 6]</span></span><br><span class="line">arr1.slice(<span class="number">2</span>, <span class="number">4</span>); <span class="comment">// [3, 4]</span></span><br><span class="line">arr1.slice(-<span class="number">3</span>); <span class="comment">// [4, 5, 6]</span></span><br></pre></td></tr></table></figure>
-
-<p>如果传入负数，那么会被自动加上数组的长度，试图变成非负数。<br>传入一个绝对值小于数组长度的值，就是从后向前取负数绝对值个数的元素。例如例子中取了后三个元素。</p>
-<p>另一个用法就是将函数参数arguments转换为一个正常的数组。数组太大，性能不太好，权衡一下再使用。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>);</span><br></pre></td></tr></table></figure>
-
-<h2 id="array-splice"><a href="#array-splice" class="headerlink" title="array.splice()"></a>array.splice()</h2><p>这是数组中最强大也最常用对的方法了，可以实现删除，插入，替换。</p>
-<p>语法</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">array.slice(start, count, item);</span><br></pre></td></tr></table></figure>
-
-<p>该方法移除一个或多个元素，并用新的元素替代他们。start是开始的位置，count是删除的数量，item是新增加的元素（item不止一个，也可省略)，以数组形式返回删除的元素。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="comment">//删除</span></span><br><span class="line">arr1.splice(<span class="number">2</span>, <span class="number">1</span>); <span class="comment">// [1, 2, 4, 5]  返回 [3]</span></span><br><span class="line"><span class="comment">//插入</span></span><br><span class="line">arr1.splice(<span class="number">3</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">7</span>); <span class="comment">// [1, 2, 4, 6, 7, 5]</span></span><br><span class="line"><span class="comment">//替换</span></span><br><span class="line">arr1.splice(<span class="number">1</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">9</span>); <span class="comment">// [1, 8, 9, 6, 7, 5]  返回[2, 4]</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>下面介绍一些ECMAScript5新增的方法，主要是ie8不支持。</strong></p>
-<h2 id="indexOf-与-lastIndexOf"><a href="#indexOf-与-lastIndexOf" class="headerlink" title="indexOf() 与 lastIndexOf()"></a>indexOf() 与 lastIndexOf()</h2><p>查找对应项在数组中的索引位置，第二个参数表示对应查找方向的起始位置，返回第一个匹配的位置，如果没有找到则返回-1;<br>indexOf()是从前往后查找，lastIndexOf()是从后往前查找。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>];</span><br><span class="line">arr1.indexOf(<span class="number">2</span>); <span class="comment">// 1</span></span><br><span class="line">arr1.indexOf(<span class="number">2</span>, <span class="number">3</span>); <span class="comment">// 5</span></span><br><span class="line"></span><br><span class="line">arr1.lastIndexOf(<span class="number">3</span>); <span class="comment">// 4</span></span><br><span class="line">arr1.lastIndexOf(<span class="number">3</span>, <span class="number">4</span>) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="迭代方法"><a href="#迭代方法" class="headerlink" title="迭代方法"></a>迭代方法</h1><p>以下方法接受两个参数，第一个是每一项运行的函数，第二个函数运行的作用域。<br>运行函数有三个参数，分别是当前项，位置，数组本身。</p>
-<h2 id="array-every"><a href="#array-every" class="headerlink" title="array.every()"></a>array.every()</h2><p>运行给定函数，如果迭代每一项都返回true,则最终返回true。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr1.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item &gt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="array-some"><a href="#array-some" class="headerlink" title="array.some()"></a>array.some()</h2><p>运行给定函数，如果迭代中有一项返回true,则最终返回true。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item &gt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="array-map"><a href="#array-map" class="headerlink" title="array.map()"></a>array.map()</h2><p>运行给定函数，将迭代中返回的值组成数组，返回该数组。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item * <span class="number">2</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [2, 4, 6, 8, 10]</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="array-filter"><a href="#array-filter" class="headerlink" title="array.filter()"></a>array.filter()</h2><p>运行给定函数，将迭代中返回true的元素以数组形式返回</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">arr1.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item &gt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [4, 5]</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="array-forEach"><a href="#array-forEach" class="headerlink" title="array.forEach()"></a>array.forEach()</h2><p>运行给定函数，不返回任何值。类似于普通的for循环的功能。</p>
-<h1 id="归并方法"><a href="#归并方法" class="headerlink" title="归并方法"></a>归并方法</h1><p>函数接受两个参数，第一个参数是每一个运行的自定义函数，第二项是作为归并基础的初始值。<br>自定义函数接受四个参数，分别是前一项，当前项，位置，数组。</p>
-<h2 id="array-reduce-与-array-reduceRight"><a href="#array-reduce-与-array-reduceRight" class="headerlink" title="array.reduce() 与 array.reduceRight()"></a>array.reduce() 与 array.reduceRight()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> splitstr = <span class="function"><span class="keyword">function</span>(<span class="params">prev, item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> prev + <span class="string">&#x27;#&#x27;</span> + item;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">arr1.reduce(splitstr, <span class="number">8</span>); <span class="comment">// 8#1#2#3#4#5</span></span><br><span class="line">arr1.reduceRight(splitstr, <span class="number">8</span>); <span class="comment">// 8#5#4#3#2#1</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这一篇介绍了数组方法的种种细节和注意问题，下一篇将会介绍数组更高级的用法。</p>
-]]></content>
-      <tags>
-        <tag>javascript</tag>
-        <tag>数组</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mac前端开发工具集</title>
-    <url>/20180527/front_tools/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<p>最近因工作原因，需要重新配置开发环境。尝试过很多的开发工具，有些是尝鲜的，有些一直用下来了，只有时间和实际场景能让你知道，会不会长久地使用这个工具。我依然还会去尝试很多新工具，这次推荐前端的长期使用软件集合。</p>
-<h1 id="不分工种的工具"><a href="#不分工种的工具" class="headerlink" title="不分工种的工具"></a>不分工种的工具</h1><h2 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h2><p>mac上的快速安装软件，软件包管理器。免去先下载、再安装的繁琐，安装只需要一行命令。</p>
-<h2 id="iTerm2"><a href="#iTerm2" class="headerlink" title="iTerm2"></a>iTerm2</h2><p>我最喜欢的命令行工具，好处体现在细节，用过才知道。再配合<code>oh my zsh</code>就更爽了。</p>
-<span id="more"></span>
-
-<h2 id="SpaceLauncher"><a href="#SpaceLauncher" class="headerlink" title="SpaceLauncher"></a>SpaceLauncher</h2><p>全局快捷键定义，因为使用了空格键，跟其他软件快捷键无冲突，快速在各个工具间切换，那个感觉怎个爽啊。</p>
-<h2 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h2><p>几款实用插件</p>
-<ul>
-<li><code>postman</code> 接口api调试工具，可配各种方式，登录账户还能保存记录。</li>
-<li><code>OneTab</code> 保存当前的所有标签页，避免了开一堆标签页的眼花缭乱，也避免卡顿。</li>
-<li><code>User-Agent Switcher</code> 修改UA，在调试特定场景下，很管用。</li>
-<li><code>vue</code>和<code>react</code> 框架调试工具</li>
-<li><code>有道笔记</code> 和 <code>印象剪藏</code> 网页快速保存到笔记工具，很多网址会失效，存下来才是王道。</li>
-</ul>
-<h2 id="SourceTree"><a href="#SourceTree" class="headerlink" title="SourceTree"></a>SourceTree</h2><p>几乎人人在用的git可视化客户端工具，建议配置工作目录，也自定义下常用按钮，个人感觉<code>刷新</code>按钮很常用。</p>
-<h2 id="有道词典"><a href="#有道词典" class="headerlink" title="有道词典"></a>有道词典</h2><p>用过好几款词典，换来换去还是有道好用，翻译得精准，也没有广告。主要是查询一些变量命名和翻译大段文档。<br>在这里推荐一个好用的变量命名网站<a href="https://unbug.github.io/codelf/">CODELF</a></p>
-<h2 id="坚果云"><a href="#坚果云" class="headerlink" title="坚果云"></a>坚果云</h2><p>国内好用的云存储同步工具，自身已经盈利，不用担心关闭的问题。但免费的上传流量有限，不适合大文件。日常零碎的文件很适合。</p>
-<h2 id="Beyond-Compare"><a href="#Beyond-Compare" class="headerlink" title="Beyond Compare"></a>Beyond Compare</h2><p>文件比对工具，可能80%的情况下用不到它，一旦用得上是很感激的，肉眼对比是真的累。</p>
-<h1 id="网络工具"><a href="#网络工具" class="headerlink" title="网络工具"></a>网络工具</h1><h2 id="Lantern"><a href="#Lantern" class="headerlink" title="Lantern"></a>Lantern</h2><p>科学工具，解决广大程序猿的上网烦恼。建议买两年划算。</p>
-<h2 id="ShadowSocks"><a href="#ShadowSocks" class="headerlink" title="ShadowSocks"></a>ShadowSocks</h2><p>第二个科学工具，但得自己购买服务。</p>
-<h2 id="Charles"><a href="#Charles" class="headerlink" title="Charles"></a>Charles</h2><p>抓包工具，何人不抓包呢，现在可是移动端的天下。附带<a href="https://www.zzzmode.com/mytools/charles/">破解地址</a></p>
-<h2 id="Weinre"><a href="#Weinre" class="headerlink" title="Weinre"></a>Weinre</h2><p>线上调试工具，这个能解决抓包工具做不到的线上调试。这个<a href="https://blog.csdn.net/hzaini89/article/details/51745832">教程</a>很不错。</p>
-<h1 id="IDE编辑器"><a href="#IDE编辑器" class="headerlink" title="IDE编辑器"></a>IDE编辑器</h1><p>以下这三款可同时安装，atom较轻量，打开速度快、免费。</p>
-<ul>
-<li>WebStorm</li>
-<li>VSCode</li>
-<li>Atom</li>
-</ul>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
-<li>微信开发者工具</li>
-<li><a href="http://wit-web.azurewebsites.net/en/assistor/download">Assistor PS</a> ps切图插件</li>
-<li><code>nvm</code> node版本管理工具</li>
-<li>有道云笔记</li>
-<li>印象笔记</li>
-<li>kindle读书软件</li>
-<li><code>draw.io</code> 流程图工具</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>macOS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>我用HTML写简历</title>
-    <url>/20180923/resume/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>每次换工作写简历都是有点痛苦的事情，尤其是下载word模板，各种注册流程，有的还得买积分，冲会员，甚是不爽。就算下载好了，修改其中的一些细节也不太熟悉各种功能，由于长期不用word，早把很多设置功能抛之脑后。</p>
-<p>忽然有一天灵感涌上，这种简易的模板样式，对于一个前端工程师来说，写个页面分分钟的事，只要能把html转成pdf格式这事就成了。</p>
-<span id="more"></span>
-
-<h2 id="Puppeteer"><a href="#Puppeteer" class="headerlink" title="Puppeteer"></a>Puppeteer</h2><p>Puppeteer是谷歌出的一个headless自动化工具。</p>
-<ul>
-<li>利用网页生成PDF、图片</li>
-<li>抓取网站内容</li>
-<li>自动化表单提交、UI测试、键盘输入等</li>
-<li>创建一个最新的自动化测试环境</li>
-</ul>
-<p>用来把html转换pdf，虽然是有点大材小用，但是很适合，渲染效果也是足够放心的。</p>
-<h3 id="install"><a href="#install" class="headerlink" title="install"></a>install</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> &gt; Node v6.4.0</span></span><br><span class="line">npm i puppeteer --save</span><br></pre></td></tr></table></figure>
-
-<p>但是安装这里有坑位，还好前人踩过坑了，失败的人点<a href="https://juejin.im/post/5b99c9ece51d450e51625630">这里</a>，笔者也是下载失败了~~~</p>
-<h2 id="index-html"><a href="#index-html" class="headerlink" title="index.html"></a>index.html</h2><p>具体怎么写得养眼，就是自己的事情了，这里提供一个简单的模板。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>我的简历<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1.0, maximum-scale=1.0, user-scalable=0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">    主要内容</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="gulpfile-js"><a href="#gulpfile-js" class="headerlink" title="gulpfile.js"></a>gulpfile.js</h2><p>既然想要写得爽，怎么也得来个热更新吧，搞个简单的自动化工具。<br>Puppeteer只能访问http地址，所以还需要静态资源服务</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm i --save browser-sync gulp gulp-notify</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>browser-sync 提供静态服务器和热更新</li>
-<li>gulp 自动化工具</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> notify = <span class="built_in">require</span>(<span class="string">&#x27;gulp-notify&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> browserSync = <span class="built_in">require</span>(<span class="string">&#x27;browser-sync&#x27;</span>).create()</span><br><span class="line"><span class="keyword">const</span> reload = browserSync.reload</span><br><span class="line"></span><br><span class="line"><span class="comment">// 热更新</span></span><br><span class="line">gulp.task(<span class="string">&#x27;styles&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">&#x27;src/*.css&#x27;</span>)</span><br><span class="line">        .pipe(reload(&#123;<span class="attr">stream</span>: <span class="literal">true</span>&#125;))</span><br><span class="line">        .pipe(notify(&#123;<span class="attr">message</span>: <span class="string">&#x27;Styles complete&#x27;</span>&#125;))</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态资源服务</span></span><br><span class="line">gulp.task(<span class="string">&#x27;serve&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>], <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    browserSync.init(&#123;</span><br><span class="line">        <span class="attr">server</span>: &#123;</span><br><span class="line">            <span class="attr">baseDir</span>: <span class="string">&quot;./src&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">port</span>: <span class="number">7000</span>,</span><br><span class="line">        <span class="comment">// 关闭右上角通知</span></span><br><span class="line">        <span class="attr">notify</span>: <span class="literal">false</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.css&#x27;</span>, [<span class="string">&#x27;styles&#x27;</span>])</span><br><span class="line">    gulp.watch(<span class="string">&#x27;src/**/*.html&#x27;</span>, reload)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="build-js"><a href="#build-js" class="headerlink" title="build.js"></a>build.js</h2><p>只差转换生成了，这里用到了await语法，否则层级太深。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">&#x27;puppeteer&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch()</span><br><span class="line">    <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage()</span><br><span class="line">    <span class="keyword">await</span> page.goto(<span class="string">&#x27;http://localhost:7000&#x27;</span>)</span><br><span class="line">    <span class="keyword">await</span> page.pdf(&#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&#x27;resume.pdf&#x27;</span>,</span><br><span class="line">        <span class="attr">format</span>: <span class="string">&#x27;A4&#x27;</span>,</span><br><span class="line">        <span class="comment">// 打印背景色</span></span><br><span class="line">        <span class="attr">printBackground</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> browser.close()</span><br><span class="line">    <span class="built_in">console</span>.info(<span class="string">&#x27;build done&#x27;</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
-
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后写简历的事情，也被我们工程化了，想想也是省心省力。可以发挥我们的想象，加入各种好玩的东西，再也没人有跟我一样的简历样式了。</p>
-<p>这里写了一个简单的项目，仅供参考<a href="https://github.com/hanmingpan/better-resume">demo地址</a></p>
-]]></content>
-      <tags>
-        <tag>puppeteer</tag>
-        <tag>简历</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>代理本地服务到公网-natapp内网穿透工具</title>
-    <url>/20181213/natapp/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<p>开发一些服务时，想把本地服务映射到公网可访问状态，方便开发调试。</p>
-<p>适合调试微信小程序，混合型app客户端等</p>
-<p><em>本工具免费稳定，也有高级付费版</em></p>
-<span id="more"></span>
-
-<h2 id="注册下载"><a href="#注册下载" class="headerlink" title="注册下载"></a>注册下载</h2><ol>
-<li>打开<a href="https://natapp.cn/">https://natapp.cn</a></li>
-<li>购买免费型</li>
-<li>下载客户端</li>
-<li>修改客户端权限</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd 下载目录</span><br><span class="line">chmod a+x natapp</span><br></pre></td></tr></table></figure>
-
-<p><img src="//blogcdn.affecthing.com/natapp1.png" alt="natapp1"></p>
-<h2 id="普通使用"><a href="#普通使用" class="headerlink" title="普通使用"></a>普通使用</h2><ol>
-<li>配置本地地址 127.0.0.1</li>
-<li>配置本地端口 8080</li>
-<li>复制authtoken</li>
-<li>运行客户端</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">// 运行客户端，出现online代表已通</span><br><span class="line">./natapp -authtoken=复制的authtoken</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>额外配置</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 如果使用了webpack，增加配置</span></span><br><span class="line"><span class="attr">devServer</span>: &#123;</span><br><span class="line">    <span class="attr">disableHostCheck</span>: <span class="literal">true</span> <span class="comment">// 绕过主机检查</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="//blogcdn.affecthing.com/natapp2.png" alt="natapp2"></p>
-<h2 id="高级使用-固定域名"><a href="#高级使用-固定域名" class="headerlink" title="高级使用-固定域名"></a>高级使用-固定域名</h2><ul>
-<li>购买付费服务，多种可选</li>
-<li>域名服务下增加一条CNAME解析</li>
-<li>将已备案域名绑定到natapp</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>内网穿透</tag>
-        <tag>远程调试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>淘宝flexible深度解读</title>
     <url>/20180620/flexible/</url>
     <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
@@ -822,74 +822,6 @@ var next = ele.nextElementSibling;  // .right
         <tag>rem响应式</tag>
         <tag>flexible</tag>
         <tag>dpi</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>程序员综合能力参考清单</title>
-    <url>/20190924/ability/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
-<p>工作五年了，回头看看走过的路，好多道理真该早点懂得，但当时的我还在努力成为一个合格的程序员，没考虑到上层建筑的事。老话说得好<code>不谋全局者，不足谋一域</code>，更早的从整个软件行业来看待自己的职业，会做出更好的路线选择。</p>
-<span id="more"></span>
-
-<p>石头是个程序员，热爱新鲜的技术，醉心于这些好玩的东西，感觉它们很酷啊，希望把他们用到工作中，然后发现各种问题，不太实用，只能放弃了这项新技术，然后继续验证下一个想法。</p>
-<p>如果我是一个leader，需要这样的员工吗？答案是不一定，他热爱新技术，那只是他的加分项。因为我有另一个判断标准：能完成一件事，能实现业务目标，积极拥抱业务变化，为业务提供更好的技术支持，这是我要的员工。也就是说人得能成事，不仅仅是工作里的分内事。</p>
-<blockquote>
-<p>我发现，如果一个人的全部信息都局限于他的工作领域，那么他的工作不会做的很好。一个人必须有眼光，他可以从书籍或者人们身上，最好是两者兼有，培养眼光。                                                                           ——哈维·费尔斯通</p>
-</blockquote>
-<h2 id="管理能力"><a href="#管理能力" class="headerlink" title="管理能力"></a>管理能力</h2><p>石头刚入行不久，他幻想某一天也会成为某个小领导，目前来看还得几年，所以说管理能力不是石头该关心的事？反过来看，大部分人通常都会在私底下吐槽领导，就算你直属领导人挺好，你可能还会吐槽上层领导。如果领导经常做出错误的决定，那他怎么成为领导的，又怎么带领团队工作呢？</p>
-<p>逐渐去拥有管理能力的过程，会改变看事情的角度。也会将心比心的去问自己，能不能做出更好的决定。如果领导犯错了，我怎么恰当的给出提示。当有一天给到你带领团队的机会，也多少会胸有成竹。</p>
-<h2 id="沟通能力"><a href="#沟通能力" class="headerlink" title="沟通能力"></a>沟通能力</h2><p>人类之所以统治世界，是大规模群体合作的成果，沟通起到至关重要的作用。如果你能用一句话让别人明白你的意思，那就比用三句话的效率提高了一大截。</p>
-<p>能用尽量少的语言描述清楚一个问题，能迅速明白别人话语背后的意思，遇到不清楚的问题，多和相关人员，有经验的人去交流，总会给到你更丰富的信息，减少你的无谓劳动。这就是沟通能力带来的好处。</p>
-<p>沟通的过程中管理好自己的情绪，俗话说伸手不打笑脸人，我们的目的是解决问题，而不是比吵架谁赢了。</p>
-<h2 id="英文听说读写"><a href="#英文听说读写" class="headerlink" title="英文听说读写"></a>英文听说读写</h2><p>编程语言是英文的，这项基本的能力不够好，会在方面掣肘你。代码的可读性跟命名有直接关系。</p>
-<p>石头英语能力薄弱，公司要做个活动女神颜值测试，石头给项目起名<code>nvshen</code>，想了想汉语全拼有点低级，又想了个英文的<code>womanGod</code>，感觉还挺满意，其实这是中式英文chinglish。石头又用专业的有道词典，查到了<code>goddess</code>，这次应该没跑了，正宗的。而真相呢？<code>goddess</code>是女神仙的意思，电视剧里的女神仙确实挺漂亮的，它不是地道的英语表达。在这里<code>hottie</code>、<code>sexy</code>、<code>peach</code>这一类的单词显然更好。</p>
-<p>学好英文的唯一方式就是长期的刻意练习，石头狠心报了一个三年的培训班，从最开始的见面时打招呼<code>How are you?</code>到后来的<code>How&#39;s it going?</code>。英语交流开始变得顺其自然，看英文材料再也不是一筹莫展，而是迅速把握到重点片段，解决遇到的棘手问题。</p>
-<p><em>话说stackoverflow真香</em></p>
-<h2 id="技术全面性"><a href="#技术全面性" class="headerlink" title="技术全面性"></a>技术全面性</h2><p>其实笔者一直在强调全面性，而技术能力是看家本事，技术全面性也不能掉以轻心。难道这是让石头既要会前端，又要会后端，还是能运维？如果这么想说明还是不理解<code>全栈工程师</code>。当下这个时代，知识太多，要装下更多，也要学会放弃很多知识。咱们得把那些行业里大浪淘沙后的真金白银吃进肚子里。</p>
-<p>石头他们公司要做一个新项目，一兄弟说既然咱们都有<code>a.example.com</code>、<code>b.example.com</code>，咱们再买个新域名<code>c.example.com</code>吧，你听完不想笑吗？</p>
-<ul>
-<li>算法</li>
-<li>计算机原理&amp;Linux</li>
-<li>安全</li>
-<li>html&amp;css&amp;js</li>
-<li>Java&amp;Python&amp;php</li>
-<li>Mysql</li>
-<li>网络&amp;http</li>
-<li>正则表达式</li>
-<li>git&amp;开发工具</li>
-</ul>
-<p>以上这些基本的技能，尽量都掌握，有了他们，学习其他新技术的周期会缩短，也可以顺畅迁移到任何的新兴技术职业。</p>
-<p>特斯拉创始人马斯克有一个故事，每次他认为谁没足够努力把一件事做好，会当场把他辞掉，然后对他说，你的工作我接手了。直到找来新的员工，这期间他会一直承担那个人的工作。如果不具备全面的基本技能，他无法胜任。</p>
-<h2 id="凡事讲究个过程"><a href="#凡事讲究个过程" class="headerlink" title="凡事讲究个过程"></a>凡事讲究个过程</h2><p>先学习那些跟自身职业有关联的能力，尽量要学以致用，如果未来的一个项目会用到某项知识，就要提前开始学习。</p>
-<p>除了学好自身职业的关键知识，还要学会主要领域的关键知识，而一些子领域的知识点，视兴趣、工作情况选择性了解，在实际运用时再做详细研究。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>芒格在《穷查理宝典》中提到一个<code>lollapalooza效应</code>，为那些相互强化并极大地放大彼此效应的因素发明的词组。类比到工作中，如果你能综合利用各项能力去完成一件事，最终的结果通常会更好。</p>
-]]></content>
-      <tags>
-        <tag>全栈工程师</tag>
-        <tag>能力参考清单</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>给孤傲的程序员们：软件开发是一项团体运动</title>
-    <url>/20201101/cooperation/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
-<p>记得有个程序员调查报告显示：</p>
-<blockquote>
-<p>近 70％的受访者表示他们的能力高于平均水平，而不到 10％的受访者认为他们的能力低于平均水平。</p>
-</blockquote>
-<p>大部分人认为自己比其他同事水平要好或者不低于。</p>
-<span id="more"></span>
-
-<p>孤傲的我们总认为自己是那个扫地憎，完美地完成每个任务，拯救世上的软件。我不得不说程序员们太孤傲了，包括我自己。一度很流行“10 倍工程师”这个说法，很快就遭到了一众业界大佬的嘲讽。</p>
-<p>回到自然界，人类为什么战胜了狮子老虎，统治了世界。并不是因为你是武松，也不是因为你手里有刀，是围猎，是合作。最终的全球化，大范围地让不认识的人合作生产。</p>
-<p>强大如张无忌也差点在围攻光明顶时挂掉。大家爱玩的王者荣耀也不是1v5，而是5v5。超级计算中并没有超级芯片，而是几万个普通芯片的组合。合作的力量太强大了，合作是人类文明独有的超级核武。</p>
-<p>到了目前这个阶段，你不得不合作，产品经理、设计师、前端、后端、算法、人工智能、测试、运维。没有身兼数职的人，每一次开发任务都是多方沟通。这意味着开发不再是闷头搞大事，而是合作商量大事，各自去执行你擅长的部分。</p>
-<p>合作过程中的沟通是频繁，我知道很多人不喜欢被打断，我也尤其不喜欢在思考一个复杂问题时被打断，因为确实很影响继续工作的心流状态。越是不喜欢被打扰，现实中就越是经常被打扰或者被临时拉去开会。我们只能尽量提前规划一些沟通的时间段，或者每隔两三个小时主动看一下合作方的最新消息。</p>
-<p>软件开发显然是一项团体运动，写下代码前一些疑问，如果能提前沟通可能经常节省你不少的时间。当你给产品经理讲述新技术时，可能他帮你找到了用武之地。接口文档的提前约定，提前梳理了你在处理异常情况时的流程。</p>
-<p>拥抱合作，Peace and Love。</p>
-]]></content>
-      <tags>
-        <tag>合作</tag>
       </tags>
   </entry>
   <entry>
@@ -933,61 +865,6 @@ var next = ele.nextElementSibling;  // .right
 ]]></content>
       <tags>
         <tag>重构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>用JavaScript模拟事件循环</title>
-    <url>/20210609/eventloop/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
-<h2 id="哇叽哇叽"><a href="#哇叽哇叽" class="headerlink" title="哇叽哇叽"></a>哇叽哇叽</h2><p>对于很多概念性的原理，可能三两句话就能概括，但必然损失了很多细节。而实际的代码呢，无法忽略细节，最多是简化一些。</p>
-<p>那么就让我们一起来用伪代码来模拟事件循环机制吧。</p>
-<p><em>Talk is cheap. Show me the code.</em></p>
-<p>说起来容易做起来难，历史上的马谡可能是最佳反面代表人物了。</p>
-<span id="more"></span>
-
-<h2 id="为什么是事件循环机制，而不是别的机制？"><a href="#为什么是事件循环机制，而不是别的机制？" class="headerlink" title="为什么是事件循环机制，而不是别的机制？"></a>为什么是事件循环机制，而不是别的机制？</h2><p>js主线程要做各种类型的任务，例如：dom事件、布局计算、js任务、用户输入、动画、定时器。</p>
-<h3 id="如何解决未来的新任务？"><a href="#如何解决未来的新任务？" class="headerlink" title="如何解决未来的新任务？"></a>如何解决未来的新任务？</h3><p>各种事件不可能是同一时间执行，会在未来产生新的事件，所以就需要有一个机制像前台接待员一样，一直守在那里，时刻检测是否有新任务了，一有新任务就执行它，这就是事件循环机制。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  doSomething()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="如何解决积攒的新任务？"><a href="#如何解决积攒的新任务？" class="headerlink" title="如何解决积攒的新任务？"></a>如何解决积攒的新任务？</h2><p>新任务太多了，前台接待员无法同时处理多个任务，只能让大家排队了，这就是任务队列机制。</p>
-<p>为什么无法同时处理多个任务？因为js(渲染进程的主线程)是单线程执行模式。</p>
-<p>队列是先进先出的数据结构，在js中可以理解为数组。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> queue = []</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.unshift()</span><br><span class="line">  task()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="高优先级任务被阻塞了"><a href="#高优先级任务被阻塞了" class="headerlink" title="高优先级任务被阻塞了"></a>高优先级任务被阻塞了</h2><p>如果只有一个消息队列，那么高优先级的任务一直在等待，可能会产生页面卡顿。<br>所以按照任务的类型分了几种队列。优先级依次向下。</p>
-<ul>
-<li>用户交互</li>
-<li>合成页面</li>
-<li>默认（资源加载、定时器等）</li>
-<li>空闲（垃圾回收等）</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">  handleQueue = []  <span class="comment">// 交互队列</span></span><br><span class="line">  composeQueue = [] <span class="comment">// 合成队列</span></span><br><span class="line">  baseQueue = []    <span class="comment">// 默认队列</span></span><br><span class="line">  freeQueue = []    <span class="comment">// 空闲队列</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 插入新任务</span></span><br><span class="line">  <span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (type === <span class="string">&#x27;handle&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.handleQueue.push(task)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;compose&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.composeQueue.push(task)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;base&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.baseQueue.push(task)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;free&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.freeQueue.push(task)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取一个任务</span></span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> queue = []</span><br><span class="line">    <span class="keyword">if</span> (handleQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = handleQueue</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (composeQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = composeQueue</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (baseQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = baseQueue</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (freeQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = freeQueue</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> queue.unshift()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="页面在不同阶段，高优目标是不同的"><a href="#页面在不同阶段，高优目标是不同的" class="headerlink" title="页面在不同阶段，高优目标是不同的"></a>页面在不同阶段，高优目标是不同的</h2><p>页面在加载阶段，第一目标是先把页面渲染出来。<br>页面在交互阶段，第一目标是及时响应用户的操作。</p>
-<p>为了满足不同阶段的目标，需要调整不同阶段任务队列的优先级。</p>
-<p><img src="//blogcdn.affecthing.com/eventloop-1" alt="natapp1"></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">  handleQueue = []</span><br><span class="line">  composeQueue = []</span><br><span class="line">  baseQueue = []</span><br><span class="line">  freeQueue = []</span><br><span class="line">  priority = []</span><br><span class="line">  <span class="comment">// 设置优先级</span></span><br><span class="line">  <span class="function"><span class="title">setPriority</span>(<span class="params">lifecycle</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;pageload&#x27;</span>) &#123; <span class="comment">// 页面加载</span></span><br><span class="line">      <span class="built_in">this</span>.priority = [<span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;handle&#x27;</span>) &#123; <span class="comment">// 交互阶段</span></span><br><span class="line">      <span class="built_in">this</span>.priority = [<span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>, <span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>]</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;free&#x27;</span>) &#123; <span class="comment">// 空闲阶段</span></span><br><span class="line">      <span class="built_in">this</span>.priority = [<span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> curr = []</span><br><span class="line">    <span class="comment">// 根据优先级顺序来获取任务</span></span><br><span class="line">    <span class="built_in">this</span>.priority.forEach(<span class="function"><span class="params">priority</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> queue = <span class="built_in">this</span>[priority]</span><br><span class="line">      <span class="keyword">if</span> (queue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> queue.unshift()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 省略</span></span><br><span class="line">  <span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">queue.setPriority(<span class="string">&#x27;pageload&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="如何在渲染前做一些任务？"><a href="#如何在渲染前做一些任务？" class="headerlink" title="如何在渲染前做一些任务？"></a>如何在渲染前做一些任务？</h2><p>有时候我们想在当前任务完成前再紧接着做一些任务，但是如果插入到队伍末尾，那么需要的时间可能长，可能短，这就无法稳定地按照预期来做了。</p>
-<p>所以增加了微任务队列，在当前任务即将完成时，再执行一些事情，不用等太久。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span> </span>&#123;</span><br><span class="line">  microQueue = []</span><br><span class="line">  <span class="comment">// 执行任务</span></span><br><span class="line">  <span class="function"><span class="title">do</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// start doSomething</span></span><br><span class="line">    <span class="comment">// doSomething</span></span><br><span class="line">    <span class="comment">// end doSomething</span></span><br><span class="line">    <span class="comment">// 检查微任务队列</span></span><br><span class="line">    <span class="keyword">if</span> (microQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      microQueue.forEach(<span class="function"><span class="params">microTask</span> =&gt;</span> microTask())</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 添加微任务</span></span><br><span class="line">  <span class="function"><span class="title">addMicro</span>(<span class="params">microTask</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.microQueue(microTask)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略，同上</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">setPriority</span>(<span class="params">lifecycle</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line">queue.add(<span class="keyword">new</span> Task(), <span class="string">&#x27;base&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task.do()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="低级任务饿死现象"><a href="#低级任务饿死现象" class="headerlink" title="低级任务饿死现象"></a>低级任务饿死现象</h2><p>一直在执行高优任务，低级任务就会出现饿死现象，所以连续执行一定数量的高优任务后，需要执行一次低级任务。</p>
-<h2 id="异步回调"><a href="#异步回调" class="headerlink" title="异步回调"></a>异步回调</h2><p>这里先说一个常识，js虽然是单线程执行，但是浏览器却是多进程的。</p>
-<p>一个异步任务，可能是由浏览器的其他进程或者线程去执行，然后再将执行结果利用 IPC 的方式通知渲染进程，之后渲染进程再将对应的消息添加到消息队列中。</p>
-<h2 id="setTimeout实现机制有何不同之处？"><a href="#setTimeout实现机制有何不同之处？" class="headerlink" title="setTimeout实现机制有何不同之处？"></a>setTimeout实现机制有何不同之处？</h2><p>由于存在时间的概念，并不能直接放入消息队列中。浏览器又增加了一个延迟队列，还有其他的一些延迟任务都在这里执行。每次执行完消息队列中的一个任务，就要检查一遍延迟队列。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> delayQueue = []</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查延迟队列中的任务，是否到时间了</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkDelayQueue</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  delayQueue.map(<span class="function"><span class="params">task</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="string">&#x27;到期了&#x27;</span>) &#123;</span><br><span class="line">      task()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task.do()</span><br><span class="line"></span><br><span class="line">  checkDelayQueue()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>以上代码不是实际的浏览器实现，只是为了更好理解事件循环机制提供帮助。</p>
-<p>希望你也写出自己的实现版本。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li>《浏览器工作原理与实践》</li>
-<li>《JavaScript忍者秘籍》</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>事件循环</tag>
       </tags>
   </entry>
   <entry>
@@ -1061,6 +938,168 @@ var next = ele.nextElementSibling;  // .right
 
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>也许这种方式没有帮助到你，那你更应该去寻找适合自己的学习方式。</p>
 <p>欢迎讨论切磋学习方法。</p>
+]]></content>
+      <tags>
+        <tag>基本类型</tag>
+        <tag>类型检测</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>程序员综合能力参考清单</title>
+    <url>/20190924/ability/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<p>工作五年了，回头看看走过的路，好多道理真该早点懂得，但当时的我还在努力成为一个合格的程序员，没考虑到上层建筑的事。老话说得好<code>不谋全局者，不足谋一域</code>，更早的从整个软件行业来看待自己的职业，会做出更好的路线选择。</p>
+<span id="more"></span>
+
+<p>石头是个程序员，热爱新鲜的技术，醉心于这些好玩的东西，感觉它们很酷啊，希望把他们用到工作中，然后发现各种问题，不太实用，只能放弃了这项新技术，然后继续验证下一个想法。</p>
+<p>如果我是一个leader，需要这样的员工吗？答案是不一定，他热爱新技术，那只是他的加分项。因为我有另一个判断标准：能完成一件事，能实现业务目标，积极拥抱业务变化，为业务提供更好的技术支持，这是我要的员工。也就是说人得能成事，不仅仅是工作里的分内事。</p>
+<blockquote>
+<p>我发现，如果一个人的全部信息都局限于他的工作领域，那么他的工作不会做的很好。一个人必须有眼光，他可以从书籍或者人们身上，最好是两者兼有，培养眼光。                                                                           ——哈维·费尔斯通</p>
+</blockquote>
+<h2 id="管理能力"><a href="#管理能力" class="headerlink" title="管理能力"></a>管理能力</h2><p>石头刚入行不久，他幻想某一天也会成为某个小领导，目前来看还得几年，所以说管理能力不是石头该关心的事？反过来看，大部分人通常都会在私底下吐槽领导，就算你直属领导人挺好，你可能还会吐槽上层领导。如果领导经常做出错误的决定，那他怎么成为领导的，又怎么带领团队工作呢？</p>
+<p>逐渐去拥有管理能力的过程，会改变看事情的角度。也会将心比心的去问自己，能不能做出更好的决定。如果领导犯错了，我怎么恰当的给出提示。当有一天给到你带领团队的机会，也多少会胸有成竹。</p>
+<h2 id="沟通能力"><a href="#沟通能力" class="headerlink" title="沟通能力"></a>沟通能力</h2><p>人类之所以统治世界，是大规模群体合作的成果，沟通起到至关重要的作用。如果你能用一句话让别人明白你的意思，那就比用三句话的效率提高了一大截。</p>
+<p>能用尽量少的语言描述清楚一个问题，能迅速明白别人话语背后的意思，遇到不清楚的问题，多和相关人员，有经验的人去交流，总会给到你更丰富的信息，减少你的无谓劳动。这就是沟通能力带来的好处。</p>
+<p>沟通的过程中管理好自己的情绪，俗话说伸手不打笑脸人，我们的目的是解决问题，而不是比吵架谁赢了。</p>
+<h2 id="英文听说读写"><a href="#英文听说读写" class="headerlink" title="英文听说读写"></a>英文听说读写</h2><p>编程语言是英文的，这项基本的能力不够好，会在方面掣肘你。代码的可读性跟命名有直接关系。</p>
+<p>石头英语能力薄弱，公司要做个活动女神颜值测试，石头给项目起名<code>nvshen</code>，想了想汉语全拼有点低级，又想了个英文的<code>womanGod</code>，感觉还挺满意，其实这是中式英文chinglish。石头又用专业的有道词典，查到了<code>goddess</code>，这次应该没跑了，正宗的。而真相呢？<code>goddess</code>是女神仙的意思，电视剧里的女神仙确实挺漂亮的，它不是地道的英语表达。在这里<code>hottie</code>、<code>sexy</code>、<code>peach</code>这一类的单词显然更好。</p>
+<p>学好英文的唯一方式就是长期的刻意练习，石头狠心报了一个三年的培训班，从最开始的见面时打招呼<code>How are you?</code>到后来的<code>How&#39;s it going?</code>。英语交流开始变得顺其自然，看英文材料再也不是一筹莫展，而是迅速把握到重点片段，解决遇到的棘手问题。</p>
+<p><em>话说stackoverflow真香</em></p>
+<h2 id="技术全面性"><a href="#技术全面性" class="headerlink" title="技术全面性"></a>技术全面性</h2><p>其实笔者一直在强调全面性，而技术能力是看家本事，技术全面性也不能掉以轻心。难道这是让石头既要会前端，又要会后端，还是能运维？如果这么想说明还是不理解<code>全栈工程师</code>。当下这个时代，知识太多，要装下更多，也要学会放弃很多知识。咱们得把那些行业里大浪淘沙后的真金白银吃进肚子里。</p>
+<p>石头他们公司要做一个新项目，一兄弟说既然咱们都有<code>a.example.com</code>、<code>b.example.com</code>，咱们再买个新域名<code>c.example.com</code>吧，你听完不想笑吗？</p>
+<ul>
+<li>算法</li>
+<li>计算机原理&amp;Linux</li>
+<li>安全</li>
+<li>html&amp;css&amp;js</li>
+<li>Java&amp;Python&amp;php</li>
+<li>Mysql</li>
+<li>网络&amp;http</li>
+<li>正则表达式</li>
+<li>git&amp;开发工具</li>
+</ul>
+<p>以上这些基本的技能，尽量都掌握，有了他们，学习其他新技术的周期会缩短，也可以顺畅迁移到任何的新兴技术职业。</p>
+<p>特斯拉创始人马斯克有一个故事，每次他认为谁没足够努力把一件事做好，会当场把他辞掉，然后对他说，你的工作我接手了。直到找来新的员工，这期间他会一直承担那个人的工作。如果不具备全面的基本技能，他无法胜任。</p>
+<h2 id="凡事讲究个过程"><a href="#凡事讲究个过程" class="headerlink" title="凡事讲究个过程"></a>凡事讲究个过程</h2><p>先学习那些跟自身职业有关联的能力，尽量要学以致用，如果未来的一个项目会用到某项知识，就要提前开始学习。</p>
+<p>除了学好自身职业的关键知识，还要学会主要领域的关键知识，而一些子领域的知识点，视兴趣、工作情况选择性了解，在实际运用时再做详细研究。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>芒格在《穷查理宝典》中提到一个<code>lollapalooza效应</code>，为那些相互强化并极大地放大彼此效应的因素发明的词组。类比到工作中，如果你能综合利用各项能力去完成一件事，最终的结果通常会更好。</p>
+]]></content>
+      <tags>
+        <tag>全栈工程师</tag>
+        <tag>能力参考清单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用JavaScript模拟事件循环</title>
+    <url>/20210609/eventloop/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<h2 id="哇叽哇叽"><a href="#哇叽哇叽" class="headerlink" title="哇叽哇叽"></a>哇叽哇叽</h2><p>对于很多概念性的原理，可能三两句话就能概括，但必然损失了很多细节。而实际的代码呢，无法忽略细节，最多是简化一些。</p>
+<p>那么就让我们一起来用伪代码来模拟事件循环机制吧。</p>
+<p><em>Talk is cheap. Show me the code.</em></p>
+<p>说起来容易做起来难，历史上的马谡可能是最佳反面代表人物了。</p>
+<span id="more"></span>
+
+<h2 id="为什么是事件循环机制，而不是别的机制？"><a href="#为什么是事件循环机制，而不是别的机制？" class="headerlink" title="为什么是事件循环机制，而不是别的机制？"></a>为什么是事件循环机制，而不是别的机制？</h2><p>js主线程要做各种类型的任务，例如：dom事件、布局计算、js任务、用户输入、动画、定时器。</p>
+<h3 id="如何解决未来的新任务？"><a href="#如何解决未来的新任务？" class="headerlink" title="如何解决未来的新任务？"></a>如何解决未来的新任务？</h3><p>各种事件不可能是同一时间执行，会在未来产生新的事件，所以就需要有一个机制像前台接待员一样，一直守在那里，时刻检测是否有新任务了，一有新任务就执行它，这就是事件循环机制。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  doSomething()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="如何解决积攒的新任务？"><a href="#如何解决积攒的新任务？" class="headerlink" title="如何解决积攒的新任务？"></a>如何解决积攒的新任务？</h2><p>新任务太多了，前台接待员无法同时处理多个任务，只能让大家排队了，这就是任务队列机制。</p>
+<p>为什么无法同时处理多个任务？因为js(渲染进程的主线程)是单线程执行模式。</p>
+<p>队列是先进先出的数据结构，在js中可以理解为数组。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> queue = []</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.unshift()</span><br><span class="line">  task()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="高优先级任务被阻塞了"><a href="#高优先级任务被阻塞了" class="headerlink" title="高优先级任务被阻塞了"></a>高优先级任务被阻塞了</h2><p>如果只有一个消息队列，那么高优先级的任务一直在等待，可能会产生页面卡顿。<br>所以按照任务的类型分了几种队列。优先级依次向下。</p>
+<ul>
+<li>用户交互</li>
+<li>合成页面</li>
+<li>默认（资源加载、定时器等）</li>
+<li>空闲（垃圾回收等）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">  handleQueue = []  <span class="comment">// 交互队列</span></span><br><span class="line">  composeQueue = [] <span class="comment">// 合成队列</span></span><br><span class="line">  baseQueue = []    <span class="comment">// 默认队列</span></span><br><span class="line">  freeQueue = []    <span class="comment">// 空闲队列</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 插入新任务</span></span><br><span class="line">  <span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (type === <span class="string">&#x27;handle&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.handleQueue.push(task)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;compose&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.composeQueue.push(task)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;base&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.baseQueue.push(task)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">&#x27;free&#x27;</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.freeQueue.push(task)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取一个任务</span></span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> queue = []</span><br><span class="line">    <span class="keyword">if</span> (handleQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = handleQueue</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (composeQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = composeQueue</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (baseQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = baseQueue</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (freeQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      queue = freeQueue</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> queue.unshift()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="页面在不同阶段，高优目标是不同的"><a href="#页面在不同阶段，高优目标是不同的" class="headerlink" title="页面在不同阶段，高优目标是不同的"></a>页面在不同阶段，高优目标是不同的</h2><p>页面在加载阶段，第一目标是先把页面渲染出来。<br>页面在交互阶段，第一目标是及时响应用户的操作。</p>
+<p>为了满足不同阶段的目标，需要调整不同阶段任务队列的优先级。</p>
+<p><img src="//blogcdn.affecthing.com/eventloop-1" alt="natapp1"></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">  handleQueue = []</span><br><span class="line">  composeQueue = []</span><br><span class="line">  baseQueue = []</span><br><span class="line">  freeQueue = []</span><br><span class="line">  priority = []</span><br><span class="line">  <span class="comment">// 设置优先级</span></span><br><span class="line">  <span class="function"><span class="title">setPriority</span>(<span class="params">lifecycle</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;pageload&#x27;</span>) &#123; <span class="comment">// 页面加载</span></span><br><span class="line">      <span class="built_in">this</span>.priority = [<span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;handle&#x27;</span>) &#123; <span class="comment">// 交互阶段</span></span><br><span class="line">      <span class="built_in">this</span>.priority = [<span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>, <span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>]</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (lifecycle === <span class="string">&#x27;free&#x27;</span>) &#123; <span class="comment">// 空闲阶段</span></span><br><span class="line">      <span class="built_in">this</span>.priority = [<span class="string">&#x27;baseQueue&#x27;</span>, <span class="string">&#x27;handleQueue&#x27;</span>, <span class="string">&#x27;freeQueue&#x27;</span>, <span class="string">&#x27;composeQueue&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> curr = []</span><br><span class="line">    <span class="comment">// 根据优先级顺序来获取任务</span></span><br><span class="line">    <span class="built_in">this</span>.priority.forEach(<span class="function"><span class="params">priority</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> queue = <span class="built_in">this</span>[priority]</span><br><span class="line">      <span class="keyword">if</span> (queue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> queue.unshift()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 省略</span></span><br><span class="line">  <span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"><span class="keyword">const</span> stop = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">queue.setPriority(<span class="string">&#x27;pageload&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="如何在渲染前做一些任务？"><a href="#如何在渲染前做一些任务？" class="headerlink" title="如何在渲染前做一些任务？"></a>如何在渲染前做一些任务？</h2><p>有时候我们想在当前任务完成前再紧接着做一些任务，但是如果插入到队伍末尾，那么需要的时间可能长，可能短，这就无法稳定地按照预期来做了。</p>
+<p>所以增加了微任务队列，在当前任务即将完成时，再执行一些事情，不用等太久。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span> </span>&#123;</span><br><span class="line">  microQueue = []</span><br><span class="line">  <span class="comment">// 执行任务</span></span><br><span class="line">  <span class="function"><span class="title">do</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// start doSomething</span></span><br><span class="line">    <span class="comment">// doSomething</span></span><br><span class="line">    <span class="comment">// end doSomething</span></span><br><span class="line">    <span class="comment">// 检查微任务队列</span></span><br><span class="line">    <span class="keyword">if</span> (microQueue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      microQueue.forEach(<span class="function"><span class="params">microTask</span> =&gt;</span> microTask())</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 添加微任务</span></span><br><span class="line">  <span class="function"><span class="title">addMicro</span>(<span class="params">microTask</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.microQueue(microTask)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略，同上</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">add</span>(<span class="params">task, type</span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">setPriority</span>(<span class="params">lifecycle</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line">queue.add(<span class="keyword">new</span> Task(), <span class="string">&#x27;base&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task.do()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="低级任务饿死现象"><a href="#低级任务饿死现象" class="headerlink" title="低级任务饿死现象"></a>低级任务饿死现象</h2><p>一直在执行高优任务，低级任务就会出现饿死现象，所以连续执行一定数量的高优任务后，需要执行一次低级任务。</p>
+<h2 id="异步回调"><a href="#异步回调" class="headerlink" title="异步回调"></a>异步回调</h2><p>这里先说一个常识，js虽然是单线程执行，但是浏览器却是多进程的。</p>
+<p>一个异步任务，可能是由浏览器的其他进程或者线程去执行，然后再将执行结果利用 IPC 的方式通知渲染进程，之后渲染进程再将对应的消息添加到消息队列中。</p>
+<h2 id="setTimeout实现机制有何不同之处？"><a href="#setTimeout实现机制有何不同之处？" class="headerlink" title="setTimeout实现机制有何不同之处？"></a>setTimeout实现机制有何不同之处？</h2><p>由于存在时间的概念，并不能直接放入消息队列中。浏览器又增加了一个延迟队列，还有其他的一些延迟任务都在这里执行。每次执行完消息队列中的一个任务，就要检查一遍延迟队列。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> delayQueue = []</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查延迟队列中的任务，是否到时间了</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkDelayQueue</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  delayQueue.map(<span class="function"><span class="params">task</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="string">&#x27;到期了&#x27;</span>) &#123;</span><br><span class="line">      task()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> task = queue.get()</span><br><span class="line">  task.do()</span><br><span class="line"></span><br><span class="line">  checkDelayQueue()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 退出标志</span></span><br><span class="line">  <span class="keyword">if</span> (stop) &#123;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>以上代码不是实际的浏览器实现，只是为了更好理解事件循环机制提供帮助。</p>
+<p>希望你也写出自己的实现版本。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li>《浏览器工作原理与实践》</li>
+<li>《JavaScript忍者秘籍》</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>事件循环</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>给孤傲的程序员们：软件开发是一项团体运动</title>
+    <url>/20201101/cooperation/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<p>记得有个程序员调查报告显示：</p>
+<blockquote>
+<p>近 70％的受访者表示他们的能力高于平均水平，而不到 10％的受访者认为他们的能力低于平均水平。</p>
+</blockquote>
+<p>大部分人认为自己比其他同事水平要好或者不低于。</p>
+<span id="more"></span>
+
+<p>孤傲的我们总认为自己是那个扫地憎，完美地完成每个任务，拯救世上的软件。我不得不说程序员们太孤傲了，包括我自己。一度很流行“10 倍工程师”这个说法，很快就遭到了一众业界大佬的嘲讽。</p>
+<p>回到自然界，人类为什么战胜了狮子老虎，统治了世界。并不是因为你是武松，也不是因为你手里有刀，是围猎，是合作。最终的全球化，大范围地让不认识的人合作生产。</p>
+<p>强大如张无忌也差点在围攻光明顶时挂掉。大家爱玩的王者荣耀也不是1v5，而是5v5。超级计算中并没有超级芯片，而是几万个普通芯片的组合。合作的力量太强大了，合作是人类文明独有的超级核武。</p>
+<p>到了目前这个阶段，你不得不合作，产品经理、设计师、前端、后端、算法、人工智能、测试、运维。没有身兼数职的人，每一次开发任务都是多方沟通。这意味着开发不再是闷头搞大事，而是合作商量大事，各自去执行你擅长的部分。</p>
+<p>合作过程中的沟通是频繁，我知道很多人不喜欢被打断，我也尤其不喜欢在思考一个复杂问题时被打断，因为确实很影响继续工作的心流状态。越是不喜欢被打扰，现实中就越是经常被打扰或者被临时拉去开会。我们只能尽量提前规划一些沟通的时间段，或者每隔两三个小时主动看一下合作方的最新消息。</p>
+<p>软件开发显然是一项团体运动，写下代码前一些疑问，如果能提前沟通可能经常节省你不少的时间。当你给产品经理讲述新技术时，可能他帮你找到了用武之地。接口文档的提前约定，提前梳理了你在处理异常情况时的流程。</p>
+<p>拥抱合作，Peace and Love。</p>
+]]></content>
+      <tags>
+        <tag>合作</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>给老项目加入eslint的建议</title>
+    <url>/20210802/eslintidea/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>通常关于eslint的文章是介绍如何使用。这里会假定一个前提，这是一个新项目。今天我们聊聊老项的一些使用建议。</p>
+<h2 id="尽快确定一种风格"><a href="#尽快确定一种风格" class="headerlink" title="尽快确定一种风格"></a>尽快确定一种风格</h2><p>很多团队会陷入一种争论，到底选择哪种风格，通常有<code>airbnb</code>、<code>standard</code>等。也有一些团队会认为这几种风格都不是我想要的，要自己定制。</p>
+<p>此时，我们忽略一个问题，我们做这件事最重要的目的是什么？</p>
+<span id="more"></span>
+
+<p>有两个目的，一是自动检查错误；二是统一团队代码风格，增强维护性。</p>
+<p>不论哪种风格，都会检查错误，那么统一风格才是主要的目标，而不是选择哪种风格。</p>
+<p>所以不论是民主投票，还是leader做决定，或者其他办法。都请尽快确定风格，并且有了<code>prettier</code>后，写代码的过程中工具会帮你自动改正的。</p>
+<h2 id="不用追求完美"><a href="#不用追求完美" class="headerlink" title="不用追求完美"></a>不用追求完美</h2><p>当我们在一个老项目中加入eslint后，会发现报错信息多到爆炸，我相信程序员中有很多强迫症，想立刻修复这些错误。</p>
+<p>但我请你先停下来，思考一个问题，你能确保自己的修改，不会导致任何问题吗？<br>答案是不能。</p>
+<p>同时还有几个事情需要考虑：</p>
+<ul>
+<li>有一些错误或警告，需要读懂原来的代码，并进行修复</li>
+<li>古老的项目，有太多的文件需要修复</li>
+<li>有一些修复需要完整的测试</li>
+</ul>
+<p>上面这三件事情会耗费团队很多精力，并且有些团队有很多古老的项目。工作量太庞大了，如果我们把大量的精力浪费在这里，不是最好的选择。</p>
+<p>过去的代码，虽然它丑陋，但大都经过了充分地测试，是可以正常运行的代码。我们的主要目标是约束未来的代码。</p>
+<h2 id="我的办法"><a href="#我的办法" class="headerlink" title="我的办法"></a>我的办法</h2><p>因为我个人有代码洁癖，所以做了一些更精细的操作。</p>
+<ol>
+<li>有一些规则，像缩进都改成两个空格，这类的规则全都使用工具来解决掉。</li>
+<li>给所有文件增加<code>eslint-disable </code>注释，并规范团队，在未来如果修改这个文件，需要删除注释并修复。</li>
+</ol>
+<p>因为我们团队采用了vue，所以写了一个批量添加注释的脚本工具。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/sh</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -lt 1 ]</span><br><span class="line">  <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">&#x27;请填写路径&#x27;</span></span><br><span class="line">  <span class="built_in">exit</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">&#123;</span><br><span class="line">  num=0</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">e</span></span>()&#123;</span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> `ls <span class="variable">$1</span>`</span><br><span class="line">      <span class="keyword">do</span></span><br><span class="line">        <span class="keyword">if</span> [ -d <span class="variable">$1</span><span class="string">&quot;/&quot;</span><span class="variable">$file</span> ]</span><br><span class="line">        <span class="keyword">then</span></span><br><span class="line">          e <span class="variable">$1</span><span class="string">&quot;/&quot;</span><span class="variable">$file</span> <span class="variable">$2</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">          <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$&#123;file##*.&#125;</span>&quot;</span>x = <span class="string">&quot;js&quot;</span>x ]||[ <span class="string">&quot;<span class="variable">$&#123;file##*.&#125;</span>&quot;</span>x = <span class="string">&quot;ts&quot;</span>x ]</span><br><span class="line">          <span class="keyword">then</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="variable">$1</span><span class="string">&quot;/&quot;</span><span class="variable">$file</span><span class="string">&quot;\n&quot;</span></span><br><span class="line">            num=`expr <span class="variable">$num</span> + 1`</span><br><span class="line">            <span class="comment"># sed -i &#x27;&#x27; 1d $1&quot;/&quot;$file</span></span><br><span class="line">            sed -i <span class="string">&#x27;&#x27;</span> <span class="string">&#x27;1 i\</span></span><br><span class="line"><span class="string">            /* eslint-disable */</span></span><br><span class="line"><span class="string">            &#x27;</span> <span class="variable">$1</span><span class="string">&quot;/&quot;</span><span class="variable">$file</span></span><br><span class="line">          <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$&#123;file##*.&#125;</span>&quot;</span>x = <span class="string">&quot;vue&quot;</span>x ]</span><br><span class="line">            <span class="keyword">then</span></span><br><span class="line">              num=`expr <span class="variable">$num</span> + 1`</span><br><span class="line">              <span class="comment"># sed -i &#x27;&#x27; 1d $1&quot;/&quot;$file</span></span><br><span class="line">              sed -i <span class="string">&#x27;&#x27;</span> <span class="string">&#x27;1s/\&lt;template\&gt;/\&lt;template\&gt;\&#x27;</span>$<span class="string">&#x27;\n\&lt;!-- eslint-disable --\&gt;/&#x27;</span> <span class="variable">$1</span><span class="string">&quot;/&quot;</span><span class="variable">$file</span></span><br><span class="line">              sed -i <span class="string">&#x27;&#x27;</span> <span class="string">&#x27;1s/\&lt;template lang=&quot;html&quot;\&gt;/\&lt;template lang=&quot;html&quot;\&gt;\&#x27;</span>$<span class="string">&#x27;\n\&lt;!-- eslint-disable --\&gt;/&#x27;</span> <span class="variable">$1</span><span class="string">&quot;/&quot;</span><span class="variable">$file</span></span><br><span class="line">              sed -i <span class="string">&#x27;&#x27;</span> <span class="string">&#x27;s/\&lt;script\&gt;/\&lt;script\&gt;\&#x27;</span>$<span class="string">&#x27;\n\/* eslint-disable *\//&#x27;</span> <span class="variable">$1</span><span class="string">&quot;/&quot;</span><span class="variable">$file</span></span><br><span class="line">              sed -i <span class="string">&#x27;&#x27;</span> <span class="string">&#x27;s/\&lt;script lang=&quot;ts&quot;\&gt;/\&lt;script lang=&quot;ts&quot;\&gt;\&#x27;</span>$<span class="string">&#x27;\n\/* eslint-disable *\//&#x27;</span> <span class="variable">$1</span><span class="string">&quot;/&quot;</span><span class="variable">$file</span></span><br><span class="line">            <span class="keyword">fi</span></span><br><span class="line">          <span class="keyword">fi</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">      <span class="keyword">done</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">e <span class="variable">$1</span> <span class="variable">$2</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;共修改&quot;</span><span class="variable">$num</span><span class="string">&quot;个js、ts、vue文件&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>推荐望闻问切这种古老的中医方法，多看项目代码，找熟悉的人咨询，将具体的策略和团队一起探讨。</p>
+<p>希望大家根据自己的项目情况，做出更好的决策。</p>
 ]]></content>
       <tags>
         <tag>基本类型</tag>
