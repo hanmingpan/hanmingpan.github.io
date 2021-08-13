@@ -196,6 +196,226 @@
       </tags>
   </entry>
   <entry>
+    <title>Javascript字符串string</title>
+    <url>/20160323/string/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>字符串是Javascript最常用的数据类型，是五种基本数据类型之一（其他是number, boolean, null, undefined)。<br>我们常用的是字符串字面量形式。</p>
+<h2 id="检测是否为字符串"><a href="#检测是否为字符串" class="headerlink" title="检测是否为字符串"></a>检测是否为字符串</h2><p>typeof直接去检测是不准确的，通用的类型检测方法又太过繁琐。<br>而借助valueOf()方法，则可以返回一个字符串字面量。(此方式也适用于number与boolean)</p>
+<pre><code>var str1 = &#39;hello&#39;;
+var str2 = new String(&#39;world&#39;);
+
+typeof str1; // string
+typeof str2; // object
+typeof str2.valueOf(); // string
+</code></pre>
+<h2 id="其他类型转换为字符串"><a href="#其他类型转换为字符串" class="headerlink" title="其他类型转换为字符串"></a>其他类型转换为字符串</h2><p>大部分情况下调用toString()方法即可，然后null和undefined则需要使用String()方法。</p>
+<pre><code>var num = 1;
+   num.toString();       // &#39;1&#39;
+   var other = String(null) // &#39;null&#39;
+</code></pre>
+<span id="more"></span>
+
+<h2 id="一元运算符和字符串"><a href="#一元运算符和字符串" class="headerlink" title="一元运算符和字符串"></a>一元运算符和字符串</h2><p>当一个字符串和其他类型相加时，其他类型会转换成字符串，再相加。<br>而如果是和其他类型做比较和减法运算时，字符串会转换成数字，再计算。</p>
+<pre><code>var str = &#39;1&#39;;
+   var num = 5;
+   var boo = true;
+   num - str;  // 4
+   str == boo; // true
+</code></pre>
+<h2 id="str-concat"><a href="#str-concat" class="headerlink" title="str.concat()"></a>str.concat()</h2><p>将一个或者多个字符串参数附加到字符串对象末尾，拼接成一个字符串。</p>
+<pre><code>  var str = &#39;Hello&#39;;
+str.concat(&#39; &#39;, &#39;World&#39;); // Hello World
+</code></pre>
+<p>然而最常用的还是’+’运算符。</p>
+<pre><code>var str = &#39;5&#39; &#39;1&#39;;    // 51
+var str2 = 5 + &#39;1&#39;;   // 51
+var num = 5 + (+&#39;1&#39;); // 6
+</code></pre>
+<p>当其他数据类型和字符串相加时，首先会被转换成字符串。<br>但是在数字字符串前面加入一个’+’运算符，将会把字符串转化为数字。</p>
+<h2 id="str-indexOf-与-str-lastIndexOf"><a href="#str-indexOf-与-str-lastIndexOf" class="headerlink" title="str.indexOf() 与 str.lastIndexOf()"></a>str.indexOf() 与 str.lastIndexOf()</h2><p>在原始字符串中查找参数字符串，如果存在，则返回参数字符串索引位置。不存在返回-1。<br>第二个参数代表查找的起始位置。</p>
+<pre><code>var str = &#39;god is god&#39;;
+
+str.indexOf(&#39;god&#39;);    // 0
+str.indexOf(&#39;god&#39;, 4); // 7
+str.indexOf(&#39;are&#39;);    // -1
+</code></pre>
+<p>lastIndexOf()则是从右向左搜索，第二个参数也是从右向左计数。</p>
+<pre><code>str.lastIndexOf(&#39;god&#39;);    // 7
+str.lastIndexOf(&#39;god&#39;, 1); // 0
+
+str.indexOf(&#39;god&#39;, 0);     // 0
+str.lastIndexOf(&#39;god&#39;, 0); // 0
+</code></pre>
+<p>Javascript从右向左计算时，通常遵循左包括右不包括。</p>
+<h2 id="str-search"><a href="#str-search" class="headerlink" title="str.search()"></a>str.search()</h2><p>在字符串中查找符合正则表达式的匹配项，如果匹配成功，返回首次匹配项的索引，否则返回-1。</p>
+<pre><code>var str = &#39;hello 123 world&#39;;
+str.search(/\d/);    // 6
+str.search(/china/); // -1
+</code></pre>
+<h2 id="str-match"><a href="#str-match" class="headerlink" title="str.match()"></a>str.match()</h2><p>参数为正则表达式对象，返回一个包含匹配结果的数组。</p>
+<pre><code>var str = &#39;1 hello 2 world 3&#39;;
+var arr = str.match(/\d/g); // [1, 2, 3]
+</code></pre>
+<h2 id="str-replace"><a href="#str-replace" class="headerlink" title="str.replace()"></a>str.replace()</h2><p>语法</p>
+<pre><code>str.replace(regexp/substr, newstr/function)
+</code></pre>
+<p>用字符串替换匹配项，返回新字符串。<br>第一个参数可以是字符串或正则表达式对象。<br>第二个参数为替换字符串或者函数返回值。</p>
+<pre><code>var str = &#39;1 hello 2 world 3&#39;;
+var str2 = str.replace(&#39;world&#39;, &#39;china&#39;); // &#39;1 hello 2 china 3&#39;
+var str3 = str.replace(/\d/g, &#39;88&#39;); // &#39;88 hello 88 china 88&#39;
+
+//函数四个参数分别为匹配项、p1正则表达式一个括号匹配项(p2为第二个括号匹配项，以此类推)、匹配项索引位置、原始字符串
+//此方法将所有项打印出来看看
+var str4 = str.replace(/(\d)/g, function(match, p1, offset, string)&#123;
+    return &#39;(match:&#39; + match + &#39;-p1:&#39; + p1 + &#39;-offset:&#39; + offset + &#39;-string:&#39; + string + &#39;)&#39;;
+&#125;)
+// &#39;(match:1-p1:1-offset:0-string:1 hello 2 world 3) hello (match:2-p1:2-offset:8-string:1 hello 2 world 3) world (match:3-p1:3-offset:16-string:1 hello 2 world 3)&#39;
+</code></pre>
+<h2 id="str-slice"><a href="#str-slice" class="headerlink" title="str.slice()"></a>str.slice()</h2><p>语法</p>
+<pre><code>str.slice(start, end);
+</code></pre>
+<p>提取字符串中的一部分，参数为索引位置，第二个参数可选（默认为字符串长度）。<br>如果参数为负，自动被加上字符串长度计算。</p>
+<pre><code>var str = &#39;God is god&#39;;
+var str2 = str.slice(0, 3);   // God
+var str3 = str.slice(4);      // is god
+var str4 = str.slice(-3, -1); // go
+</code></pre>
+<h2 id="str-substring"><a href="#str-substring" class="headerlink" title="str.substring()"></a>str.substring()</h2><p>语法</p>
+<pre><code>str.substring(start, end)
+</code></pre>
+<p>此方法和slice()相似。只是如果参数为负数，则按照0计算。如果参数大于字符串长度，则按照str.length计算。</p>
+<pre><code>var str = &#39;God is god&#39;;
+var str1 = str.substring(0, 3);  // God
+var str2 = str.substring(-2, 3); // God
+var str3 = str.substring(4);     // is god
+var str4 = str.substring(7, 10); // god
+var str5 = str.substring(7, 20); // god
+</code></pre>
+<h2 id="str-substr"><a href="#str-substr" class="headerlink" title="str.substr()"></a>str.substr()</h2><p>语法</p>
+<pre><code>str.substr(start, length)
+</code></pre>
+<p>提取字符串中指定长度的子字符串。<br>第一个参数为起始索引位置，如果为负数，则自动被加上字符串长度计算。<br>第二个参数为截取的长度，可选的（默认字符串长度），如果为0或者负数，则返回空字符串。</p>
+<pre><code>var str = &#39;God is god&#39;;
+var str1 = str.substr(0, 3);  // God
+var str2 = str.substr(-3, 3); // god
+var str3 = str.substr(3, -1); // &#39;&#39;
+var str4 = str.substr(4);     // is god
+</code></pre>
+<h2 id="str-split"><a href="#str-split" class="headerlink" title="str.split()"></a>str.split()</h2><p>语法</p>
+<pre><code>str.split(sep, limit)
+</code></pre>
+<p>将一个字符串按照给定分隔符，分割为一个数组。<br>第一个参数为字符串或正则表达式，第二个参数限制数组长度。</p>
+<pre><code>var str = &#39;1,2,3,4,5&#39;;
+var arr = str.split(&#39;,&#39;);     // [1, 2, 3, 4, 5]
+var arr2 = str.split(&#39;,&#39;, 3); // [1, 2, 3]
+var arr3 = str.split(/,/);    // [1, 2, 3, 4, 5]
+</code></pre>
+<h2 id="str-trim"><a href="#str-trim" class="headerlink" title="str.trim()"></a>str.trim()</h2><p>去除字符串两端的空白。</p>
+<pre><code>var str1 = &#39; hello &#39;;
+var str2 = &#39; hello&#39;;
+var str3 = &#39;hello &#39;;
+var str4 = &#39;he llo&#39;;
+
+str1.trim(); // hello
+str2.trim(); // hello
+str3.trim(); // hello
+str4.trim(); // he llo
+</code></pre>
+<p>trim()不存在时的兼容代码</p>
+<pre><code>if (!String.prototype.trim) &#123;
+  String.prototype.trim = function () &#123;
+    return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, &#39;&#39;);
+  &#125;;
+&#125;
+</code></pre>
+<h2 id="str-charAt"><a href="#str-charAt" class="headerlink" title="str.charAt()"></a>str.charAt()</h2><p>获取指定索引位置的字符。</p>
+<pre><code>var str = &#39;hello world&#39;;
+str.charAt(0); // h
+str.charAt(6); // w
+</code></pre>
+<h2 id="str-charCodeAt"><a href="#str-charCodeAt" class="headerlink" title="str.charCodeAt()"></a>str.charCodeAt()</h2><p>获取指定索引位置字符的Unicode编码。</p>
+<pre><code>var str = &#39;hello wrold&#39;;
+str.charCodeAt(0); // 104
+str.charCodeAt(6); // 119
+</code></pre>
+<h2 id="String-fromCharCode"><a href="#String-fromCharCode" class="headerlink" title="String.fromCharCode()"></a>String.fromCharCode()</h2><p>静态方法，根据指定的Unicode编码，返回响应的字符串。</p>
+<pre><code>String.fromCharCode(97,98,99); // abc
+</code></pre>
+<h2 id="str-toUpperCase-与-str-toLowerCase"><a href="#str-toUpperCase-与-str-toLowerCase" class="headerlink" title="str.toUpperCase() 与 str.toLowerCase()"></a>str.toUpperCase() 与 str.toLowerCase()</h2><p>字符串大小写转换。</p>
+<pre><code>var str = &#39;hello china&#39;;
+var str2 = &#39;HELLO WORLD&#39;;
+
+str.toUpperCase();  // HELLO　CHINA
+str2.toLowerCase(); // hello world
+</code></pre>
+<h2 id="str-localeCompare"><a href="#str-localeCompare" class="headerlink" title="str.localeCompare()"></a>str.localeCompare()</h2><p>字符串比较函数，如果原始字符串在词法上比参数字符串大，返回1，相等的话返回0，否则返回-1。<br>一般情况下使用比较运算符即可。</p>
+<pre><code>var str = &#39;abcd&#39;;
+str.localeCompare(&#39;efgh&#39;); // -1;
+str.localeCompare(&#39;ABCD&#39;); // 1
+</code></pre>
+<h2 id="JSON-parse"><a href="#JSON-parse" class="headerlink" title="JSON.parse()"></a>JSON.parse()</h2><p>语法</p>
+<pre><code>JSON.parse(str, function(prop, val)&#123;&#125;);
+</code></pre>
+<p>将一个json字符串解析成为一个javascipt值;<br>第一个参数是json字符串。<br>第二个参数是一个解析函数，会把返回值覆盖原属性值，如果返回为undefined,则此属性从对象中删除。<br>函数中的两个参数分别为属性名和属性值。</p>
+<pre><code>var str = &#39;&#123;&quot;oo&quot; : 1, &quot;pp&quot; : &quot;2&quot;&#125;&#39;;
+var obj = JSON.parse(str);
+// Object &#123;oo: 1, pp: &quot;2&quot;&#125;
+
+var obj2 = JSON.parse(str, function(p, v)&#123;
+    if( p === &#39;oo&#39;) &#123;
+        v = undefined;
+    &#125;
+    return v;
+&#125;);
+//    Object &#123;pp: &quot;2&quot;&#125;
+
+var obj3 = JSON.parse(str, function(p, v)&#123;
+    return v + 5;
+&#125;);
+// [object object]5
+</code></pre>
+<p>第三个例子明显不是我们想要的结果。因为在遍历到最顶层的时候，传入到函数中的参数是空字符串。<br>重新改写第三个例子。</p>
+<pre><code>var obj3 = JSON.parse(str, function(p, v)&#123;
+    if (p === &#39;&#39;) &#123;
+        return v;
+    &#125;
+
+    return v + 5;
+&#125;);
+// Object &#123;oo: 6, pp: &quot;25&quot;&#125;
+</code></pre>
+<h2 id="JSON-stringify"><a href="#JSON-stringify" class="headerlink" title="JSON.stringify()"></a>JSON.stringify()</h2><p>语法</p>
+<pre><code>JSON.stringify(value, function()/array, space);
+</code></pre>
+<p>将js值序列化成json字符串。<br>第一个参数可以是任何类型，但是非数组中的undefined会被忽略，数组中的undefined转化为null。<br>第二参数可以是函数或者数组，如果是函数，用法类型JSON.parse()。如果是数组，那么最终结果是数组中存在的值。<br>第三个参数是控制结果字符串的间距，如果是数字，则缩进对应数量空格。如果是字符串，则每个级别插入该字符串。（最多十位）</p>
+<pre><code>var obj = &#123;oo : 1, pp : 2&#125;;
+var str = JSON.stringify(obj);
+// &#39;&#123;&quot;oo&quot;:1,&quot;pp&quot;:2&#125;&#39;
+
+var str2 = JSON.stringify(obj, [&#39;oo&#39;]);
+// &#39;&#123;&quot;pp&quot;:2&#125;&#39;
+
+var str3 = JSON.stringify(obj, null, &#39;bili&#39;);
+/* &#39;&#123;
+    bili&quot;oo&quot;: 1,
+    bili&quot;pp&quot;: 2
+    &#125;&#39;
+*/
+
+var str4 = JSON.stringify(obj, null, 4);
+/* &#39;&#123;
+        &quot;oo&quot;: 1,
+        &quot;pp&quot;: 2
+    &#125;&#39;
+*/
+</code></pre>
+]]></content>
+      <tags>
+        <tag>javascript</tag>
+        <tag>String</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>dom节点处理</title>
     <url>/20160418/dom/</url>
     <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
@@ -524,6 +744,45 @@ var next = ele.nextElementSibling;  // .right
       </tags>
   </entry>
   <entry>
+    <title>淘宝flexible深度解读</title>
+    <url>/20180620/flexible/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
+<p>关于flexible的第一篇介绍文章是<code>大漠</code>的《<a href="https://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html">使用Flexible实现手淘H5页面的终端适配</a>》。请先阅读这篇文章再来看本文。</p>
+<p>三年前看的时候就一个感觉<code>Perfect</code>，还有这么神奇的操作，但是深入到原理就有点似懂非懂，向其他同学推荐的时候，总有些细节讲不清楚。究其原因是自己没有深入了解“为什么会产生这样的解决方案？”。</p>
+<span id="more"></span>
+
+<h2 id="rem如何计算？"><a href="#rem如何计算？" class="headerlink" title="rem如何计算？"></a>rem如何计算？</h2><p>这种方案受到<code>vw</code>这个单位的启发，100vw等于设备宽度，跟具体像素无关，有点类似100%。但百分比无法解决宽高比的问题。</p>
+<p>rem单位是参照根节点的font-size为依据，所以只要根据设备宽度来除以100份，动态计算根节点的字体大小，就能hack这个vw的效果。</p>
+<pre><code>1vw = (ClietWidth/100)= htmlFontSize = 1rem
+</code></pre>
+<p>flexible将页面分成了10份，为什么不像vw单位一样是100份呢？拿iPhone4举例，宽度为320px，如果是100份，1rem=3.2px，目前大部分浏览器不支持12px以下的字体大小，所以320/12=26.67，最多可以将页面分成26份，方便计算取整数10，1rem=(320/10)=32px。</p>
+<h2 id="dpr有什么用？"><a href="#dpr有什么用？" class="headerlink" title="dpr有什么用？"></a>dpr有什么用？</h2><p>先看一下设备的实际像素与css像素的统计图。</p>
+<p><img src="//blogcdn.affecthing.com/flexible-1.png" alt="flexible-1"></p>
+<p>在iphone4之前没有视网膜屏幕，一个设备像素等于一个css像素。最开始的移动端网站大多是按照240px或320px的设计图开发，iphone3GS就是320px，那么在iPhone4的640px上，整个网站只能显示一半，看起来很奇怪。就算厂商会自动缩放整个网站来适配<br>屏幕，也无法解决固定像素的问题。</p>
+<p><img src="//blogcdn.affecthing.com/flexible-2.png" alt="flexible-2"></p>
+<p>考虑到这方面的影响，iPhone4的物理像素比（devicePixelRatio）dpr=2，将一个像素的宽度和高度都扩大二倍，手机在底层对网站进行了显示上的放大，这样一来屏幕对于原有的网站还是320px。</p>
+<h2 id="viewport的改变能带来什么？"><a href="#viewport的改变能带来什么？" class="headerlink" title="viewport的改变能带来什么？"></a>viewport的改变能带来什么？</h2><p>这是计算rem的关键代码</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> docEl = <span class="built_in">document</span>.documentElement</span><br><span class="line"><span class="keyword">var</span> rem = docEl.clientWidth / <span class="number">10</span></span><br><span class="line">docEl.style.fontSize = rem + <span class="string">&#x27;px&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>clientWidth</code>是根元素的可视宽度，如果viewport缩放scale=1.0，那么对于iPhone4的clientWidth=320px，如果scale=0.5，那么clientWidth=640px，无论如何改变viewport值，rem都等于根节点可视宽度的1/10。</p>
+<p><code>老版本0.3.2</code>里有这样一段。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> isAndroid = win.navigator.appVersion.match(<span class="regexp">/android/gi</span>);</span><br><span class="line"><span class="keyword">var</span> isIPhone = win.navigator.appVersion.match(<span class="regexp">/iphone/gi</span>);</span><br><span class="line"><span class="keyword">var</span> devicePixelRatio = win.devicePixelRatio;</span><br><span class="line"><span class="keyword">if</span> (isIPhone) &#123;</span><br><span class="line">  <span class="comment">// iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案</span></span><br><span class="line">  <span class="keyword">if</span> (devicePixelRatio &gt;= <span class="number">3</span> &amp;&amp; (!dpr || dpr &gt;= <span class="number">3</span>)) &#123;</span><br><span class="line">      dpr = <span class="number">3</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (devicePixelRatio &gt;= <span class="number">2</span> &amp;&amp; (!dpr || dpr &gt;= <span class="number">2</span>)) &#123;</span><br><span class="line">      dpr = <span class="number">2</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      dpr = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// 其他设备下，仍旧使用1倍的方案</span></span><br><span class="line">  dpr = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">scale = <span class="number">1</span> / dpr;</span><br></pre></td></tr></table></figure>
+
+<p>动态去计算scale，并不影响rem的计算，好处是解决了1px的问题，坏处是破坏了css媒介media。<br>老版本对android不支持高清方案，是个缺陷。</p>
+<p><code>新版本2.0</code>里面则去掉了动态计算scale的方式，改为检测是否支持0.5px的特性，通过添加类名<code>hairlines</code>来向下兼容</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// detect 0.5px supports</span></span><br><span class="line"><span class="keyword">if</span> (dpr &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> fakeBody = <span class="built_in">document</span>.createElement(<span class="string">&#x27;body&#x27;</span>)</span><br><span class="line">    <span class="keyword">var</span> testElement = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">    testElement.style.border = <span class="string">&#x27;.5px solid transparent&#x27;</span></span><br><span class="line">    fakeBody.appendChild(testElement)</span><br><span class="line">    docEl.appendChild(fakeBody)</span><br><span class="line">    <span class="keyword">if</span> (testElement.offsetHeight === <span class="number">1</span>) &#123;</span><br><span class="line">        docEl.classList.add(<span class="string">&#x27;hairlines&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    docEl.removeChild(fakeBody)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="效果图和rem计算方式的联系是什么？"><a href="#效果图和rem计算方式的联系是什么？" class="headerlink" title="效果图和rem计算方式的联系是什么？"></a>效果图和rem计算方式的联系是什么？</h2><p>css里的1rem=clientWidth/10，效果图与设备像素计算的共同关联是都把屏幕分成10份，那么iphone4效果图里的1rem=(640/10)=64px。<br>所以css的转化基础永远是width/10。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这篇文章主要是记录思考为什么这样做的解答。希望有更多的疑问来让我们一起思考。</p>
+<p>如今淘宝家也升级了适配方案，拥抱真正的vw。参考大漠后来的文章《<a href="https://www.w3cplus.com/css/vw-for-layout.html">再聊移动端页面的适配》</a></p>
+]]></content>
+      <tags>
+        <tag>rem响应式</tag>
+        <tag>flexible</tag>
+        <tag>dpi</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>我用HTML写简历</title>
     <url>/20180923/resume/</url>
     <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
@@ -563,265 +822,6 @@ var next = ele.nextElementSibling;  // .right
       <tags>
         <tag>puppeteer</tag>
         <tag>简历</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Javascript字符串string</title>
-    <url>/20160323/string/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<p>字符串是Javascript最常用的数据类型，是五种基本数据类型之一（其他是number, boolean, null, undefined)。<br>我们常用的是字符串字面量形式。</p>
-<h2 id="检测是否为字符串"><a href="#检测是否为字符串" class="headerlink" title="检测是否为字符串"></a>检测是否为字符串</h2><p>typeof直接去检测是不准确的，通用的类型检测方法又太过繁琐。<br>而借助valueOf()方法，则可以返回一个字符串字面量。(此方式也适用于number与boolean)</p>
-<pre><code>var str1 = &#39;hello&#39;;
-var str2 = new String(&#39;world&#39;);
-
-typeof str1; // string
-typeof str2; // object
-typeof str2.valueOf(); // string
-</code></pre>
-<h2 id="其他类型转换为字符串"><a href="#其他类型转换为字符串" class="headerlink" title="其他类型转换为字符串"></a>其他类型转换为字符串</h2><p>大部分情况下调用toString()方法即可，然后null和undefined则需要使用String()方法。</p>
-<pre><code>var num = 1;
-   num.toString();       // &#39;1&#39;
-   var other = String(null) // &#39;null&#39;
-</code></pre>
-<span id="more"></span>
-
-<h2 id="一元运算符和字符串"><a href="#一元运算符和字符串" class="headerlink" title="一元运算符和字符串"></a>一元运算符和字符串</h2><p>当一个字符串和其他类型相加时，其他类型会转换成字符串，再相加。<br>而如果是和其他类型做比较和减法运算时，字符串会转换成数字，再计算。</p>
-<pre><code>var str = &#39;1&#39;;
-   var num = 5;
-   var boo = true;
-   num - str;  // 4
-   str == boo; // true
-</code></pre>
-<h2 id="str-concat"><a href="#str-concat" class="headerlink" title="str.concat()"></a>str.concat()</h2><p>将一个或者多个字符串参数附加到字符串对象末尾，拼接成一个字符串。</p>
-<pre><code>  var str = &#39;Hello&#39;;
-str.concat(&#39; &#39;, &#39;World&#39;); // Hello World
-</code></pre>
-<p>然而最常用的还是’+’运算符。</p>
-<pre><code>var str = &#39;5&#39; &#39;1&#39;;    // 51
-var str2 = 5 + &#39;1&#39;;   // 51
-var num = 5 + (+&#39;1&#39;); // 6
-</code></pre>
-<p>当其他数据类型和字符串相加时，首先会被转换成字符串。<br>但是在数字字符串前面加入一个’+’运算符，将会把字符串转化为数字。</p>
-<h2 id="str-indexOf-与-str-lastIndexOf"><a href="#str-indexOf-与-str-lastIndexOf" class="headerlink" title="str.indexOf() 与 str.lastIndexOf()"></a>str.indexOf() 与 str.lastIndexOf()</h2><p>在原始字符串中查找参数字符串，如果存在，则返回参数字符串索引位置。不存在返回-1。<br>第二个参数代表查找的起始位置。</p>
-<pre><code>var str = &#39;god is god&#39;;
-
-str.indexOf(&#39;god&#39;);    // 0
-str.indexOf(&#39;god&#39;, 4); // 7
-str.indexOf(&#39;are&#39;);    // -1
-</code></pre>
-<p>lastIndexOf()则是从右向左搜索，第二个参数也是从右向左计数。</p>
-<pre><code>str.lastIndexOf(&#39;god&#39;);    // 7
-str.lastIndexOf(&#39;god&#39;, 1); // 0
-
-str.indexOf(&#39;god&#39;, 0);     // 0
-str.lastIndexOf(&#39;god&#39;, 0); // 0
-</code></pre>
-<p>Javascript从右向左计算时，通常遵循左包括右不包括。</p>
-<h2 id="str-search"><a href="#str-search" class="headerlink" title="str.search()"></a>str.search()</h2><p>在字符串中查找符合正则表达式的匹配项，如果匹配成功，返回首次匹配项的索引，否则返回-1。</p>
-<pre><code>var str = &#39;hello 123 world&#39;;
-str.search(/\d/);    // 6
-str.search(/china/); // -1
-</code></pre>
-<h2 id="str-match"><a href="#str-match" class="headerlink" title="str.match()"></a>str.match()</h2><p>参数为正则表达式对象，返回一个包含匹配结果的数组。</p>
-<pre><code>var str = &#39;1 hello 2 world 3&#39;;
-var arr = str.match(/\d/g); // [1, 2, 3]
-</code></pre>
-<h2 id="str-replace"><a href="#str-replace" class="headerlink" title="str.replace()"></a>str.replace()</h2><p>语法</p>
-<pre><code>str.replace(regexp/substr, newstr/function)
-</code></pre>
-<p>用字符串替换匹配项，返回新字符串。<br>第一个参数可以是字符串或正则表达式对象。<br>第二个参数为替换字符串或者函数返回值。</p>
-<pre><code>var str = &#39;1 hello 2 world 3&#39;;
-var str2 = str.replace(&#39;world&#39;, &#39;china&#39;); // &#39;1 hello 2 china 3&#39;
-var str3 = str.replace(/\d/g, &#39;88&#39;); // &#39;88 hello 88 china 88&#39;
-
-//函数四个参数分别为匹配项、p1正则表达式一个括号匹配项(p2为第二个括号匹配项，以此类推)、匹配项索引位置、原始字符串
-//此方法将所有项打印出来看看
-var str4 = str.replace(/(\d)/g, function(match, p1, offset, string)&#123;
-    return &#39;(match:&#39; + match + &#39;-p1:&#39; + p1 + &#39;-offset:&#39; + offset + &#39;-string:&#39; + string + &#39;)&#39;;
-&#125;)
-// &#39;(match:1-p1:1-offset:0-string:1 hello 2 world 3) hello (match:2-p1:2-offset:8-string:1 hello 2 world 3) world (match:3-p1:3-offset:16-string:1 hello 2 world 3)&#39;
-</code></pre>
-<h2 id="str-slice"><a href="#str-slice" class="headerlink" title="str.slice()"></a>str.slice()</h2><p>语法</p>
-<pre><code>str.slice(start, end);
-</code></pre>
-<p>提取字符串中的一部分，参数为索引位置，第二个参数可选（默认为字符串长度）。<br>如果参数为负，自动被加上字符串长度计算。</p>
-<pre><code>var str = &#39;God is god&#39;;
-var str2 = str.slice(0, 3);   // God
-var str3 = str.slice(4);      // is god
-var str4 = str.slice(-3, -1); // go
-</code></pre>
-<h2 id="str-substring"><a href="#str-substring" class="headerlink" title="str.substring()"></a>str.substring()</h2><p>语法</p>
-<pre><code>str.substring(start, end)
-</code></pre>
-<p>此方法和slice()相似。只是如果参数为负数，则按照0计算。如果参数大于字符串长度，则按照str.length计算。</p>
-<pre><code>var str = &#39;God is god&#39;;
-var str1 = str.substring(0, 3);  // God
-var str2 = str.substring(-2, 3); // God
-var str3 = str.substring(4);     // is god
-var str4 = str.substring(7, 10); // god
-var str5 = str.substring(7, 20); // god
-</code></pre>
-<h2 id="str-substr"><a href="#str-substr" class="headerlink" title="str.substr()"></a>str.substr()</h2><p>语法</p>
-<pre><code>str.substr(start, length)
-</code></pre>
-<p>提取字符串中指定长度的子字符串。<br>第一个参数为起始索引位置，如果为负数，则自动被加上字符串长度计算。<br>第二个参数为截取的长度，可选的（默认字符串长度），如果为0或者负数，则返回空字符串。</p>
-<pre><code>var str = &#39;God is god&#39;;
-var str1 = str.substr(0, 3);  // God
-var str2 = str.substr(-3, 3); // god
-var str3 = str.substr(3, -1); // &#39;&#39;
-var str4 = str.substr(4);     // is god
-</code></pre>
-<h2 id="str-split"><a href="#str-split" class="headerlink" title="str.split()"></a>str.split()</h2><p>语法</p>
-<pre><code>str.split(sep, limit)
-</code></pre>
-<p>将一个字符串按照给定分隔符，分割为一个数组。<br>第一个参数为字符串或正则表达式，第二个参数限制数组长度。</p>
-<pre><code>var str = &#39;1,2,3,4,5&#39;;
-var arr = str.split(&#39;,&#39;);     // [1, 2, 3, 4, 5]
-var arr2 = str.split(&#39;,&#39;, 3); // [1, 2, 3]
-var arr3 = str.split(/,/);    // [1, 2, 3, 4, 5]
-</code></pre>
-<h2 id="str-trim"><a href="#str-trim" class="headerlink" title="str.trim()"></a>str.trim()</h2><p>去除字符串两端的空白。</p>
-<pre><code>var str1 = &#39; hello &#39;;
-var str2 = &#39; hello&#39;;
-var str3 = &#39;hello &#39;;
-var str4 = &#39;he llo&#39;;
-
-str1.trim(); // hello
-str2.trim(); // hello
-str3.trim(); // hello
-str4.trim(); // he llo
-</code></pre>
-<p>trim()不存在时的兼容代码</p>
-<pre><code>if (!String.prototype.trim) &#123;
-  String.prototype.trim = function () &#123;
-    return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, &#39;&#39;);
-  &#125;;
-&#125;
-</code></pre>
-<h2 id="str-charAt"><a href="#str-charAt" class="headerlink" title="str.charAt()"></a>str.charAt()</h2><p>获取指定索引位置的字符。</p>
-<pre><code>var str = &#39;hello world&#39;;
-str.charAt(0); // h
-str.charAt(6); // w
-</code></pre>
-<h2 id="str-charCodeAt"><a href="#str-charCodeAt" class="headerlink" title="str.charCodeAt()"></a>str.charCodeAt()</h2><p>获取指定索引位置字符的Unicode编码。</p>
-<pre><code>var str = &#39;hello wrold&#39;;
-str.charCodeAt(0); // 104
-str.charCodeAt(6); // 119
-</code></pre>
-<h2 id="String-fromCharCode"><a href="#String-fromCharCode" class="headerlink" title="String.fromCharCode()"></a>String.fromCharCode()</h2><p>静态方法，根据指定的Unicode编码，返回响应的字符串。</p>
-<pre><code>String.fromCharCode(97,98,99); // abc
-</code></pre>
-<h2 id="str-toUpperCase-与-str-toLowerCase"><a href="#str-toUpperCase-与-str-toLowerCase" class="headerlink" title="str.toUpperCase() 与 str.toLowerCase()"></a>str.toUpperCase() 与 str.toLowerCase()</h2><p>字符串大小写转换。</p>
-<pre><code>var str = &#39;hello china&#39;;
-var str2 = &#39;HELLO WORLD&#39;;
-
-str.toUpperCase();  // HELLO　CHINA
-str2.toLowerCase(); // hello world
-</code></pre>
-<h2 id="str-localeCompare"><a href="#str-localeCompare" class="headerlink" title="str.localeCompare()"></a>str.localeCompare()</h2><p>字符串比较函数，如果原始字符串在词法上比参数字符串大，返回1，相等的话返回0，否则返回-1。<br>一般情况下使用比较运算符即可。</p>
-<pre><code>var str = &#39;abcd&#39;;
-str.localeCompare(&#39;efgh&#39;); // -1;
-str.localeCompare(&#39;ABCD&#39;); // 1
-</code></pre>
-<h2 id="JSON-parse"><a href="#JSON-parse" class="headerlink" title="JSON.parse()"></a>JSON.parse()</h2><p>语法</p>
-<pre><code>JSON.parse(str, function(prop, val)&#123;&#125;);
-</code></pre>
-<p>将一个json字符串解析成为一个javascipt值;<br>第一个参数是json字符串。<br>第二个参数是一个解析函数，会把返回值覆盖原属性值，如果返回为undefined,则此属性从对象中删除。<br>函数中的两个参数分别为属性名和属性值。</p>
-<pre><code>var str = &#39;&#123;&quot;oo&quot; : 1, &quot;pp&quot; : &quot;2&quot;&#125;&#39;;
-var obj = JSON.parse(str);
-// Object &#123;oo: 1, pp: &quot;2&quot;&#125;
-
-var obj2 = JSON.parse(str, function(p, v)&#123;
-    if( p === &#39;oo&#39;) &#123;
-        v = undefined;
-    &#125;
-    return v;
-&#125;);
-//    Object &#123;pp: &quot;2&quot;&#125;
-
-var obj3 = JSON.parse(str, function(p, v)&#123;
-    return v + 5;
-&#125;);
-// [object object]5
-</code></pre>
-<p>第三个例子明显不是我们想要的结果。因为在遍历到最顶层的时候，传入到函数中的参数是空字符串。<br>重新改写第三个例子。</p>
-<pre><code>var obj3 = JSON.parse(str, function(p, v)&#123;
-    if (p === &#39;&#39;) &#123;
-        return v;
-    &#125;
-
-    return v + 5;
-&#125;);
-// Object &#123;oo: 6, pp: &quot;25&quot;&#125;
-</code></pre>
-<h2 id="JSON-stringify"><a href="#JSON-stringify" class="headerlink" title="JSON.stringify()"></a>JSON.stringify()</h2><p>语法</p>
-<pre><code>JSON.stringify(value, function()/array, space);
-</code></pre>
-<p>将js值序列化成json字符串。<br>第一个参数可以是任何类型，但是非数组中的undefined会被忽略，数组中的undefined转化为null。<br>第二参数可以是函数或者数组，如果是函数，用法类型JSON.parse()。如果是数组，那么最终结果是数组中存在的值。<br>第三个参数是控制结果字符串的间距，如果是数字，则缩进对应数量空格。如果是字符串，则每个级别插入该字符串。（最多十位）</p>
-<pre><code>var obj = &#123;oo : 1, pp : 2&#125;;
-var str = JSON.stringify(obj);
-// &#39;&#123;&quot;oo&quot;:1,&quot;pp&quot;:2&#125;&#39;
-
-var str2 = JSON.stringify(obj, [&#39;oo&#39;]);
-// &#39;&#123;&quot;pp&quot;:2&#125;&#39;
-
-var str3 = JSON.stringify(obj, null, &#39;bili&#39;);
-/* &#39;&#123;
-    bili&quot;oo&quot;: 1,
-    bili&quot;pp&quot;: 2
-    &#125;&#39;
-*/
-
-var str4 = JSON.stringify(obj, null, 4);
-/* &#39;&#123;
-        &quot;oo&quot;: 1,
-        &quot;pp&quot;: 2
-    &#125;&#39;
-*/
-</code></pre>
-]]></content>
-      <tags>
-        <tag>javascript</tag>
-        <tag>String</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>淘宝flexible深度解读</title>
-    <url>/20180620/flexible/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼聊技术</a></em></p>
-<p>关于flexible的第一篇介绍文章是<code>大漠</code>的《<a href="https://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html">使用Flexible实现手淘H5页面的终端适配</a>》。请先阅读这篇文章再来看本文。</p>
-<p>三年前看的时候就一个感觉<code>Perfect</code>，还有这么神奇的操作，但是深入到原理就有点似懂非懂，向其他同学推荐的时候，总有些细节讲不清楚。究其原因是自己没有深入了解“为什么会产生这样的解决方案？”。</p>
-<span id="more"></span>
-
-<h2 id="rem如何计算？"><a href="#rem如何计算？" class="headerlink" title="rem如何计算？"></a>rem如何计算？</h2><p>这种方案受到<code>vw</code>这个单位的启发，100vw等于设备宽度，跟具体像素无关，有点类似100%。但百分比无法解决宽高比的问题。</p>
-<p>rem单位是参照根节点的font-size为依据，所以只要根据设备宽度来除以100份，动态计算根节点的字体大小，就能hack这个vw的效果。</p>
-<pre><code>1vw = (ClietWidth/100)= htmlFontSize = 1rem
-</code></pre>
-<p>flexible将页面分成了10份，为什么不像vw单位一样是100份呢？拿iPhone4举例，宽度为320px，如果是100份，1rem=3.2px，目前大部分浏览器不支持12px以下的字体大小，所以320/12=26.67，最多可以将页面分成26份，方便计算取整数10，1rem=(320/10)=32px。</p>
-<h2 id="dpr有什么用？"><a href="#dpr有什么用？" class="headerlink" title="dpr有什么用？"></a>dpr有什么用？</h2><p>先看一下设备的实际像素与css像素的统计图。</p>
-<p><img src="//blogcdn.affecthing.com/flexible-1.png" alt="flexible-1"></p>
-<p>在iphone4之前没有视网膜屏幕，一个设备像素等于一个css像素。最开始的移动端网站大多是按照240px或320px的设计图开发，iphone3GS就是320px，那么在iPhone4的640px上，整个网站只能显示一半，看起来很奇怪。就算厂商会自动缩放整个网站来适配<br>屏幕，也无法解决固定像素的问题。</p>
-<p><img src="//blogcdn.affecthing.com/flexible-2.png" alt="flexible-2"></p>
-<p>考虑到这方面的影响，iPhone4的物理像素比（devicePixelRatio）dpr=2，将一个像素的宽度和高度都扩大二倍，手机在底层对网站进行了显示上的放大，这样一来屏幕对于原有的网站还是320px。</p>
-<h2 id="viewport的改变能带来什么？"><a href="#viewport的改变能带来什么？" class="headerlink" title="viewport的改变能带来什么？"></a>viewport的改变能带来什么？</h2><p>这是计算rem的关键代码</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> docEl = <span class="built_in">document</span>.documentElement</span><br><span class="line"><span class="keyword">var</span> rem = docEl.clientWidth / <span class="number">10</span></span><br><span class="line">docEl.style.fontSize = rem + <span class="string">&#x27;px&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>clientWidth</code>是根元素的可视宽度，如果viewport缩放scale=1.0，那么对于iPhone4的clientWidth=320px，如果scale=0.5，那么clientWidth=640px，无论如何改变viewport值，rem都等于根节点可视宽度的1/10。</p>
-<p><code>老版本0.3.2</code>里有这样一段。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> isAndroid = win.navigator.appVersion.match(<span class="regexp">/android/gi</span>);</span><br><span class="line"><span class="keyword">var</span> isIPhone = win.navigator.appVersion.match(<span class="regexp">/iphone/gi</span>);</span><br><span class="line"><span class="keyword">var</span> devicePixelRatio = win.devicePixelRatio;</span><br><span class="line"><span class="keyword">if</span> (isIPhone) &#123;</span><br><span class="line">  <span class="comment">// iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案</span></span><br><span class="line">  <span class="keyword">if</span> (devicePixelRatio &gt;= <span class="number">3</span> &amp;&amp; (!dpr || dpr &gt;= <span class="number">3</span>)) &#123;</span><br><span class="line">      dpr = <span class="number">3</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (devicePixelRatio &gt;= <span class="number">2</span> &amp;&amp; (!dpr || dpr &gt;= <span class="number">2</span>)) &#123;</span><br><span class="line">      dpr = <span class="number">2</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      dpr = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// 其他设备下，仍旧使用1倍的方案</span></span><br><span class="line">  dpr = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">scale = <span class="number">1</span> / dpr;</span><br></pre></td></tr></table></figure>
-
-<p>动态去计算scale，并不影响rem的计算，好处是解决了1px的问题，坏处是破坏了css媒介media。<br>老版本对android不支持高清方案，是个缺陷。</p>
-<p><code>新版本2.0</code>里面则去掉了动态计算scale的方式，改为检测是否支持0.5px的特性，通过添加类名<code>hairlines</code>来向下兼容</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// detect 0.5px supports</span></span><br><span class="line"><span class="keyword">if</span> (dpr &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> fakeBody = <span class="built_in">document</span>.createElement(<span class="string">&#x27;body&#x27;</span>)</span><br><span class="line">    <span class="keyword">var</span> testElement = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">    testElement.style.border = <span class="string">&#x27;.5px solid transparent&#x27;</span></span><br><span class="line">    fakeBody.appendChild(testElement)</span><br><span class="line">    docEl.appendChild(fakeBody)</span><br><span class="line">    <span class="keyword">if</span> (testElement.offsetHeight === <span class="number">1</span>) &#123;</span><br><span class="line">        docEl.classList.add(<span class="string">&#x27;hairlines&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    docEl.removeChild(fakeBody)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="效果图和rem计算方式的联系是什么？"><a href="#效果图和rem计算方式的联系是什么？" class="headerlink" title="效果图和rem计算方式的联系是什么？"></a>效果图和rem计算方式的联系是什么？</h2><p>css里的1rem=clientWidth/10，效果图与设备像素计算的共同关联是都把屏幕分成10份，那么iphone4效果图里的1rem=(640/10)=64px。<br>所以css的转化基础永远是width/10。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这篇文章主要是记录思考为什么这样做的解答。希望有更多的疑问来让我们一起思考。</p>
-<p>如今淘宝家也升级了适配方案，拥抱真正的vw。参考大漠后来的文章《<a href="https://www.w3cplus.com/css/vw-for-layout.html">再聊移动端页面的适配》</a></p>
-]]></content>
-      <tags>
-        <tag>rem响应式</tag>
-        <tag>flexible</tag>
-        <tag>dpi</tag>
       </tags>
   </entry>
   <entry>
@@ -865,6 +865,74 @@ var str4 = JSON.stringify(obj, null, 4);
 ]]></content>
       <tags>
         <tag>重构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>程序员综合能力参考清单</title>
+    <url>/20190924/ability/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<p>工作五年了，回头看看走过的路，好多道理真该早点懂得，但当时的我还在努力成为一个合格的程序员，没考虑到上层建筑的事。老话说得好<code>不谋全局者，不足谋一域</code>，更早的从整个软件行业来看待自己的职业，会做出更好的路线选择。</p>
+<span id="more"></span>
+
+<p>石头是个程序员，热爱新鲜的技术，醉心于这些好玩的东西，感觉它们很酷啊，希望把他们用到工作中，然后发现各种问题，不太实用，只能放弃了这项新技术，然后继续验证下一个想法。</p>
+<p>如果我是一个leader，需要这样的员工吗？答案是不一定，他热爱新技术，那只是他的加分项。因为我有另一个判断标准：能完成一件事，能实现业务目标，积极拥抱业务变化，为业务提供更好的技术支持，这是我要的员工。也就是说人得能成事，不仅仅是工作里的分内事。</p>
+<blockquote>
+<p>我发现，如果一个人的全部信息都局限于他的工作领域，那么他的工作不会做的很好。一个人必须有眼光，他可以从书籍或者人们身上，最好是两者兼有，培养眼光。                                                                           ——哈维·费尔斯通</p>
+</blockquote>
+<h2 id="管理能力"><a href="#管理能力" class="headerlink" title="管理能力"></a>管理能力</h2><p>石头刚入行不久，他幻想某一天也会成为某个小领导，目前来看还得几年，所以说管理能力不是石头该关心的事？反过来看，大部分人通常都会在私底下吐槽领导，就算你直属领导人挺好，你可能还会吐槽上层领导。如果领导经常做出错误的决定，那他怎么成为领导的，又怎么带领团队工作呢？</p>
+<p>逐渐去拥有管理能力的过程，会改变看事情的角度。也会将心比心的去问自己，能不能做出更好的决定。如果领导犯错了，我怎么恰当的给出提示。当有一天给到你带领团队的机会，也多少会胸有成竹。</p>
+<h2 id="沟通能力"><a href="#沟通能力" class="headerlink" title="沟通能力"></a>沟通能力</h2><p>人类之所以统治世界，是大规模群体合作的成果，沟通起到至关重要的作用。如果你能用一句话让别人明白你的意思，那就比用三句话的效率提高了一大截。</p>
+<p>能用尽量少的语言描述清楚一个问题，能迅速明白别人话语背后的意思，遇到不清楚的问题，多和相关人员，有经验的人去交流，总会给到你更丰富的信息，减少你的无谓劳动。这就是沟通能力带来的好处。</p>
+<p>沟通的过程中管理好自己的情绪，俗话说伸手不打笑脸人，我们的目的是解决问题，而不是比吵架谁赢了。</p>
+<h2 id="英文听说读写"><a href="#英文听说读写" class="headerlink" title="英文听说读写"></a>英文听说读写</h2><p>编程语言是英文的，这项基本的能力不够好，会在方面掣肘你。代码的可读性跟命名有直接关系。</p>
+<p>石头英语能力薄弱，公司要做个活动女神颜值测试，石头给项目起名<code>nvshen</code>，想了想汉语全拼有点低级，又想了个英文的<code>womanGod</code>，感觉还挺满意，其实这是中式英文chinglish。石头又用专业的有道词典，查到了<code>goddess</code>，这次应该没跑了，正宗的。而真相呢？<code>goddess</code>是女神仙的意思，电视剧里的女神仙确实挺漂亮的，它不是地道的英语表达。在这里<code>hottie</code>、<code>sexy</code>、<code>peach</code>这一类的单词显然更好。</p>
+<p>学好英文的唯一方式就是长期的刻意练习，石头狠心报了一个三年的培训班，从最开始的见面时打招呼<code>How are you?</code>到后来的<code>How&#39;s it going?</code>。英语交流开始变得顺其自然，看英文材料再也不是一筹莫展，而是迅速把握到重点片段，解决遇到的棘手问题。</p>
+<p><em>话说stackoverflow真香</em></p>
+<h2 id="技术全面性"><a href="#技术全面性" class="headerlink" title="技术全面性"></a>技术全面性</h2><p>其实笔者一直在强调全面性，而技术能力是看家本事，技术全面性也不能掉以轻心。难道这是让石头既要会前端，又要会后端，还是能运维？如果这么想说明还是不理解<code>全栈工程师</code>。当下这个时代，知识太多，要装下更多，也要学会放弃很多知识。咱们得把那些行业里大浪淘沙后的真金白银吃进肚子里。</p>
+<p>石头他们公司要做一个新项目，一兄弟说既然咱们都有<code>a.example.com</code>、<code>b.example.com</code>，咱们再买个新域名<code>c.example.com</code>吧，你听完不想笑吗？</p>
+<ul>
+<li>算法</li>
+<li>计算机原理&amp;Linux</li>
+<li>安全</li>
+<li>html&amp;css&amp;js</li>
+<li>Java&amp;Python&amp;php</li>
+<li>Mysql</li>
+<li>网络&amp;http</li>
+<li>正则表达式</li>
+<li>git&amp;开发工具</li>
+</ul>
+<p>以上这些基本的技能，尽量都掌握，有了他们，学习其他新技术的周期会缩短，也可以顺畅迁移到任何的新兴技术职业。</p>
+<p>特斯拉创始人马斯克有一个故事，每次他认为谁没足够努力把一件事做好，会当场把他辞掉，然后对他说，你的工作我接手了。直到找来新的员工，这期间他会一直承担那个人的工作。如果不具备全面的基本技能，他无法胜任。</p>
+<h2 id="凡事讲究个过程"><a href="#凡事讲究个过程" class="headerlink" title="凡事讲究个过程"></a>凡事讲究个过程</h2><p>先学习那些跟自身职业有关联的能力，尽量要学以致用，如果未来的一个项目会用到某项知识，就要提前开始学习。</p>
+<p>除了学好自身职业的关键知识，还要学会主要领域的关键知识，而一些子领域的知识点，视兴趣、工作情况选择性了解，在实际运用时再做详细研究。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>芒格在《穷查理宝典》中提到一个<code>lollapalooza效应</code>，为那些相互强化并极大地放大彼此效应的因素发明的词组。类比到工作中，如果你能综合利用各项能力去完成一件事，最终的结果通常会更好。</p>
+]]></content>
+      <tags>
+        <tag>全栈工程师</tag>
+        <tag>能力参考清单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>给孤傲的程序员们：软件开发是一项团体运动</title>
+    <url>/20201101/cooperation/</url>
+    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
+<p>记得有个程序员调查报告显示：</p>
+<blockquote>
+<p>近 70％的受访者表示他们的能力高于平均水平，而不到 10％的受访者认为他们的能力低于平均水平。</p>
+</blockquote>
+<p>大部分人认为自己比其他同事水平要好或者不低于。</p>
+<span id="more"></span>
+
+<p>孤傲的我们总认为自己是那个扫地憎，完美地完成每个任务，拯救世上的软件。我不得不说程序员们太孤傲了，包括我自己。一度很流行“10 倍工程师”这个说法，很快就遭到了一众业界大佬的嘲讽。</p>
+<p>回到自然界，人类为什么战胜了狮子老虎，统治了世界。并不是因为你是武松，也不是因为你手里有刀，是围猎，是合作。最终的全球化，大范围地让不认识的人合作生产。</p>
+<p>强大如张无忌也差点在围攻光明顶时挂掉。大家爱玩的王者荣耀也不是1v5，而是5v5。超级计算中并没有超级芯片，而是几万个普通芯片的组合。合作的力量太强大了，合作是人类文明独有的超级核武。</p>
+<p>到了目前这个阶段，你不得不合作，产品经理、设计师、前端、后端、算法、人工智能、测试、运维。没有身兼数职的人，每一次开发任务都是多方沟通。这意味着开发不再是闷头搞大事，而是合作商量大事，各自去执行你擅长的部分。</p>
+<p>合作过程中的沟通是频繁，我知道很多人不喜欢被打断，我也尤其不喜欢在思考一个复杂问题时被打断，因为确实很影响继续工作的心流状态。越是不喜欢被打扰，现实中就越是经常被打扰或者被临时拉去开会。我们只能尽量提前规划一些沟通的时间段，或者每隔两三个小时主动看一下合作方的最新消息。</p>
+<p>软件开发显然是一项团体运动，写下代码前一些疑问，如果能提前沟通可能经常节省你不少的时间。当你给产品经理讲述新技术时，可能他帮你找到了用武之地。接口文档的提前约定，提前梳理了你在处理异常情况时的流程。</p>
+<p>拥抱合作，Peace and Love。</p>
+]]></content>
+      <tags>
+        <tag>合作</tag>
       </tags>
   </entry>
   <entry>
@@ -945,51 +1013,6 @@ var str4 = JSON.stringify(obj, null, 4);
       </tags>
   </entry>
   <entry>
-    <title>程序员综合能力参考清单</title>
-    <url>/20190924/ability/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
-<p>工作五年了，回头看看走过的路，好多道理真该早点懂得，但当时的我还在努力成为一个合格的程序员，没考虑到上层建筑的事。老话说得好<code>不谋全局者，不足谋一域</code>，更早的从整个软件行业来看待自己的职业，会做出更好的路线选择。</p>
-<span id="more"></span>
-
-<p>石头是个程序员，热爱新鲜的技术，醉心于这些好玩的东西，感觉它们很酷啊，希望把他们用到工作中，然后发现各种问题，不太实用，只能放弃了这项新技术，然后继续验证下一个想法。</p>
-<p>如果我是一个leader，需要这样的员工吗？答案是不一定，他热爱新技术，那只是他的加分项。因为我有另一个判断标准：能完成一件事，能实现业务目标，积极拥抱业务变化，为业务提供更好的技术支持，这是我要的员工。也就是说人得能成事，不仅仅是工作里的分内事。</p>
-<blockquote>
-<p>我发现，如果一个人的全部信息都局限于他的工作领域，那么他的工作不会做的很好。一个人必须有眼光，他可以从书籍或者人们身上，最好是两者兼有，培养眼光。                                                                           ——哈维·费尔斯通</p>
-</blockquote>
-<h2 id="管理能力"><a href="#管理能力" class="headerlink" title="管理能力"></a>管理能力</h2><p>石头刚入行不久，他幻想某一天也会成为某个小领导，目前来看还得几年，所以说管理能力不是石头该关心的事？反过来看，大部分人通常都会在私底下吐槽领导，就算你直属领导人挺好，你可能还会吐槽上层领导。如果领导经常做出错误的决定，那他怎么成为领导的，又怎么带领团队工作呢？</p>
-<p>逐渐去拥有管理能力的过程，会改变看事情的角度。也会将心比心的去问自己，能不能做出更好的决定。如果领导犯错了，我怎么恰当的给出提示。当有一天给到你带领团队的机会，也多少会胸有成竹。</p>
-<h2 id="沟通能力"><a href="#沟通能力" class="headerlink" title="沟通能力"></a>沟通能力</h2><p>人类之所以统治世界，是大规模群体合作的成果，沟通起到至关重要的作用。如果你能用一句话让别人明白你的意思，那就比用三句话的效率提高了一大截。</p>
-<p>能用尽量少的语言描述清楚一个问题，能迅速明白别人话语背后的意思，遇到不清楚的问题，多和相关人员，有经验的人去交流，总会给到你更丰富的信息，减少你的无谓劳动。这就是沟通能力带来的好处。</p>
-<p>沟通的过程中管理好自己的情绪，俗话说伸手不打笑脸人，我们的目的是解决问题，而不是比吵架谁赢了。</p>
-<h2 id="英文听说读写"><a href="#英文听说读写" class="headerlink" title="英文听说读写"></a>英文听说读写</h2><p>编程语言是英文的，这项基本的能力不够好，会在方面掣肘你。代码的可读性跟命名有直接关系。</p>
-<p>石头英语能力薄弱，公司要做个活动女神颜值测试，石头给项目起名<code>nvshen</code>，想了想汉语全拼有点低级，又想了个英文的<code>womanGod</code>，感觉还挺满意，其实这是中式英文chinglish。石头又用专业的有道词典，查到了<code>goddess</code>，这次应该没跑了，正宗的。而真相呢？<code>goddess</code>是女神仙的意思，电视剧里的女神仙确实挺漂亮的，它不是地道的英语表达。在这里<code>hottie</code>、<code>sexy</code>、<code>peach</code>这一类的单词显然更好。</p>
-<p>学好英文的唯一方式就是长期的刻意练习，石头狠心报了一个三年的培训班，从最开始的见面时打招呼<code>How are you?</code>到后来的<code>How&#39;s it going?</code>。英语交流开始变得顺其自然，看英文材料再也不是一筹莫展，而是迅速把握到重点片段，解决遇到的棘手问题。</p>
-<p><em>话说stackoverflow真香</em></p>
-<h2 id="技术全面性"><a href="#技术全面性" class="headerlink" title="技术全面性"></a>技术全面性</h2><p>其实笔者一直在强调全面性，而技术能力是看家本事，技术全面性也不能掉以轻心。难道这是让石头既要会前端，又要会后端，还是能运维？如果这么想说明还是不理解<code>全栈工程师</code>。当下这个时代，知识太多，要装下更多，也要学会放弃很多知识。咱们得把那些行业里大浪淘沙后的真金白银吃进肚子里。</p>
-<p>石头他们公司要做一个新项目，一兄弟说既然咱们都有<code>a.example.com</code>、<code>b.example.com</code>，咱们再买个新域名<code>c.example.com</code>吧，你听完不想笑吗？</p>
-<ul>
-<li>算法</li>
-<li>计算机原理&amp;Linux</li>
-<li>安全</li>
-<li>html&amp;css&amp;js</li>
-<li>Java&amp;Python&amp;php</li>
-<li>Mysql</li>
-<li>网络&amp;http</li>
-<li>正则表达式</li>
-<li>git&amp;开发工具</li>
-</ul>
-<p>以上这些基本的技能，尽量都掌握，有了他们，学习其他新技术的周期会缩短，也可以顺畅迁移到任何的新兴技术职业。</p>
-<p>特斯拉创始人马斯克有一个故事，每次他认为谁没足够努力把一件事做好，会当场把他辞掉，然后对他说，你的工作我接手了。直到找来新的员工，这期间他会一直承担那个人的工作。如果不具备全面的基本技能，他无法胜任。</p>
-<h2 id="凡事讲究个过程"><a href="#凡事讲究个过程" class="headerlink" title="凡事讲究个过程"></a>凡事讲究个过程</h2><p>先学习那些跟自身职业有关联的能力，尽量要学以致用，如果未来的一个项目会用到某项知识，就要提前开始学习。</p>
-<p>除了学好自身职业的关键知识，还要学会主要领域的关键知识，而一些子领域的知识点，视兴趣、工作情况选择性了解，在实际运用时再做详细研究。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>芒格在《穷查理宝典》中提到一个<code>lollapalooza效应</code>，为那些相互强化并极大地放大彼此效应的因素发明的词组。类比到工作中，如果你能综合利用各项能力去完成一件事，最终的结果通常会更好。</p>
-]]></content>
-      <tags>
-        <tag>全栈工程师</tag>
-        <tag>能力参考清单</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>用JavaScript模拟事件循环</title>
     <url>/20210609/eventloop/</url>
     <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
@@ -1042,29 +1065,6 @@ var str4 = JSON.stringify(obj, null, 4);
 ]]></content>
       <tags>
         <tag>事件循环</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>给孤傲的程序员们：软件开发是一项团体运动</title>
-    <url>/20201101/cooperation/</url>
-    <content><![CDATA[<p><em>本文属于原创文章，转载请注明–来自<a href="//affecthing.com">桃源小盼的博客</a></em></p>
-<p>记得有个程序员调查报告显示：</p>
-<blockquote>
-<p>近 70％的受访者表示他们的能力高于平均水平，而不到 10％的受访者认为他们的能力低于平均水平。</p>
-</blockquote>
-<p>大部分人认为自己比其他同事水平要好或者不低于。</p>
-<span id="more"></span>
-
-<p>孤傲的我们总认为自己是那个扫地憎，完美地完成每个任务，拯救世上的软件。我不得不说程序员们太孤傲了，包括我自己。一度很流行“10 倍工程师”这个说法，很快就遭到了一众业界大佬的嘲讽。</p>
-<p>回到自然界，人类为什么战胜了狮子老虎，统治了世界。并不是因为你是武松，也不是因为你手里有刀，是围猎，是合作。最终的全球化，大范围地让不认识的人合作生产。</p>
-<p>强大如张无忌也差点在围攻光明顶时挂掉。大家爱玩的王者荣耀也不是1v5，而是5v5。超级计算中并没有超级芯片，而是几万个普通芯片的组合。合作的力量太强大了，合作是人类文明独有的超级核武。</p>
-<p>到了目前这个阶段，你不得不合作，产品经理、设计师、前端、后端、算法、人工智能、测试、运维。没有身兼数职的人，每一次开发任务都是多方沟通。这意味着开发不再是闷头搞大事，而是合作商量大事，各自去执行你擅长的部分。</p>
-<p>合作过程中的沟通是频繁，我知道很多人不喜欢被打断，我也尤其不喜欢在思考一个复杂问题时被打断，因为确实很影响继续工作的心流状态。越是不喜欢被打扰，现实中就越是经常被打扰或者被临时拉去开会。我们只能尽量提前规划一些沟通的时间段，或者每隔两三个小时主动看一下合作方的最新消息。</p>
-<p>软件开发显然是一项团体运动，写下代码前一些疑问，如果能提前沟通可能经常节省你不少的时间。当你给产品经理讲述新技术时，可能他帮你找到了用武之地。接口文档的提前约定，提前梳理了你在处理异常情况时的流程。</p>
-<p>拥抱合作，Peace and Love。</p>
-]]></content>
-      <tags>
-        <tag>合作</tag>
       </tags>
   </entry>
   <entry>
